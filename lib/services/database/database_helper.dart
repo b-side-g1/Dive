@@ -3,8 +3,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-
-final String tableName = 'Record';
+import 'package:flutterapp/models/record_model.dart';
 
 class DBHelper {
   DBHelper._();
@@ -30,7 +29,7 @@ class DBHelper {
       version: 1,
       onCreate: (Database db, int version) async {
         await db.execute( '''
-          CREATE TABLE $tableName
+          CREATE TABLE $Record.tableName
             id TEXT PRIMARY KEY,
             score INTEGER NOT NULL,
             description TEXT
