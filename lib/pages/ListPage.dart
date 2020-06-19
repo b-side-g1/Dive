@@ -58,6 +58,42 @@ class BodyLayout extends StatelessWidget {
 Widget _myListView(BuildContext context) {
   // final menus = ['오늘 나의 점수', '그래프'];
 // return ListView.separated( itemCount: menus.length, itemBuilder: (context, index) { return ListTile( title: Text(menus[index]), ); }, separatorBuilder: (context, index) { return Divider(); }, );
+// final todayData = {
+//     "status": "success",
+//     "code": 200,
+//     "message": "The request was successful",
+//     "data": [
+//         {
+//             "name": "Abu Dhabi",
+//             "id": 4139,
+//             "parent": 5153,
+//             "type": "city",
+//             "imageURL": ""
+
+//         },
+//         {
+//             "name": "Croatia",
+//             "id": 5037,
+//             "parent": 6886,
+//             "type": "country",
+//             "imageURL": ""
+
+//         },
+//      ]
+// };
+
+  final todayData = [
+    {"date": "2020-01-01", "score": "30"},
+    {"date": "2020-01-01", "score": "50"},
+    {"date": "2020-01-01", "score": "70"}
+  ];
+  void handleTodayScore(todayData) {
+    print(todayData);
+    //   (json['sets'] as List).map((i) {
+    //   return Set.fromJson(i);
+    // }).toList()
+    // return
+  }
 
   return ListView(
     children: ListTile.divideTiles(
@@ -72,11 +108,25 @@ Widget _myListView(BuildContext context) {
         ListTile(
           title: Text('캘린더'),
         ),
-        ListTile(
-          title: Text('통계페이지로 이동'),
+        RaisedButton(
+          child: Text(
+            "통계페이지로 이동",
+            style: TextStyle(color: Colors.black),
+          ),
+          color: Colors.yellow,
+          onPressed: () {
+            // 버튼을 누르면 안에 있는 함수를 실행
+          },
         ),
-        ListTile(
-          title: Text('무드등 켜기'),
+        RaisedButton(
+          child: Text(
+            "무드등켜기",
+            style: TextStyle(color: Colors.white),
+          ),
+          color: Colors.green,
+          onPressed: () {
+            // 버튼을 누르면 안에 있는 함수를 실행
+          },
         ),
       ],
     ).toList(),
