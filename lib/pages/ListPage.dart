@@ -19,34 +19,6 @@ class _ListPageState extends State<ListPage> {
       body: BodyLayout(),
     );
   }
-
-  final TextStyle menuFont = const TextStyle(fontSize: 18.0);
-  final button1 =
-      new RaisedButton(child: new Text("Button1"), onPressed: () {});
-
-  // Widget _buildMenu() {
-  //   return ListView.builder(
-  //       padding: const EdgeInsets.all(16.0),
-  //       itemBuilder: (BuildContext context, int index) {
-  //         // if (index.isOdd) return Divider();
-  //         // final index = index ~/ 2;
-
-  //     // return Container(width: 200, height: 200, margin: EdgeInsets.only(bottom: 10), color: Colors.red);
-  //       });
-  // }
-
-  // Widget _menuItem() {
-  //   print(pair);
-  //   return ListTile(
-  //     title: Text(
-  //       pair.asPascalCase,
-  //       style: menuFont,
-  //     ),
-  //     trailing: Icon(isAlreadySaved ? Icons.favorite : Icons.favorite_border,
-  //         color: isAlreadySaved ? Colors.red : null),
-  //   );
-  // }
-
 }
 
 class BodyLayout extends StatelessWidget {
@@ -57,60 +29,96 @@ class BodyLayout extends StatelessWidget {
 }
 
 Widget _myListView(BuildContext context) {
-  final todayData = [
+  List<dynamic> todayData = [
     {"date": "2020-01-01", "score": "30"},
     {"date": "2020-01-01", "score": "50"},
-    {"date": "2020-01-01", "score": "70"}
+    {"date": "2020-01-01", "score": "90"}
   ];
-  void handleTodayScore(todayData) {
-    print(todayData);
-    //   (json['sets'] as List).map((i) {
-    //   return Set.fromJson(i);
-    // }).toList()
-    // return
-  }
+  final TextStyle _biggerFont =
+      const TextStyle(fontSize: 18.0, color: Colors.blueGrey);
+  double height = 40;
+  double width = 200;
 
-  handleTodayScore(todayData);
-  print("hi");
-  // return ListView(
-  //   children: ListTile.divideTiles(
-  //     context: context,
-  //     tiles: [
-  //       ListTile(
-  //         title: Text('오늘 나의 점수'),
-  //       ),
-  //       ListTile(
-  //         title: Text('그래프'),
-  //       ),
-  //       ListTile(
-  //         title: Text('캘린더'),
-  //       ),
-  //       btn_statistic(context),
-  //       btn_lamp()
-  //     ],
-  //   ).toList(),
-  // );
+  String handleTodayScore(todayData) {
+    double score = 0;
+    todayData.forEach((element) {
+      score += double.parse(element['score']);
+    });
+
+    return ((score / todayData.length).round()).toString();
+  }
 
   return Center(
     child: Column(
       children: [
         Padding(
           padding: EdgeInsets.all(10),
-          child: btn_statistic(context),
+          child: Center(
+            child: Column(children: [
+              Padding(
+                padding: EdgeInsets.all(5),
+                child: Text("오늘나의점수", style: _biggerFont),
+              ),
+              Container(
+                child: Center(child: Text(handleTodayScore(todayData))),
+                color: Colors.red[100],
+                width: width,
+                height: height,
+              )
+            ]),
+          ),
         ),
         Padding(
           padding: EdgeInsets.all(10),
-          child: btn_lamp(),
+          child: Center(
+            child: Column(children: [
+              Padding(
+                padding: EdgeInsets.all(5),
+                child: Text("나의 무드 캘린더", style: _biggerFont),
+              ),
+              Container(
+                child: Center(child: Text("캘린더렌더링")),
+                color: Colors.blue[100],
+                width: width,
+                height: height,
+              )
+            ]),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(10),
+          child: Center(
+            child: Column(children: [
+              Padding(
+                padding: EdgeInsets.all(5),
+                child: Text("나의 무드 그래프", style: _biggerFont),
+              ),
+              Container(
+                child: Center(child: Text("그래프 렌더링")),
+                color: Colors.yellow[100],
+                width: width,
+                height: height,
+              )
+            ]),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(10),
+          child: btn_statistic(context, width, height),
+        ),
+        Padding(
+          padding: EdgeInsets.all(10),
+          child: btn_lamp(width, height),
         ),
       ],
     ),
   );
 }
 
-Widget btn_statistic(context) {
+Widget btn_statistic(context, width, height) {
   return ButtonTheme(
-      minWidth: 200.0,
-      height: 50.0,
+      minWidth: width,
+      height: height,
       child: RaisedButton(
         child: Text(
           "통계페이지로 이동",
@@ -127,11 +135,15 @@ Widget btn_statistic(context) {
 }
 
 /* button - lamp */
-Widget btn_lamp() {
-  return Lamp();
+Widget btn_lamp(width, height) {
+  return Lamp(width: width, height: height);
 }
 
 class Lamp extends StatefulWidget {
+  Lamp({Key key, this.width, this.height}) : super(key: key);
+  final double width;
+  final double height;
+
   @override
   LampState createState() => LampState();
 }
@@ -145,8 +157,8 @@ class LampState extends State<Lamp> {
       child: Column(
         children: [
           ButtonTheme(
-              minWidth: 200.0,
-              height: 50.0,
+              minWidth: widget.width,
+              height: widget.height,
               child: RaisedButton(
                 child: Text(
                   lampOn ? "무드등끄기" : "무드등켜기",
@@ -173,12 +185,3 @@ class LampState extends State<Lamp> {
     );
   }
 }
-
-// section - today score
-// class ListPage extends StatefulWidget {
-//   ListPage({Key key, this.title}) : super(key: key);
-//   final String title;
-
-//   @override
-//   _ListPageState createState() => _ListPageState();
-// }
