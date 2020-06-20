@@ -1,5 +1,5 @@
 class Record {
-  static final tableName = 'Record';
+  static final tableName = 'record';
 
   final String id;
   final int score;

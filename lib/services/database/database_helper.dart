@@ -24,16 +24,17 @@ class DBHelper {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, 'MoodTrackDB');
 
+    var recordTable = Record.tableName;
+    var ddl = "";
+    var recordDDL = "CREATE TABLE $recordTable(id TEXT PRIMARY KEY, score INTEGER, description TEXT)";
+
+    ddl += recordDDL;
+
     return await openDatabase(
       path,
       version: 1,
       onCreate: (Database db, int version) async {
-        await db.execute( '''
-          CREATE TABLE $Record.tableName
-            id TEXT PRIMARY KEY,
-            score INTEGER NOT NULL,
-            description TEXT
-          ''');
+        await db.execute(ddl);
       }
     );
   }
