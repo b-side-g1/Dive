@@ -95,6 +95,8 @@ Widget _myListView(BuildContext context) {
     // return
   }
 
+  handleTodayScore(todayData);
+  print("hi");
   return ListView(
     children: ListTile.divideTiles(
       context: context,
@@ -108,29 +110,75 @@ Widget _myListView(BuildContext context) {
         ListTile(
           title: Text('캘린더'),
         ),
-        RaisedButton(
-          child: Text(
-            "통계페이지로 이동",
-            style: TextStyle(color: Colors.black),
-          ),
-          color: Colors.yellow,
-          onPressed: () {
-            // 버튼을 누르면 안에 있는 함수를 실행
-          },
-        ),
-        RaisedButton(
-          child: Text(
-            "무드등켜기",
-            style: TextStyle(color: Colors.white),
-          ),
-          color: Colors.green,
-          onPressed: () {
-            // 버튼을 누르면 안에 있는 함수를 실행
-          },
-        ),
+        btn_statistic(),
+        btn_lamp()
       ],
     ).toList(),
   );
+}
+
+Widget btn_statistic() {
+  return RaisedButton(
+    child: Text(
+      "통계페이지로 이동",
+      style: TextStyle(color: Colors.black),
+    ),
+    color: Colors.yellow,
+    onPressed: () {
+      // 버튼을 누르면 안에 있는 함수를 실행
+    },
+  );
+}
+
+/* button - lamp */
+Widget btn_lamp() {
+  return Lamp();
+}
+
+class Lamp extends StatefulWidget {
+  @override
+  LampState createState() => LampState();
+}
+
+class LampState extends State<Lamp> {
+  bool lampOn = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: [
+          RaisedButton(
+            child: Text(
+              lampOn ? "무드등끄기" : "무드등켜기",
+              style: TextStyle(color: lampOn ? Colors.black : Colors.white),
+            ),
+            color: lampOn ? Colors.yellow : Colors.black,
+            onPressed: () {
+              setState(() {
+                lampOn = !lampOn;
+              });
+            },
+          ),
+          lampOn
+              ? Image(image: AssetImage('lib/src/image/idea.png'))
+              : Image(image: AssetImage('lib/src/image/idea(1).png'))
+        ],
+      ),
+    );
+    // return RaisedButton(
+    //   child: Text(
+    //     lampOn ? "무드등끄기" : "무드등켜기",
+    //     style: TextStyle(color: lampOn ? Colors.black : Colors.white),
+    //   ),
+    //   color: lampOn ? Colors.yellow : Colors.black,
+    //   onPressed: () {
+    //     setState(() {
+    //       lampOn = !lampOn;
+    //     });
+    //   },
+    // );
+  }
 }
 
 // section - today score
