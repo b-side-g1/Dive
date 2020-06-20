@@ -94,7 +94,7 @@ class _RecordingFormState extends State<RecordingForm> {
                   });
                   Scaffold.of(context)
                       .showSnackBar(SnackBar(content: Text('Processing Data')));
-                  Record record = Record(score: score,description: "테스트" );
+                  Record record = Record(id: randomString(20), score: score,description: "테스트" );
                   _createRecord(record);
                   _getAllRecords();
                 }
