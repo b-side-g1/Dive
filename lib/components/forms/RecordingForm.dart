@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/components/TagBox.dart';
+import 'package:random_string/random_string.dart';
+
 import 'package:flutterapp/components/forms/InputComponent.dart';
+import 'package:flutterapp/models/record_model.dart';
+import 'package:flutterapp/services/record/record_service.dart';
 
 class RecordingForm extends StatefulWidget {
   final int minScore = 1;
@@ -65,6 +69,8 @@ class _RecordingFormState extends State<RecordingForm> {
   int score;
   final _formKey = GlobalKey<FormState>();
 
+  RecordService _recordService = RecordService();
+
   @override
   void dispose() {
     scoreController.dispose();
@@ -104,6 +110,7 @@ class _RecordingFormState extends State<RecordingForm> {
                 return null;
               },
               keyboardType: TextInputType.number,
+              controller: scoreController,
             ),
           ),
           Padding(
@@ -141,18 +148,40 @@ class _RecordingFormState extends State<RecordingForm> {
             child: RaisedButton(
               onPressed: () {
                 if (_formKey.currentState.validate()) {
+                  var score = int.parse(scoreController.value.text);
+                  var reason = reasonController.value.text;
+                  print('[RecordingForm.dart] score -> $score');
+                  print('[RecordingForm.dart] reason -> $reason');
                   setState(() {
                     widget.feelingTags.add(reasonController.value.text);
+                    // reasonTags.add(reason);
                   });
                   Scaffold.of(context)
                       .showSnackBar(SnackBar(content: Text('Processing Data')));
+                  Record record = Record(id: randomString(20), score: score,description: "테스트" );
+                  _createRecord(record);
+                  _getAllRecords();
                 }
               },
-              child: Text('Submit'),
+              child: Text('태그 입력'),
             ),
           ),
         ],
       ),
     );
+  }
+
+  void _createRecord(Record record) async {
+    final result = await _recordService.insertRecord(record);
+    print('[RecordingForm.dart] #_insertRecord Result -> $result');
+  }
+
+  void _getAllRecords() async {
+    final records = await _recordService.selectAllRecord();
+    for (final record in records) {
+      final id = record.id;
+      final score = record.score;
+      print("[RecordingForm.dart] record -> $id , $score");
+    }
   }
 }
