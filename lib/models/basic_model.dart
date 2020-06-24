@@ -18,6 +18,7 @@ class Basic {
       this.uuid,
       this.createdAt});
 
+  
   factory Basic.fromJson(Map<String, dynamic> json) => new Basic(
         id: json["id"],
         today_startAt: json["today_startAt"],
