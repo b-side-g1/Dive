@@ -21,7 +21,7 @@ class Splash extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    AssetImage assetsImage = AssetImage('lib/src/image/splash@3x.png');
+    AssetImage assetsImage = AssetImage('lib/src/image/splash/splash@3x.png');
     return Scaffold(
         body: Container(
           decoration: BoxDecoration(
