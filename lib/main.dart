@@ -1,6 +1,5 @@
  import 'package:flutter/material.dart';
 import 'package:flutterapp/splash/splash_page.dart';
-import 'controller/DiaryTabController.dart';
 
 void main() {
   runApp(MyApp());
