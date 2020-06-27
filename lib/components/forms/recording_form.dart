@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/components/TagBox.dart';
+import 'package:flutterapp/components/tag_box.dart';
 import 'package:random_string/random_string.dart';
 
 import 'package:flutterapp/components/forms/InputComponent.dart';
@@ -150,8 +150,8 @@ class _RecordingFormState extends State<RecordingForm> {
                 if (_formKey.currentState.validate()) {
                   var score = int.parse(scoreController.value.text);
                   var reason = reasonController.value.text;
-                  print('[RecordingForm.dart] score -> $score');
-                  print('[RecordingForm.dart] reason -> $reason');
+                  print('[recording_form.dart] score -> $score');
+                  print('[recording_form.dart] reason -> $reason');
                   setState(() {
                     this.feelingTags.add(reasonController.value.text);
                     // reasonTags.add(reason);
@@ -173,7 +173,7 @@ class _RecordingFormState extends State<RecordingForm> {
 
   void _createRecord(Record record) async {
     final result = await _recordService.insertRecord(record);
-    print('[RecordingForm.dart] #_insertRecord Result -> $result');
+    print('[recording_form.dart] #_insertRecord Result -> $result');
   }
 
   void _getAllRecords() async {
@@ -181,7 +181,7 @@ class _RecordingFormState extends State<RecordingForm> {
     for (final record in records) {
       final id = record.id;
       final score = record.score;
-      print("[RecordingForm.dart] record -> $id , $score");
+      print("[recording_form.dart] record -> $id , $score");
     }
   }
 }

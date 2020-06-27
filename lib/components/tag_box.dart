@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-import 'Tag.dart';
+import 'tag.dart';
 
 class TagBox extends StatefulWidget {
   String title;
