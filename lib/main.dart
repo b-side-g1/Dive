@@ -1,5 +1,5 @@
  import 'package:flutter/material.dart';
-import 'controller/DiaryTabController.dart';
+import 'controller/diary_tab_controller.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,9 +13,6 @@ class MyApp extends StatelessWidget {
       title: 'Diary App',
       theme: ThemeData(  
         primarySwatch: Colors.blue,
-        // This makes the visual density adapt to the platform that you run
-        // the app on. For desktop platforms, the controls will be smaller and
-        // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home:  DiaryTabController()
