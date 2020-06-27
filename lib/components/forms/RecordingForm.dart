@@ -8,8 +8,15 @@ import 'package:flutterapp/models/record_model.dart';
 import 'package:flutterapp/services/record/record_service.dart';
 
 class RecordingForm extends StatefulWidget {
-  final int minScore = 1;
-  final int maxScore = 10;
+  @override
+  _RecordingFormState createState() {
+    return _RecordingFormState();
+  }
+}
+
+class _RecordingFormState extends State<RecordingForm> {
+  final int minScore = 0;
+  final int maxScore = 100;
   int hour = new DateTime.now().hour;
   int minute = new DateTime.now().minute;
   List<String> feelingTags = [
@@ -56,13 +63,6 @@ class RecordingForm extends StatefulWidget {
     '알콜',
   ];
 
-  @override
-  _RecordingFormState createState() {
-    return _RecordingFormState();
-  }
-}
-
-class _RecordingFormState extends State<RecordingForm> {
   final reasonController = TextEditingController();
   final scoreController = TextEditingController();
   DateTime when;
@@ -90,12 +90,12 @@ class _RecordingFormState extends State<RecordingForm> {
             child: CupertinoTimerPicker(
                 alignment: Alignment.center,
                 initialTimerDuration:
-                    Duration(hours: widget.hour, minutes: widget.minute),
+                    Duration(hours: this.hour, minutes: this.minute),
                 minuteInterval: 1,
                 mode: CupertinoTimerPickerMode.hm,
                 onTimerDurationChanged: (value) {
-                  widget.hour = value.inHours;
-                  widget.minute = value.inMinutes % 60;
+                  this.hour = value.inHours;
+                  this.minute = value.inMinutes % 60;
                 }),
           ),
           Padding(
@@ -104,8 +104,8 @@ class _RecordingFormState extends State<RecordingForm> {
               title: '기분 숫자 점수',
               validator: (value) {
                 var i = value == '' ? null : int.parse(value);
-                if (i == null || i < widget.minScore || i > widget.maxScore) {
-                  return '${widget.minScore} ~ ${widget.maxScore} 사이의 값을 입력해주세요';
+                if (i == null || i < this.minScore || i > this.maxScore) {
+                  return '${this.minScore} ~ ${this.maxScore} 사이의 값을 입력해주세요';
                 }
                 return null;
               },
@@ -118,12 +118,12 @@ class _RecordingFormState extends State<RecordingForm> {
             child: Column(
               children: <Widget>[
                 TagBox(
-                  tags: widget.feelingTags,
+                  tags: this.feelingTags,
                   title: '세부 기분 태그',
                   columnNumber: 5,
                 ),
                 TagBox(
-                  tags: widget.reasonTags,
+                  tags: this.reasonTags,
                   title: '이유 활동 태그',
                   columnNumber: 5,
                 )
@@ -153,7 +153,7 @@ class _RecordingFormState extends State<RecordingForm> {
                   print('[RecordingForm.dart] score -> $score');
                   print('[RecordingForm.dart] reason -> $reason');
                   setState(() {
-                    widget.feelingTags.add(reasonController.value.text);
+                    this.feelingTags.add(reasonController.value.text);
                     // reasonTags.add(reason);
                   });
                   Scaffold.of(context)
