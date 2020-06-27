@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/pages/BackupSettingPage.dart';
-import 'package:flutterapp/pages/PushSettingPage.dart';
-import 'package:flutterapp/pages/TagSettingPage.dart';
-import 'package:flutterapp/pages/VersionSettingPage.dart';
+import 'package:flutterapp/pages/backup_setting_page.dart';
+import 'package:flutterapp/pages/push_setting_page.dart';
+import 'package:flutterapp/pages/tag_setting_page.dart';
+import 'package:flutterapp/pages/version_setting_page.dart';
 
 class SettingPage extends StatelessWidget {
   SettingPage({this.title});
