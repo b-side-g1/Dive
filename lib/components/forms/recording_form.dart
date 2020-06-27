@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/components/tag_box.dart';
 import 'package:random_string/random_string.dart';
@@ -6,6 +5,8 @@ import 'package:random_string/random_string.dart';
 import 'package:flutterapp/components/forms/InputComponent.dart';
 import 'package:flutterapp/models/record_model.dart';
 import 'package:flutterapp/services/record/record_service.dart';
+
+import '../time_picker.dart';
 
 class RecordingForm extends StatefulWidget {
   @override
@@ -17,8 +18,6 @@ class RecordingForm extends StatefulWidget {
 class _RecordingFormState extends State<RecordingForm> {
   final int minScore = 0;
   final int maxScore = 100;
-  int hour = new DateTime.now().hour;
-  int minute = new DateTime.now().minute;
   List<String> feelingTags = [
     '신남',
     '행복함',
@@ -87,16 +86,9 @@ class _RecordingFormState extends State<RecordingForm> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(2),
-            child: CupertinoTimerPicker(
-                alignment: Alignment.center,
-                initialTimerDuration:
-                    Duration(hours: this.hour, minutes: this.minute),
-                minuteInterval: 1,
-                mode: CupertinoTimerPickerMode.hm,
-                onTimerDurationChanged: (value) {
-                  this.hour = value.inHours;
-                  this.minute = value.inMinutes % 60;
-                }),
+            child: CustomTimePickerSpinner((time) {
+              this.when = time;
+            }),
           ),
           Padding(
             padding: EdgeInsets.all(2),
@@ -158,7 +150,8 @@ class _RecordingFormState extends State<RecordingForm> {
                   });
                   Scaffold.of(context)
                       .showSnackBar(SnackBar(content: Text('Processing Data')));
-                  Record record = Record(id: randomString(20), score: score,description: "테스트" );
+                  Record record = Record(
+                      id: randomString(20), score: score, description: "테스트");
                   _createRecord(record);
                   _getAllRecords();
                 }
