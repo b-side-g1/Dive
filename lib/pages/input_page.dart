@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/components/forms/RecordingForm.dart';
+import 'package:flutterapp/components/forms/recording_form.dart';
 
 class InputPage extends StatefulWidget {
   InputPage() : super();
