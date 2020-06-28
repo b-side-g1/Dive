@@ -22,7 +22,7 @@ class _TagBoxState extends State<TagBox> {
   Widget build(BuildContext context) {
     tagRows = [];
     var tagPaddings = widget.tags
-        .map((e) => new Tag(title: e, isSelected: false,))
+        .map((e) => new Tag(title: e))
         .toList();
     for (int i = 0; i < tagPaddings.length / widget.columnNumber; i++) {
       if (i * widget.columnNumber + widget.columnNumber < tagPaddings.length) {
