@@ -1,4 +1,5 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'package:flutterapp/onboard/onboard_page.dart';
 import 'controller/DiaryTabController.dart';
 
 void main() {
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home:  DiaryTabController()
+//        home:  DiaryTabController()
+        home:  OnBoardPage()
     );
   }
 }
