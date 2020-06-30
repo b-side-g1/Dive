@@ -1,17 +1,23 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/components/TagBox.dart';
+import 'package:flutterapp/components/tag_box.dart';
 import 'package:random_string/random_string.dart';
 
 import 'package:flutterapp/components/forms/InputComponent.dart';
 import 'package:flutterapp/models/record_model.dart';
 import 'package:flutterapp/services/record/record_service.dart';
 
+import '../time_picker.dart';
+
 class RecordingForm extends StatefulWidget {
-  final int minScore = 1;
-  final int maxScore = 10;
-  int hour = new DateTime.now().hour;
-  int minute = new DateTime.now().minute;
+  @override
+  _RecordingFormState createState() {
+    return _RecordingFormState();
+  }
+}
+
+class _RecordingFormState extends State<RecordingForm> {
+  final int minScore = 0;
+  final int maxScore = 100;
   List<String> feelingTags = [
     '신남',
     '행복함',
@@ -56,13 +62,6 @@ class RecordingForm extends StatefulWidget {
     '알콜',
   ];
 
-  @override
-  _RecordingFormState createState() {
-    return _RecordingFormState();
-  }
-}
-
-class _RecordingFormState extends State<RecordingForm> {
   final reasonController = TextEditingController();
   final scoreController = TextEditingController();
   DateTime when;
@@ -87,16 +86,9 @@ class _RecordingFormState extends State<RecordingForm> {
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(2),
-            child: CupertinoTimerPicker(
-                alignment: Alignment.center,
-                initialTimerDuration:
-                    Duration(hours: widget.hour, minutes: widget.minute),
-                minuteInterval: 1,
-                mode: CupertinoTimerPickerMode.hm,
-                onTimerDurationChanged: (value) {
-                  widget.hour = value.inHours;
-                  widget.minute = value.inMinutes % 60;
-                }),
+            child: CustomTimePickerSpinner((time) {
+              this.when = time;
+            }),
           ),
           Padding(
             padding: EdgeInsets.all(2),
@@ -104,8 +96,8 @@ class _RecordingFormState extends State<RecordingForm> {
               title: '기분 숫자 점수',
               validator: (value) {
                 var i = value == '' ? null : int.parse(value);
-                if (i == null || i < widget.minScore || i > widget.maxScore) {
-                  return '${widget.minScore} ~ ${widget.maxScore} 사이의 값을 입력해주세요';
+                if (i == null || i < this.minScore || i > this.maxScore) {
+                  return '${this.minScore} ~ ${this.maxScore} 사이의 값을 입력해주세요';
                 }
                 return null;
               },
@@ -118,12 +110,12 @@ class _RecordingFormState extends State<RecordingForm> {
             child: Column(
               children: <Widget>[
                 TagBox(
-                  tags: widget.feelingTags,
+                  tags: this.feelingTags,
                   title: '세부 기분 태그',
                   columnNumber: 5,
                 ),
                 TagBox(
-                  tags: widget.reasonTags,
+                  tags: this.reasonTags,
                   title: '이유 활동 태그',
                   columnNumber: 5,
                 )
@@ -150,15 +142,16 @@ class _RecordingFormState extends State<RecordingForm> {
                 if (_formKey.currentState.validate()) {
                   var score = int.parse(scoreController.value.text);
                   var reason = reasonController.value.text;
-                  print('[RecordingForm.dart] score -> $score');
-                  print('[RecordingForm.dart] reason -> $reason');
+                  print('[recording_form.dart] score -> $score');
+                  print('[recording_form.dart] reason -> $reason');
                   setState(() {
-                    widget.feelingTags.add(reasonController.value.text);
+                    this.feelingTags.add(reasonController.value.text);
                     // reasonTags.add(reason);
                   });
                   Scaffold.of(context)
                       .showSnackBar(SnackBar(content: Text('Processing Data')));
-                  Record record = Record(id: randomString(20), score: score,description: "테스트" );
+                  Record record = Record(
+                      id: randomString(20), score: score, description: "테스트");
                   _createRecord(record);
                   _getAllRecords();
                 }
@@ -173,7 +166,7 @@ class _RecordingFormState extends State<RecordingForm> {
 
   void _createRecord(Record record) async {
     final result = await _recordService.insertRecord(record);
-    print('[RecordingForm.dart] #_insertRecord Result -> $result');
+    print('[recording_form.dart] #_insertRecord Result -> $result');
   }
 
   void _getAllRecords() async {
@@ -181,7 +174,7 @@ class _RecordingFormState extends State<RecordingForm> {
     for (final record in records) {
       final id = record.id;
       final score = record.score;
-      print("[RecordingForm.dart] record -> $id , $score");
+      print("[recording_form.dart] record -> $id , $score");
     }
   }
 }

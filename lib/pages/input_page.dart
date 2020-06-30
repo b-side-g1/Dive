@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/components/forms/RecordingForm.dart';
+import 'package:flutterapp/components/forms/recording_form.dart';
 
 class InputPage extends StatefulWidget {
-  InputPage({Key key, this.title}) : super(key: key);
-  final String title;
+  InputPage() : super();
 
   @override
   _InputPageState createState() => _InputPageState();
@@ -13,14 +12,9 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Container(
+    return Container(
         child: RecordingForm(),
-      ),
-    );
+      );
   }
 
 }
