@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/onboard/onboard_service.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_fadein/flutter_fadein.dart';
+import 'package:flutter/animation.dart';
 
 //class OnBoardPage extends StatelessWidget {
 //class OnBoardPage extends StatefulWidget{
@@ -15,11 +16,12 @@ import 'package:flutter_fadein/flutter_fadein.dart';
 //
 //}
 class OnBoardPage extends StatelessWidget {
-  bool showMessage = false;
+  Color hexToColor(String code) {
+    return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
+  }
 
   @override
   Widget build(BuildContext context) {
-//    return Scaffold(body: !_isClosed ? renderTextAnimate() : test());
     return ChangeNotifierProvider<Counter>(
       create: (_) => Counter(0),
       child: Scaffold(
@@ -52,9 +54,14 @@ class Welcome {
   Welcome({this.message, this.isLast});
 }
 
-class WelcomeAnimateState extends State<WelcomeAnimate> {
+class WelcomeAnimateState extends State<WelcomeAnimate>
+    with TickerProviderStateMixin {
   double title_opacity = 0.0;
   double message_opacity = 0.0;
+
+  Widget title_widget;
+  Widget message_widget;
+
   bool isEnd = false;
 
   List<Welcome> welcomes = [
@@ -67,17 +74,111 @@ class WelcomeAnimateState extends State<WelcomeAnimate> {
   Welcome welcome;
   int _messageIndex = 0;
 
+  AnimationController titleController;
+  AnimationController messageController;
+  Animation<double> titleAnimation;
+  Animation<double> messageAnimation;
+
   void initState() {
     super.initState();
-//    welcome = welcomes[0];
-//    changeMessageOpacity();
-    debugPrint("2초 시작!");
+
+    titleController = AnimationController(
+        duration: const Duration(milliseconds: 1500), vsync: this);
+    messageController = AnimationController(
+        duration: const Duration(milliseconds: 1500), vsync: this);
+
+    titleAnimation = CurvedAnimation(parent: titleController, curve: Curves.fastOutSlowIn);
+    messageAnimation = CurvedAnimation(parent: messageController, curve: Curves.fastOutSlowIn);
+
+    titleAnimation.addStatusListener((status) {
+      if(status == AnimationStatus.completed) {
+
+        titleController.reverse();
+        messageController.reverse();
+      }
+    });
+
+    messageAnimation.addStatusListener((status) {
+      if(status == AnimationStatus.completed) {
+        titleController.forward();
+      }
+    });
+
+//    runAnimation();
+  }
+
+  void runAnimation() {
+    step1(runNextStep: () {
+      step2(runNextStep: () {
+        debugPrint("Step3들어갈차례");
+      });
+    });
+  }
+
+  void step1({Function runNextStep}) {
+    title_widget = Text(
+      "Hello",
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontSize: 50,
+        color: Colors.white,
+        fontWeight: FontWeight.w100,
+      ),
+    );
+
+    message_widget = Text(
+      "안녕하세요",
+      style: TextStyle(
+        fontSize: 20,
+        color: hexToColor("#e4faff"),
+        fontWeight: FontWeight.bold,
+      ),
+    );
+
     changeMessageOpacity(nextJob: () {
       changeTitleOpacity(nextJob: () {
         Future.delayed(Duration(milliseconds: 3500), () {
           setState(() {
             title_opacity = 0.0;
             message_opacity = 0.0;
+
+            runNextStep();
+          });
+        });
+      });
+    });
+  }
+
+  void step2({Function runNextStep}) {
+    title_widget = Text(
+      "아이콘",
+      textAlign: TextAlign.center,
+      style: TextStyle(
+        fontSize: 50,
+        color: Colors.white,
+        fontWeight: FontWeight.w100,
+      ),
+    );
+
+    message_widget = Container(
+      padding: EdgeInsets.only(left: 50, right: 50),
+      child: Text(
+        "당신은 당신이 무엇을 할때 기쁨을 느끼고, 슬픔을 느끼는지 잘 알고 있나요?",
+        style: TextStyle(
+          fontSize: 20,
+          color: hexToColor("#e4faff"),
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+
+    changeMessageOpacity(nextJob: () {
+      changeTitleOpacity(nextJob: () {
+        Future.delayed(Duration(milliseconds: 3500), () {
+          setState(() {
+            title_opacity = 0.0;
+            message_opacity = 0.0;
+            runNextStep();
           });
         });
       });
@@ -102,53 +203,13 @@ class WelcomeAnimateState extends State<WelcomeAnimate> {
     });
   }
 
-  changeWelcomeMessage() {
-    int i = _messageIndex++ % welcomes.length;
-    welcome = welcomes[i];
-  }
-
-  Widget stackWidgets() {
-    return Stack(
-      children: <Widget>[
-        Positioned(
-          top: 0,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          child: Center(
-              child: AnimatedOpacity(
-                  duration: Duration(seconds: 1),
-                  opacity: isEnd ? 1.0 : 0.0,
-                  child: Text("Hello"))),
-        ),
-        AnimatedPositioned(
-            duration: Duration(seconds: 1),
-            top: 0,
-            bottom: isEnd ? 300 : 0,
-            left: 0,
-            right: 0,
-            child: AnimatedOpacity(
-              opacity: title_opacity,
-              duration: Duration(seconds: 1),
-              child: Center(
-                  child: Text(
-                welcome.message,
-                style: TextStyle(fontSize: 26.0, fontWeight: FontWeight.bold),
-              )),
-            )),
-      ],
-    );
-  }
-
   Color hexToColor(String code) {
     return Color(int.parse(code.substring(1, 7), radix: 16) + 0xFF000000);
   }
 
-  final controller = FadeInController();
-
   @override
   Widget build(BuildContext context) {
-    Widget title = Text(
+    title_widget = Text(
       "Hello",
       textAlign: TextAlign.center,
       style: TextStyle(
@@ -157,7 +218,8 @@ class WelcomeAnimateState extends State<WelcomeAnimate> {
         fontWeight: FontWeight.w100,
       ),
     );
-    Widget message = Text(
+
+    message_widget = Text(
       "안녕하세요",
       style: TextStyle(
         fontSize: 20,
@@ -165,7 +227,9 @@ class WelcomeAnimateState extends State<WelcomeAnimate> {
         fontWeight: FontWeight.bold,
       ),
     );
-//    return stackWidgets();
+
+
+    messageController.forward();
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -174,19 +238,17 @@ class WelcomeAnimateState extends State<WelcomeAnimate> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(top: 77),
-            child: AnimatedOpacity(
-              opacity: title_opacity,
-              duration: Duration(milliseconds: 1000),
-              child: title,
+            child: FadeTransition(
+              opacity: titleAnimation,
+              child: title_widget,
             ),
           ),
           SizedBox(
             height: 77,
           ),
-          AnimatedOpacity(
-            opacity: message_opacity,
-            duration: Duration(milliseconds: 1000),
-            child: message,
+          FadeTransition(
+            opacity: messageAnimation,
+            child: message_widget,
           )
         ],
       ),
