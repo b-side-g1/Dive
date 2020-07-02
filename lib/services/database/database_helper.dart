@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutterapp/models/basic_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
@@ -25,16 +26,19 @@ class DBHelper {
     String path = join(documentsDirectory.path, 'MoodTrackDB');
 
     var recordTable = Record.tableName;
-    var ddl = "";
-    var recordDDL = "CREATE TABLE $recordTable(id TEXT PRIMARY KEY, score INTEGER, description TEXT)";
-
-    ddl += recordDDL;
+    var basicTable = Basic.tableName;
+    String recordDDL = "CREATE TABLE $recordTable(id TEXT PRIMARY KEY, score INTEGER, description TEXT)";
+    String basicDDL = "CREATE TABLE $basicTable(id TEXT PRIMARY KEY, today_startAt TEXT, today_endAt TEXT, status TEXT, is_push INTEGER, uuid TEXT, createdAt TEXT)";
 
     return await openDatabase(
       path,
       version: 1,
       onCreate: (Database db, int version) async {
-        await db.execute(ddl);
+        await db.execute(recordDDL);
+        await db.execute(basicDDL);
+        await db.rawInsert(
+          'INSERT INTO basic(id,status,is_push,uuid) VALUES("1","FST","0","0123456789")'
+        );
       }
     );
   }
