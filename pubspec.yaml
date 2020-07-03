@@ -56,6 +56,9 @@ flutter:
   assets:
     - lib/src/image/
     - lib/src/image/splash/
+    - lib/src/image/onboarding/
+    - lib/src/image/onboarding/2.0x/
+    - lib/src/image/onboarding/3.0x/
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
