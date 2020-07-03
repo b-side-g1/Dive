@@ -1,6 +1,6 @@
 import 'package:flutterapp/models/emotion_model.dart';
 import 'package:flutterapp/models/tag_model.dart';
-import 'package:flutterapp/models/today_model.dart';
+import 'package:flutterapp/models/daily_model.dart';
 
 class Record {
   static final tableName = 'record';
@@ -8,15 +8,21 @@ class Record {
   final String id;
   final int score;
   final String description;
-  final Today today;
-  final List<Tag> tags;
-  final List<Emotion> emotions;
+  final String dailyId;
+  final DateTime updatedAt;
+  final DateTime createdAt;
+  Daily daily;
+  List<Tag> tags;
+  List<Emotion> emotions;
 
   Record(
       {this.id,
       this.score,
       this.description,
-      this.today,
+      this.dailyId,
+      this.updatedAt,
+      this.createdAt,
+      this.daily,
       this.tags,
       this.emotions});
 
@@ -24,7 +30,10 @@ class Record {
         id: json["id"],
         score: json["score"],
         description: json["description"],
-        today: json["today"],
+        dailyId: json["dailyId"],
+        updatedAt: json["updatedAt"],
+        createdAt: json["createdAt"],
+        daily: json["daily"],
         tags: json["tags"],
         emotions: json["emotions"],
       );
@@ -33,7 +42,10 @@ class Record {
         "id": id,
         "score": score,
         "description": description,
-        "today": today,
+        "dailyId": dailyId ,
+        "updatedAt": updatedAt ,
+        "createdAt": createdAt ,
+        "daily": daily,
         "tags": tags,
         "emotions": emotions,
       };
