@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutterapp/pages/input_page_1.dart';
 
 class InputPage extends StatefulWidget {
@@ -69,7 +70,13 @@ class _InputPageState extends State<InputPage> {
                         Icons.close,
                         color: Color.fromRGBO(255, 255, 255, 0.8),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        if (Navigator.canPop(context)) {
+                          Navigator.pop(context);
+                        } else {
+                          SystemNavigator.pop();
+                        }
+                      },
                       backgroundColor: Color.fromRGBO(0, 0, 0, 0.2),
                     )
                   ],
