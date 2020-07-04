@@ -62,13 +62,13 @@ class DBHelper {
     return openDatabase(
       path,
       version: 1,
-      onCreate: (Database db, int version) {
+      onCreate: (Database db, int version) async {
         ddlList.forEach((ddl) async {
           await db.execute(ddl);
         });
         await db.rawInsert(
             'INSERT INTO basic(id,status,is_push,uuid) VALUES("1","FST","0","0123456789")'
         );
-    );
+      });
   }
 }
