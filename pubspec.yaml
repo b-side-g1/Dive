@@ -23,6 +23,8 @@ environment:
 dependencies:
   flutter_time_picker_spinner: ^1.0.6+1
   flutter_fadein: ^1.1.1
+  flutter_picker:
+    git: git://github.com/yangyxd/flutter_picker.git
   flutter:
     sdk: flutter
 
