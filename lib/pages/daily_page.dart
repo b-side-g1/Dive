@@ -48,7 +48,17 @@ class _DailyPageState extends State<DailyPage> {
 
   void _setDailyByDate(DateTime date) async {
     // TODO: 원래는 Basic model에서 하루 마감시간으로 갖고 와야 함, 현재는 startAt: 00:00:00, endAt: 23:59:59
-    _daily = await _dailyService.selectDailyByDate(date);
+//    _daily = await _dailyService.selectDailyByDate(date);
+    _daily = Daily(
+      id: randomString(20),
+      startAt: DateTime(date.year, date.month, date.day, 0, 0, 0).toIso8601String(),
+      endAt: DateTime(date.year, date.month, date.day, 23, 59, 59).toIso8601String(),
+      weekday: date.weekday,
+      day: date.day,
+      week: weekNumber(date),
+      month: date.month,
+      year: date.year,
+    );
     if (_daily == null) {
       _daily = Daily(
         id: randomString(20),
