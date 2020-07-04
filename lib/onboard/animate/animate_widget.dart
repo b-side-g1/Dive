@@ -31,7 +31,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Animation<double> step5MessageAnimation;
   Animation<double> startBtnAnimation;
 
-  int animateStep = 1;
+  int animateStep = 3;
   double contentMargin = 0;
 
   void initState() {
@@ -220,12 +220,13 @@ class OnboardAnimateState extends State<OnboardAnimate>
     message_widget = Container(
       padding: EdgeInsets.only(left: 50, right: 50),
       child: Text(
-        "당신은 당신이 무엇을 할때 기쁨을 느끼고, 슬픔을 느끼는지 잘 알고 있나요?",
+        "당신은 당신이 무엇을 할때\n기쁨을 느끼고, 슬픔을 느끼는지\n잘 알고 있나요?",
         style: TextStyle(
           fontSize: 20,
           color: hexToColor("#e4faff"),
           fontWeight: FontWeight.bold,
         ),
+        textAlign: TextAlign.center,
       ),
     );
 
@@ -259,12 +260,13 @@ class OnboardAnimateState extends State<OnboardAnimate>
     message_widget = Container(
       padding: EdgeInsets.only(left: 75, right: 75),
       child: Text(
-        "다이브에서 매일매일, 매 순간의 감정을 기록하며 당신을 알아가보세요",
+        "다이브에서 매일매일,\n매 순간의 감정을 기록하며\n당신을 알아가보세요",
         style: TextStyle(
           fontSize: 20,
           color: hexToColor("#e4faff"),
           fontWeight: FontWeight.bold,
         ),
+        textAlign: TextAlign.center,
       ),
     );
 
@@ -296,17 +298,6 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Widget buildStep4() {
     contentMargin = 20.0;
     title_widget = Image.asset('lib/src/image/onboarding/contents_img_03.png');
-    message_widget = Container(
-      padding: EdgeInsets.only(left: 75, right: 75),
-      child: Text(
-        "그 전에 한 가지 알려주세요. 당신의 하루가 끝나는 시간을 언제로 설정하면 좋을까요?",
-        style: TextStyle(
-          fontSize: 20,
-          color: hexToColor("#e4faff"),
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -321,12 +312,13 @@ class OnboardAnimateState extends State<OnboardAnimate>
             child: Container(
               padding: EdgeInsets.only(left: 60, right: 60),
               child: Text(
-                "그 전에 한 가지 알려주세요. 당신의 하루가 끝나는 시간을 언제로 설정하면 좋을까요?",
+                "그 전에 한 가지 알려주세요.\n당신의 하루가 끝나는 시간을\n언제로 설정하면 좋을까요?",
                 style: TextStyle(
                   fontSize: 20,
                   color: hexToColor("#e4faff"),
                   fontWeight: FontWeight.bold,
                 ),
+                textAlign: TextAlign.center,
               ),
             ),
           ),
