@@ -17,19 +17,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
         decoration: BoxDecoration(
           image: DecorationImage(
               image: AssetImage('lib/src/image/marble_shadow.png'),
-              alignment: Alignment(0.0, 0.5)),
-        ),
-        child: Column(
-          children: <Widget>[
-            FloatingActionButton(
-              child: Icon(
-                Icons.close,
-                color: Color.fromRGBO(255, 255, 255, 0.8),
-              ),
-              onPressed: () {},
-              backgroundColor: Color.fromRGBO(0, 0, 0, 0.2),
-            ),
-          ],
+              alignment: Alignment(0.0, 0.75)),
         ),
       ),
     );
