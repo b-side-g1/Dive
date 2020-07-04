@@ -216,7 +216,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   }
 
   Widget buildStep2() {
-    title_widget = Image.asset('lib/src/image/onboarding/contents_img_02.png');
+    title_widget = Image.asset('lib/src/image/onboarding/2.0x/contents_img_02@2x.png');
     message_widget = Container(
       padding: EdgeInsets.only(left: 50, right: 50),
       child: Text(
@@ -256,7 +256,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   }
 
   Widget buildStep3() {
-    title_widget = Image.asset('lib/src/image/onboarding/contents_img_03.png');
+    title_widget = Image.asset('lib/src/image/onboarding/2.0x/contents_img_03@2x.png');
     message_widget = Container(
       padding: EdgeInsets.only(left: 75, right: 75),
       child: Text(
