@@ -35,8 +35,10 @@ class _InputPageState extends State<InputPage> {
       }
     }
 
-    return Container(
-      decoration: BoxDecoration(color: _setBackGround()),
+    return AnimatedContainer(
+      duration: Duration(seconds: 2),
+      color: _setBackGround(),
+      curve: Curves.ease,
       child: Container(
         child: Column(
           children: <Widget>[
@@ -46,7 +48,8 @@ class _InputPageState extends State<InputPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Opacity(
+                    AnimatedOpacity(
+                      duration: Duration(seconds: 1),
                       opacity: step == 1 ? 0 : 1.0,
                       child: FloatingActionButton(
                         heroTag: 'up',
