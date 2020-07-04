@@ -26,47 +26,39 @@ class DBHelper {
   }
 
   initDB() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, 'diary_app_database.db');
+//    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(await getDatabasesPath(), 'diary_app_database.db');
 
     var ddlList = [];
-    var ddl = "";
     var recordTable = Record.tableName;
-    var recordDDL = "CREATE TABLE $recordTable(id TEXT PRIMARY KEY, score INTEGER, description TEXT, dailyId TEXT, createdAt DATETIME, updatedAt DATETIME)";
+    var recordDDL = "CREATE TABLE $recordTable (id TEXT PRIMARY KEY, score INTEGER, description TEXT, dailyId TEXT, createdAt TEXT, updatedAt TEXT)";
     ddlList.add(recordDDL);
 
     var dailyTable = Daily.tableName;
-    var dailyDDL = "CREATE TABLE $dailyTable(id TEXT PRIMARY KEY, startAt DATETIME, endAt DATETIME, weekday INTEGER, day INTEGER, week INTEGER, month INTEGER, year INTEGER)";
+    var dailyDDL = "CREATE TABLE $dailyTable (id TEXT PRIMARY KEY, startAt TEXT, endAt TEXT, weekday INTEGER, day INTEGER, week INTEGER, month INTEGER, year INTEGER)";
     ddlList.add(dailyDDL);
 
     var tagTable = Tag.tableName;
-    var tagDDL = "CREATE TABLE $tagTable(id TEXT PRIMARY KEY, name TEXT)";
+    var tagDDL = "CREATE TABLE $tagTable (id TEXT PRIMARY KEY, name TEXT)";
     ddlList.add(tagDDL);
 
     var recordHasTagTable = RecordHasTag.tableName;
-    var recordHasTagDDL = "CREATE TABLE $recordHasTagTable(idx INTEGER PRIMARY KEY AUTOINCREMENT, recordId TEXT, tagId TEXT, name TEXT)";
+    var recordHasTagDDL = "CREATE TABLE $recordHasTagTable (idx INTEGER PRIMARY KEY AUTOINCREMENT, recordId TEXT, tagId TEXT, name TEXT)";
     ddlList.add(recordHasTagDDL);
 
     var emotionTable = Emotion.tableName;
-    var emotionDDL = "CREATE TABLE $emotionTable(id TEXT PRIMARY KEY, name TEXT)";
+    var emotionDDL = "CREATE TABLE $emotionTable (id TEXT PRIMARY KEY, name TEXT)";
     ddlList.add(emotionDDL);
 
     var recordHasEmotionTable = RecordHasEmotion.tableName;
-    var recordHasEmotionDDL = "CREATE TABLE $recordHasEmotionTable(idx INTEGER PRIMARY KEY AUTOINCREMENT, recordId TEXT, emotionId TEXT, name TEXT)";
+    var recordHasEmotionDDL = "CREATE TABLE $recordHasEmotionTable (idx INTEGER PRIMARY KEY AUTOINCREMENT, recordId TEXT, emotionId TEXT, name TEXT)";
     ddlList.add(recordHasEmotionDDL);
 
-    ddl +=  dailyDDL + ";";
-//    ddl +=  "\n" + dailyDDL + ";";
-//    ddl +=  "\n" + tagDDL + ";";
-//    ddl +=  "\n" + recordHasTagDDL + ";";
-//    ddl +=  "\n" + emotionDDL + ";";
-//    ddl +=  "\n" + recordHasEmotionDDL + ";";
-    return await openDatabase(
+    return openDatabase(
       path,
       version: 1,
-      onCreate: (Database db, int version) async {
+      onCreate: (Database db, int version) {
         ddlList.forEach((ddl) async {
-          print("@@@@@@@@@@ddl: " + ddl);
           await db.execute(ddl);
         });
       }

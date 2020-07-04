@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'Diary App',
-      theme: ThemeData(  
+      theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),

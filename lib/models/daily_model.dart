@@ -1,8 +1,8 @@
 class Daily {
   static final tableName = 'daily';
   final String id;
-  final DateTime startAt;
-  final DateTime endAt;
+  final String startAt;
+  final String endAt;
   final int weekday; // 1: 월요일 ~ 일요일
   final int day;
   final int week;

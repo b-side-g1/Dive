@@ -9,8 +9,8 @@ class Record {
   final int score;
   final String description;
   final String dailyId;
-  final DateTime updatedAt;
-  final DateTime createdAt;
+  final String updatedAt;
+  final String createdAt;
   Daily daily;
   List<Tag> tags;
   List<Emotion> emotions;
@@ -49,4 +49,16 @@ class Record {
         "tags": tags,
         "emotions": emotions,
       };
+
+  Map<String, dynamic> toTableJson() => {
+    "id": id,
+    "score": score,
+    "description": description,
+    "dailyId": dailyId ,
+//    "updatedAt": updatedAt ,
+//    "createdAt": createdAt ,
+//    "daily": daily,
+//    "tags": tags,
+//    "emotions": emotions,
+  };
 }

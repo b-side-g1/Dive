@@ -6,7 +6,7 @@ class RecordService {
 
   insertRecord(Record record) async {
     final db = await DBHelper().database;
-    var res = await db.insert(Record.tableName,record.toJson());
+    var res = await db.insert(Record.tableName,record.toTableJson());
     return res;
   }
 

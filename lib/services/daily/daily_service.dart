@@ -16,7 +16,7 @@ class DailyService {
         where: 'day = ? and month = ? and year = ?',
         whereArgs: [date.day, date.month, date.year]);
 
-    return res;
+    return Daily.fromJson(res[0]);
   }
 
   insertDaily(Daily daily) async {

@@ -34,54 +34,6 @@ class _DailyPageState extends State<DailyPage> {
   @override
   void dispose() {}
 
-//  static DateTime today = DateTime.now();
-//  static DateTime yesterday = DateTime.now().add(Duration(days: -1));
-//  static List<Daily> dailyList = [
-//    Daily(
-//        id: "1",
-//        startAt: DateTime(today.year, today.month, today.day, 0, 0, 0),
-//        endAt: DateTime(today.year, today.month, today.day, 23, 59, 59),
-//        weekday: today.weekday,
-//        day: today.day,
-//        week: weekNumber(today),
-//        month: today.month,
-//        year: today.year,
-//    ),
-//    Daily(
-//      id: "2",
-//      startAt: DateTime(yesterday.year, yesterday.month, yesterday.day, 0, 0, 0),
-//      endAt: DateTime(yesterday.year, yesterday.month, yesterday.day, 23, 59, 59),
-//      weekday: yesterday.weekday,
-//      day: yesterday.day,
-//      week: weekNumber(yesterday),
-//      month: yesterday.month,
-//      year: yesterday.year,
-//    ),
-//  ];
-//  List<Record> recordList = [
-//    Record(id: '1', score: 80, description: '저녁 밤바람이 시원하고, 일도 다 끝내서 기분이 좋다.',
-//        createdAt: DateTime(2020, 06, 27, 14, 28, 0),
-//        emotions: [
-//          Emotion(id: '1', name: '신남'),
-//          Emotion(id: '2', name: '행복함'),
-//          Emotion(id: '3', name: '기분좋음'),
-//          Emotion(id: '4', name: '편안함'),
-//        ], tags: [
-//      Tag(id: '1', name: '운동'),
-//      Tag(id: '2', name: '취미'),
-//      Tag(id: '3', name: '친구'),
-//        ],
-//        daily: dailyList[0]
-//    ),
-//    Record(id: '2', score: 20, description: '모든게 다 지루하다.',
-//        createdAt: DateTime(2020, 06, 27, 13, 2, 0),
-//        emotions: [
-//          Emotion(id: '5', name: '무미건조'),
-//          Emotion(id: '6', name: '지루함'),
-//        ],
-//        daily: dailyList[1]),
-//  ];
-
   @override
   void initState() {
     super.initState();
@@ -90,8 +42,8 @@ class _DailyPageState extends State<DailyPage> {
 
   _setData() {
     _setDailyByDate(_date);
-    _setRecordList();
-    _setDailyScore();
+//    _setRecordList();
+//    _setDailyScore();
   }
 
   void _setDailyByDate(DateTime date) async {
@@ -100,8 +52,8 @@ class _DailyPageState extends State<DailyPage> {
     if (_daily == null) {
       _daily = Daily(
         id: randomString(20),
-        startAt: DateTime(date.year, date.month, date.day, 0, 0, 0),
-        endAt: DateTime(date.year, date.month, date.day, 23, 59, 59),
+        startAt: DateTime(date.year, date.month, date.day, 0, 0, 0).toIso8601String(),
+        endAt: DateTime(date.year, date.month, date.day, 23, 59, 59).toIso8601String(),
         weekday: date.weekday,
         day: date.day,
         week: weekNumber(date),
@@ -110,6 +62,16 @@ class _DailyPageState extends State<DailyPage> {
       );
       await _dailyService.insertDaily(_daily);
     }
+    _recordList = await _recordService.selectAllByDailyId(_daily.id);
+    _recordList.forEach((_record) async {
+      _record.emotions = await _emotionService.selectEmotionAllByRecordId(_record.id);
+      _record.tags = await _tagService.selectTagAllByRecordId(_record.id);
+    });
+
+    _dailyScore = _recordList == null || _recordList.isEmpty
+        ? 0 :
+        (_recordList.map((c) => c.score).reduce((a, b) => a + b) /
+        _recordList.length).round();
   }
 
   void _setRecordList() async {
@@ -125,7 +87,7 @@ class _DailyPageState extends State<DailyPage> {
   void _setDailyScore() {
     _dailyScore = _recordList != null
         ? (_recordList.map((c) => c.score).reduce((a, b) => a + b) /
-            _recordList.length) as int
+            _recordList.length).round()
         : 0;
   }
 
