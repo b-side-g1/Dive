@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutterapp/onboard/animate/picker/pricker_widget.dart';
+import 'package:flutterapp/controller/diary_tab_controller.dart';
 
 class OnboardAnimate extends StatefulWidget {
   @override
@@ -18,6 +19,8 @@ class OnboardAnimateState extends State<OnboardAnimate>
   AnimationController pickerController;
   AnimationController nextBtnController;
   AnimationController supportMessageController;
+  AnimationController step5MessageController;
+  AnimationController startBtnController;
 
   Animation<double> titleAnimation;
   Animation<double> messageAnimation;
@@ -25,8 +28,10 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Animation<double> pickerAnimation;
   Animation<double> nextBtnAnimation;
   Animation<double> supportMessageAnimation;
+  Animation<double> step5MessageAnimation;
+  Animation<double> startBtnAnimation;
 
-  int animateStep = 5;
+  int animateStep = 1;
   double contentMargin = 0;
 
   void initState() {
@@ -46,6 +51,11 @@ class OnboardAnimateState extends State<OnboardAnimate>
     supportMessageController = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
 
+    step5MessageController = AnimationController(
+        duration: const Duration(milliseconds: 1000), vsync: this);
+    startBtnController = AnimationController(
+        duration: const Duration(milliseconds: 500), vsync: this);
+
     titleAnimation =
         CurvedAnimation(parent: titleController, curve: Curves.fastOutSlowIn);
     messageAnimation =
@@ -60,9 +70,15 @@ class OnboardAnimateState extends State<OnboardAnimate>
     supportMessageAnimation = CurvedAnimation(
         parent: supportMessageController, curve: Curves.fastOutSlowIn);
 
+    step5MessageAnimation = CurvedAnimation(
+        parent: step5MessageController, curve: Curves.fastOutSlowIn);
+    startBtnAnimation = CurvedAnimation(
+        parent: startBtnController, curve: Curves.fastOutSlowIn);
+
     titleAnimation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         Future.delayed(const Duration(milliseconds: 1000), () {
+          debugPrint("completed !! messageController.reverse");
           titleController.reverse();
           messageController.reverse();
         });
@@ -76,11 +92,14 @@ class OnboardAnimateState extends State<OnboardAnimate>
 
       if (status == AnimationStatus.dismissed) {
         if (animateStep == 3) {
+          debugPrint("messageAnimation dismissed step++!");
           Future.delayed(const Duration(milliseconds: 1000), () {
+            debugPrint("step4MessageController forward!");
             step4MessageController.forward();
           });
         }
         setState(() {
+          debugPrint("messageAnimation dismissed step++!");
           animateStep++;
         });
       }
@@ -93,6 +112,9 @@ class OnboardAnimateState extends State<OnboardAnimate>
       if (status == AnimationStatus.dismissed) {
         setState(() {
           animateStep++;
+          Future.delayed(const Duration(milliseconds: 1000), () {
+            step5MessageController.forward();
+          });
         });
       }
     });
@@ -114,17 +136,30 @@ class OnboardAnimateState extends State<OnboardAnimate>
         debugPrint("nextBtnAnimation.dismissed! ");
       }
     });
+
+    step5MessageAnimation.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        startBtnController.forward();
+      }
+    });
   }
 
   @override
   void dispose() {
-    debugPrint("dispose!");
     titleController.dispose();
     messageController.dispose();
+    step4MessageController.dispose();
+    pickerController.dispose();
+    nextBtnController.dispose();
+    supportMessageController.dispose();
+    step5MessageController.dispose();
+    startBtnController.dispose();
+    debugPrint("dispose!");
     super.dispose();
   }
 
   reverseStep4() {
+    debugPrint("reverseStep4!");
     step4MessageController.duration = Duration(milliseconds: 1000);
     pickerController.duration = Duration(milliseconds: 1000);
     nextBtnController.duration = Duration(milliseconds: 1000);
@@ -382,19 +417,6 @@ class OnboardAnimateState extends State<OnboardAnimate>
     return Center(
         child: Stack(
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(top: 60),
-          child: Container(
-            width: 360,
-            height: 402,
-            decoration: ShapeDecoration(
-              color: Colors.transparent,
-              shape: CircleBorder(
-                side: BorderSide(),
-              )
-            )
-          ),
-        ),
         Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -403,36 +425,46 @@ class OnboardAnimateState extends State<OnboardAnimate>
             SizedBox(
               height: 166.0,
             ),
-            Container(
-              padding: EdgeInsets.only(left: 60, right: 60),
-              child: Text(
-                "좋았어요.\n그럼 이제부터 다이브와 함께\n당신의 감정에 집중해보세요.",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+            FadeTransition(
+              opacity: step5MessageAnimation,
+              child: Container(
+                padding: EdgeInsets.only(left: 60, right: 60),
+                child: Text(
+                  "좋았어요.\n그럼 이제부터 다이브와 함께\n당신의 감정에 집중해보세요.",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
               ),
             ),
             SizedBox(
               height: 194.0,
             ),
-            ButtonTheme(
-              minWidth: 316,
-              height: 60,
-              child: FlatButton(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100.0),
-                ),
-                color: hexToColor("#63c7ff"),
-                textColor: Colors.white,
-                padding: EdgeInsets.all(8.0),
-                onPressed: () {},
-                child: Text(
-                  "시작하기",
-                  style: TextStyle(
-                    fontSize: 18.0,
+            FadeTransition(
+              opacity: startBtnAnimation,
+              child: ButtonTheme(
+                minWidth: 316,
+                height: 60,
+                child: FlatButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(100.0),
+                  ),
+                  color: hexToColor("#63c7ff"),
+                  textColor: Colors.white,
+                  padding: EdgeInsets.all(8.0),
+                  onPressed: () {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            DiaryTabController()));
+                  },
+                  child: Text(
+                    "시작하기",
+                    style: TextStyle(
+                      fontSize: 18.0,
+                    ),
                   ),
                 ),
               ),
@@ -470,9 +502,11 @@ class OnboardAnimateState extends State<OnboardAnimate>
   @override
   Widget build(BuildContext context) {
     /* step을 setState. -> 애니메이션 실행 */
-    Future.delayed(const Duration(milliseconds: 1000), () {
-      messageController.forward();
-    });
+    if (animateStep < 4) {
+      Future.delayed(const Duration(milliseconds: 1000), () {
+        messageController.forward();
+      });
+    }
     return buildAnimate(animateStep);
   }
 }

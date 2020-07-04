@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/controller/diary_tab_controller.dart';
+import 'package:flutterapp/onboard/onboard_page.dart';
 
 class SplashPage extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class Splash extends State<SplashPage> {
     Timer(
       Duration(seconds: 2),
         () => Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (BuildContext context) => DiaryTabController()
+          builder: (BuildContext context) =>  OnBoardPage()
         )));
   }
 
