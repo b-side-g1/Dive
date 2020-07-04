@@ -1,5 +1,6 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutterapp/splash/splash_page.dart';
+import 'package:flutterapp/onboard/onboard_page.dart';
 
 void main() {
   runApp(MyApp());
