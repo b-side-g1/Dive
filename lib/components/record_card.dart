@@ -29,7 +29,7 @@ class RecordCard extends StatelessWidget {
             children: <Widget>[
               emotionList(record.emotions),
               tagList(record.tags),
-              Text(DateFormat('kk:mm').format(record.today.date),
+              Text(record.createdAt, //DateFormat('kk:mm').format(record.createdAt),
                   style: TextStyle(color: Colors.white),
                   textAlign: TextAlign.right)
             ],

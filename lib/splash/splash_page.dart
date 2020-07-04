@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/controller/DiaryTabController.dart';
+import 'package:flutterapp/controller/diary_tab_controller.dart';
 
 class SplashPage extends StatefulWidget {
   @override

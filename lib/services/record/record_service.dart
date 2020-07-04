@@ -6,7 +6,7 @@ class RecordService {
 
   insertRecord(Record record) async {
     final db = await DBHelper().database;
-    var res = await db.insert(Record.tableName,record.toJson());
+    var res = await db.insert(Record.tableName,record.toTableJson());
     return res;
   }
 
@@ -18,6 +18,13 @@ class RecordService {
     return records;
   }
 
+  selectAllByDailyId(String dailyId) async {
+    final db = await DBHelper().database;
+    var res = await db.query(Record.tableName, where: 'dailyId = ?', whereArgs: [dailyId]);
+
+    List<Record> records = res.isNotEmpty ? res.map((c) => Record.fromJson(c)).toList() : [];
+    return records;
+  }
   updateRecord(Record record) async {
     final db = await DBHelper().database;
     var res = await db.update(Record.tableName,record.toJson(),where: 'id = ?', whereArgs: [record.id]);
@@ -29,10 +36,9 @@ class RecordService {
     await db.delete(Record.tableName,where: 'id = ?' ,whereArgs: [recordId]);
   }
 
-  deleteAllRecord(String recordId) async {
+  deleteAllRecord() async {
     final db = await DBHelper().database;
     final tableName = Record.tableName;
     await db.rawDelete('DELETE * FROM $tableName');
   }
-
 }
