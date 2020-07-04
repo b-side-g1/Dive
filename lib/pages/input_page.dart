@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/input_page_1.dart';
 
 class InputPage extends StatefulWidget {
-  InputPage() : super();
-
   @override
   _InputPageState createState() => _InputPageState();
 }
@@ -50,6 +48,7 @@ class _InputPageState extends State<InputPage> {
                     Opacity(
                       opacity: step == 1 ? 0 : 1.0,
                       child: FloatingActionButton(
+                        heroTag: 'up',
                         mini: true,
                         child: Icon(
                           Icons.keyboard_arrow_up,
@@ -64,6 +63,7 @@ class _InputPageState extends State<InputPage> {
                       ),
                     ),
                     FloatingActionButton(
+                      heroTag: 'close',
                       mini: true,
                       child: Icon(
                         Icons.close,
@@ -88,6 +88,7 @@ class _InputPageState extends State<InputPage> {
               child: Row(
                 children: <Widget>[
                   FloatingActionButton(
+                    heroTag: 'down',
                     mini: true,
                     child: Icon(
                       step != 3
