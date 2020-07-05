@@ -31,7 +31,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Animation<double> step5MessageAnimation;
   Animation<double> startBtnAnimation;
 
-  int animateStep = 2;
+  int animateStep = 1;
   double contentMargin = 0;
 
   void initState() {
