@@ -31,7 +31,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Animation<double> step5MessageAnimation;
   Animation<double> startBtnAnimation;
 
-  int animateStep = 1;
+  int animateStep = 2;
   double contentMargin = 0;
 
   void initState() {
@@ -217,7 +217,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
 
   Widget buildStep2() {
     title_widget =
-        Image.asset('lib/src/image/onboarding/2.0x/contents_img_02@2x.png');
+        Image.asset('lib/src/image/onboarding/contents_img_02.png');
     message_widget = Container(
       padding: EdgeInsets.only(left: 50, right: 50),
       child: Text(
@@ -258,9 +258,10 @@ class OnboardAnimateState extends State<OnboardAnimate>
 
   Widget buildStep3() {
     title_widget =
-        Image.asset('lib/src/image/onboarding/2.0x/contents_img_03@2x.png');
+        Image.asset('lib/src/image/onboarding/contents_img_03.png');
     message_widget = Container(
-      padding: EdgeInsets.only(left: 75, right: 75),
+      width: 230,
+      height: 96,
       child: Text(
         "다이브에서 매일매일,\n매 순간의 감정을 기록하며\n당신을 알아가보세요",
         style: TextStyle(
@@ -275,11 +276,11 @@ class OnboardAnimateState extends State<OnboardAnimate>
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(top: 77),
+            padding: const EdgeInsets.only(top: 186),
             child: FadeTransition(
               opacity: titleAnimation,
               child: title_widget,
@@ -413,11 +414,11 @@ class OnboardAnimateState extends State<OnboardAnimate>
           children: <Widget>[
             Column(
               mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 SizedBox(
-                  height: 166.0,
+                  height: 219.0,
                 ),
                 FadeTransition(
                   opacity: step5MessageAnimation,
@@ -435,7 +436,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
                   ),
                 ),
                 SizedBox(
-                  height: 194.0,
+                  height: 160.0,
                 ),
                 FadeTransition(
                   opacity: startBtnAnimation,
