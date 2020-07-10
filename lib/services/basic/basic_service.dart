@@ -5,11 +5,18 @@ class BasicService extends ChangeNotifier{
 
   Future<Basic> selectBasicData() async {
     final db = await DBHelper().database;
-    final List<Map<String,dynamic>> maps = await db.query(Basic.tableName);
 
-    Basic basic = maps.isNotEmpty ? maps.map((e) => Basic.fromJson(e)).toList()[0] : null;
+    final List<Map<String,dynamic>> immutableMaps = await db.query(Basic.tableName);
+
+    Basic basic = immutableMaps.isNotEmpty ? immutableMaps.map((e) {
+      return Basic.fromJson(e);
+    }).toList()[0] : null;
 
     return basic;
   }
 
+  Future<bool> isSetTodayEndAt() async {
+    Basic basic = await this.selectBasicData();
+    return basic.today_endAt != null ? true : false;
+  }
 }
