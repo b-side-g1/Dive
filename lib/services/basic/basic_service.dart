@@ -3,10 +3,13 @@ import 'package:flutterapp/models/basic_model.dart';
 import 'package:flutterapp/services/database/database_helper.dart';
 class BasicService extends ChangeNotifier{
 
-  getBasicData() async {
+  Future<Basic> selectBasicData() async {
     final db = await DBHelper().database;
-    var res = await db.query(Basic.tableName);
-    return res;
+    final List<Map<String,dynamic>> maps = await db.query(Basic.tableName);
+
+    Basic basic = maps.isNotEmpty ? maps.map((e) => Basic.fromJson(e)).toList()[0] : null;
+
+    return basic;
   }
 
 }
