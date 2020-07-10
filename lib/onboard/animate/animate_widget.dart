@@ -34,6 +34,9 @@ class OnboardAnimateState extends State<OnboardAnimate>
   int animateStep = 1;
   double contentMargin = 0;
 
+  String ampm = "";
+  String hour = "";
+
   void initState() {
     super.initState();
 
@@ -298,6 +301,9 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Widget buildStep4() {
     contentMargin = 20.0;
     title_widget = Image.asset('lib/src/image/onboarding/contents_img_03.png');
+
+
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -336,7 +342,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Text(
-                            "오전 12시",
+                            "$ampm $hour시",
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
@@ -406,6 +412,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Widget buildStep5() {
     contentMargin = 20.0;
     title_widget = Image.asset('lib/src/image/onboarding/contents_img_03.png');
+
     return Center(
         child: Stack(
       children: <Widget>[
@@ -494,6 +501,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   @override
   Widget build(BuildContext context) {
     /* step을 setState. -> 애니메이션 실행 */
+
     if (animateStep < 4) {
       Future.delayed(const Duration(milliseconds: 1000), () {
         messageController.forward();
