@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
-import 'package:flutterapp/onboard/animate/picker/pricker_widget.dart';
 import 'package:flutterapp/controller/diary_tab_controller.dart';
+import 'package:flutterapp/onboard/animate/picker/time_picker_widget.dart';
 
 class OnboardAnimate extends StatefulWidget {
   @override
@@ -33,9 +33,6 @@ class OnboardAnimateState extends State<OnboardAnimate>
 
   int animateStep = 1;
   double contentMargin = 0;
-
-  String ampm = "";
-  String hour = "";
 
   void initState() {
     super.initState();
@@ -219,7 +216,8 @@ class OnboardAnimateState extends State<OnboardAnimate>
   }
 
   Widget buildStep2() {
-    title_widget = Image.asset('lib/src/image/onboarding/2.0x/contents_img_02@2x.png');
+    title_widget =
+        Image.asset('lib/src/image/onboarding/2.0x/contents_img_02@2x.png');
     message_widget = Container(
       padding: EdgeInsets.only(left: 50, right: 50),
       child: Text(
@@ -259,7 +257,8 @@ class OnboardAnimateState extends State<OnboardAnimate>
   }
 
   Widget buildStep3() {
-    title_widget = Image.asset('lib/src/image/onboarding/2.0x/contents_img_03@2x.png');
+    title_widget =
+        Image.asset('lib/src/image/onboarding/2.0x/contents_img_03@2x.png');
     message_widget = Container(
       padding: EdgeInsets.only(left: 75, right: 75),
       child: Text(
@@ -302,8 +301,6 @@ class OnboardAnimateState extends State<OnboardAnimate>
     contentMargin = 20.0;
     title_widget = Image.asset('lib/src/image/onboarding/contents_img_03.png');
 
-
-
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -334,36 +331,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
           FadeTransition(
             opacity: pickerAnimation,
             child: ButtonTheme(
-                minWidth: 200,
-                height: 56,
-                child: Builder(builder: (context) {
-                  return OutlineButton(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Text(
-                            "$ampm $hour시",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.white),
-                          ),
-                          Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.white,
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        showPickerModal(context);
-                      },
-                      borderSide: BorderSide(
-                          color: Colors.grey,
-                          width: 5,
-                          style: BorderStyle.solid),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(30.0)));
-                })),
+                minWidth: 200, height: 56, child: TimePickerWidget()),
           ),
           SizedBox(
             height: 135.0,
