@@ -1,5 +1,3 @@
-import 'package:flutterapp/models/record_model.dart';
-
 class Tag {
   static final tableName = 'tag';
   final String id;
