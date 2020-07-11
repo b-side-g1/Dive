@@ -12,21 +12,28 @@ class _InputPageStep1State extends State<InputPageStep1> {
 
   @override
   Widget build(BuildContext context) {
+    var score = new List<Widget>(10);
+    for (var i = 0; i < score.length; i++) {
+      var val = i * 10;
+
+      score[i] = Text(
+        val.toString(),
+        style: TextStyle(
+          fontSize: 35,
+          color: Colors.white,
+          fontWeight: FontWeight.w300,
+        ),
+      );
+    }
     return new Scaffold(
         body: Container(
       decoration: new BoxDecoration(
-          color: Color.fromRGBO(43, 99, 194, 1.0),
-          border: Border.all(
-            width: 1,
-            color: Colors.green, //
-          )),
-      // decoration: BoxDecoration(
-      //   image: DecorationImage(image: AssetImage('lib/src/image/marble.png')),
-      // ),
+        color: Color.fromRGBO(43, 99, 194, 1.0),
+      ),
       child: Column(
         children: <Widget>[
           Padding(
-              padding: const EdgeInsets.only(top: 250),
+              padding: const EdgeInsets.only(top: 200),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -38,11 +45,13 @@ class _InputPageStep1State extends State<InputPageStep1> {
                       )),
                   IconButton(
                     icon: Image.asset(
-                      'lib/src/image/daily/Topnav_icon_setting@3x.png',
+                      'lib/src/image/daily/icon_arrow.png',
                       height: 24,
                     ),
                     tooltip: 'change date',
-                    onPressed: () {},
+                    onPressed: () {
+                      print("클릭");
+                    },
                   )
                 ],
               )),
@@ -51,13 +60,40 @@ class _InputPageStep1State extends State<InputPageStep1> {
                 fontSize: 25,
                 color: Colors.white,
                 fontWeight: FontWeight.w500,
-              ))
+              )),
+          Padding(
+              padding: const EdgeInsets.only(top: 30),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 200,
+                      height: 200,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: AssetImage(
+                                'lib/src/image/daily/img_bubble.png'),
+                            fit: BoxFit.cover,
+                          ),
+                          border: Border.all(
+                            width: 1,
+                            color: Colors.green, //
+                          )),
+                      child: Container(
+                          child: Center(
+                              child: ListWheelScrollView(
+                            children: score,
+                            itemExtent: 60,
+                            diameterRatio: 1.5,
+                          )),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                            width: 1,
+                            color: Colors.red, //
+                          ))),
+                    )
+                  ]))
         ],
-        // decoration: BoxDecoration(
-        //   image: DecorationImage(
-        //       image: AssetImage('lib/src/image/marble_shadow.png'),
-        //       alignment: Alignment(0.0, 0.75)),
-        // ),
       ),
     ));
   }
