@@ -21,6 +21,13 @@ class TimePickerState extends State<TimePickerWidget> {
     super.dispose();
   }
 
+  PickerTime parsePickerTime(pickerData,value) {
+    String ampm = pickerData[0][value[0]];
+    int hour = pickerData[1][value[1]];
+
+    return PickerTime(ampm: ampm, hour: hour);
+  }
+
   showPickerModal(BuildContext context) {
     final pickerData = JsonDecoder().convert(PickerData);
     Picker(
@@ -30,22 +37,21 @@ class TimePickerState extends State<TimePickerWidget> {
         hideHeader: false,
         selectedTextStyle: TextStyle(color: Colors.blue),
         onConfirm: (Picker picker, List value) {
-          String ampm = pickerData[0][value[0]];
-          int hour = pickerData[1][value[1]];
+          /* 선택한 시간을 파싱 */
+          PickerTime pickerTime = parsePickerTime(pickerData,value);
 
-          PickerTime pickerTime = PickerTime(ampm: ampm, hour: hour);
+          /*위에서 파싱한 모델을 스트림으로 전달 */
           _streamController.sink.add(pickerTime);
         }).showModal(context); //_scaffoldKey.currentState);
   }
 
   @override
   Widget build(BuildContext context) {
+    /* 시간 선택 버튼을 StreamBuilder 위젯으로 감싼다. */
     return StreamBuilder(
       stream: _streamController.stream,
-      // 어떤 스트림을 쓸지 정함
+      /* 초기값  */
       initialData: PickerTime(ampm: "오전", hour: 1),
-//      initialData: 0,
-      // 초기값 정하기, 스트림에 값이 없을지도 모르니 초기값을 정함.
       builder: (BuildContext context, AsyncSnapshot<PickerTime> snapshot) {
         // UI 만드는 부분.
         return OutlineButton(
