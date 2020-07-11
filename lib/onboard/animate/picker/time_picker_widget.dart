@@ -5,13 +5,7 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutterapp/onboard/animate/picker/picker_data.dart';
-
-class PickerTime {
-  String ampm;
-  int hour;
-
-  PickerTime({this.ampm, this.hour});
-}
+import 'package:flutterapp/models/onboard/picker_time_model.dart';
 
 class TimePickerWidget extends StatefulWidget {
   @override
