@@ -71,26 +71,17 @@ class _InputPageStep1State extends State<InputPageStep1> {
                       height: 200,
                       decoration: BoxDecoration(
                           image: DecorationImage(
-                            image: AssetImage(
-                                'lib/src/image/daily/img_bubble.png'),
-                            fit: BoxFit.cover,
-                          ),
-                          border: Border.all(
-                            width: 1,
-                            color: Colors.green, //
-                          )),
+                        image: AssetImage('lib/src/image/daily/img_bubble.png'),
+                        fit: BoxFit.cover,
+                      )),
                       child: Container(
-                          child: Center(
-                              child: ListWheelScrollView(
-                            children: score,
-                            itemExtent: 60,
-                            diameterRatio: 1.5,
-                          )),
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                            width: 1,
-                            color: Colors.red, //
-                          ))),
+                        child: Center(
+                            child: ListWheelScrollView(
+                          children: score,
+                          itemExtent: 60,
+                          diameterRatio: 1.5,
+                        )),
+                      ),
                     )
                   ]))
         ],
