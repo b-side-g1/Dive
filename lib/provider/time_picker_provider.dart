@@ -22,6 +22,17 @@ class TimePickerProvider {
     _pickerController.sink.add(pickerTime);
   }
 
+  void printPickerTime() {
+    debugPrint("[time_picker_provider.dart] #printPickerTime -> ${this.pickerTime.ampm}");
+    debugPrint("[time_picker_provider.dart] #printPickerTime -> ${this.pickerTime.hour}");
+  }
+
+  void saveEndAt() {
+
+  }
+
+
+
   void dispose() {
     this._pickerController.close();
   }

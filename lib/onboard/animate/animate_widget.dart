@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutterapp/controller/diary_tab_controller.dart';
@@ -24,6 +25,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   AnimationController supportMessageController;
   AnimationController step5MessageController;
   AnimationController startBtnController;
+  AnimationController circleController;
 
   Animation<double> titleAnimation;
   Animation<double> messageAnimation;
@@ -33,8 +35,11 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Animation<double> supportMessageAnimation;
   Animation<double> step5MessageAnimation;
   Animation<double> startBtnAnimation;
+  Animation<double> circleAnimation;
 
-  int animateStep = 1;
+
+
+  int animateStep = 3;
   double contentMargin = 0;
 
   TimePickerProvider timePickerProvider;
@@ -61,6 +66,9 @@ class OnboardAnimateState extends State<OnboardAnimate>
     startBtnController = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
 
+    circleController = AnimationController(
+        duration: const Duration(milliseconds: 3500), vsync: this, value: 0.3);
+
     titleAnimation =
         CurvedAnimation(parent: titleController, curve: Curves.fastOutSlowIn);
     messageAnimation =
@@ -79,6 +87,8 @@ class OnboardAnimateState extends State<OnboardAnimate>
         parent: step5MessageController, curve: Curves.fastOutSlowIn);
     startBtnAnimation = CurvedAnimation(
         parent: startBtnController, curve: Curves.fastOutSlowIn);
+    circleAnimation = CurvedAnimation(
+        parent: circleController, curve: Curves.fastOutSlowIn);
 
     titleAnimation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -117,6 +127,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
       if (status == AnimationStatus.dismissed) {
         setState(() {
           animateStep++;
+          circleController.forward();
           Future.delayed(const Duration(milliseconds: 1000), () {
             step5MessageController.forward();
           });
@@ -393,11 +404,17 @@ class OnboardAnimateState extends State<OnboardAnimate>
 
   Widget buildStep5() {
     contentMargin = 20.0;
-    title_widget = Image.asset('lib/src/image/onboarding/contents_img_03.png');
-
     return Center(
         child: Stack(
       children: <Widget>[
+        Container(
+          padding: EdgeInsets.only(top: 80),
+          child: ScaleTransition(
+            scale: circleAnimation,
+            alignment: Alignment.center,
+            child: Image.asset('lib/src/image/onboarding/contents_img_04.png'),
+          )
+        ),
         Column(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -437,9 +454,10 @@ class OnboardAnimateState extends State<OnboardAnimate>
                   textColor: Colors.white,
                   padding: EdgeInsets.all(8.0),
                   onPressed: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            DiaryTabController()));
+//                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+//                        builder: (BuildContext context) =>
+//                            DiaryTabController()));
+                    this.timePickerProvider.printPickerTime();
                   },
                   child: Text(
                     "시작하기",
