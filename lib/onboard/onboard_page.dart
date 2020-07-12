@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/onboard/onboard_service.dart';
+import 'package:flutterapp/provider/time_picker_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutterapp/onboard/animate/animate_widget.dart';
 
@@ -33,20 +34,20 @@ class OnBoardPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<Counter>(
-      create: (_) => Counter(0),
-      child: Scaffold(
-          body: Center(
-        child: Container(
-            decoration: buildBackground(),
-            child: Stack(
-              children: <Widget>[
-                _topLightImage(),
-                _bottomWaveImage(),
-                OnboardAnimate(),
-              ],
-            )),
-      )),
-    );
+    return Scaffold(
+        body: Center(
+      child: Container(
+          decoration: buildBackground(),
+          child: Stack(
+            children: <Widget>[
+              _topLightImage(),
+              _bottomWaveImage(),
+              Provider(
+                create: (context) => TimePickerProvider(),
+                child: OnboardAnimate() ,
+              )
+            ],
+          )),
+    ));
   }
 }

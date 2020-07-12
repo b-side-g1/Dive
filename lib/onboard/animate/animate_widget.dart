@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutterapp/controller/diary_tab_controller.dart';
+import 'package:flutterapp/models/onboard/picker_time_model.dart';
 import 'package:flutterapp/onboard/animate/picker/time_picker_widget.dart';
+import 'package:flutterapp/provider/time_picker_provider.dart';
+import 'package:provider/provider.dart';
 
 class OnboardAnimate extends StatefulWidget {
   @override
@@ -33,6 +36,8 @@ class OnboardAnimateState extends State<OnboardAnimate>
 
   int animateStep = 1;
   double contentMargin = 0;
+
+  TimePickerProvider timePickerProvider;
 
   void initState() {
     super.initState();
@@ -154,7 +159,10 @@ class OnboardAnimateState extends State<OnboardAnimate>
     supportMessageController.dispose();
     step5MessageController.dispose();
     startBtnController.dispose();
+
+    this.timePickerProvider.dispose();
     debugPrint("dispose!");
+
     super.dispose();
   }
 
@@ -331,7 +339,13 @@ class OnboardAnimateState extends State<OnboardAnimate>
           FadeTransition(
             opacity: pickerAnimation,
             child: ButtonTheme(
-                minWidth: 200, height: 56, child: TimePickerWidget()),
+                minWidth: 200,
+                height: 56,
+                child: StreamProvider<PickerTime>.value(
+                  initialData: PickerTime(ampm: "오전", hour: 1),
+                  value: timePickerProvider.pickerStream,
+                  child: TimePickerWidget(),
+                )),
           ),
           SizedBox(
             height: 135.0,
@@ -468,8 +482,9 @@ class OnboardAnimateState extends State<OnboardAnimate>
 
   @override
   Widget build(BuildContext context) {
-    /* step을 setState. -> 애니메이션 실행 */
+    this.timePickerProvider = Provider.of<TimePickerProvider>(context);
 
+    /* step을 setState. -> 애니메이션 실행 */
     if (animateStep < 4) {
       Future.delayed(const Duration(milliseconds: 1000), () {
         messageController.forward();
