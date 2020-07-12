@@ -454,10 +454,9 @@ class OnboardAnimateState extends State<OnboardAnimate>
                   textColor: Colors.white,
                   padding: EdgeInsets.all(8.0),
                   onPressed: () {
-//                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-//                        builder: (BuildContext context) =>
-//                            DiaryTabController()));
-                    this.timePickerProvider.printPickerTime();
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            DiaryTabController()));
                   },
                   child: Text(
                     "시작하기",
