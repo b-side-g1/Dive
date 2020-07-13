@@ -35,18 +35,9 @@ dependencies:
   provider: ^3.0.0+1
   charts_flutter: ^0.9.0
   flutter_native_splash: ^0.1.9
-#  flutter_rounded_date_picker: 1.0.0
+  uuid: ^2.2.0
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.3
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-
-
-#  flutter_rounded_date_picker: 1.0.0
+  #  flutter_rounded_date_picker: 1.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -76,6 +67,11 @@ flutter:
     - lib/src/image/onboarding/2.0x/
     - lib/src/image/onboarding/3.0x/
     - lib/src/image/daily/
+    - lib/src/image/daily/2.0x/
+    - lib/src/image/daily/3.0x/
+    - lib/src/image/bottombar/
+    - lib/src/image/bottombar/2.0x/
+    - lib/src/image/bottombar/3.0x/
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
