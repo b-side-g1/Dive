@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/splash/splash_page.dart';
-import 'package:flutterapp/onboard/onboard_page.dart';
+import 'package:flutterapp/services/basic/basic_service.dart';
 
-void main() {
+bool initScreen;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  BasicService basicService = BasicService();
+  initScreen = await basicService.isSetTodayEndAt();
+
   runApp(MyApp());
 }
 class MyApp extends StatelessWidget {
@@ -16,7 +23,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-        home:  SplashPage()
+        home:  SplashPage(initScreen)
     );
   }
 }
