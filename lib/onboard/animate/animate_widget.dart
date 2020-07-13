@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
+import 'package:flutterapp/onboard/animate/picker/pricker_widget.dart';
 import 'package:flutterapp/controller/diary_tab_controller.dart';
 import 'package:flutterapp/models/onboard/picker_time_model.dart';
 import 'package:flutterapp/onboard/animate/picker/time_picker_widget.dart';
@@ -39,7 +39,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
 
 
 
-  int animateStep = 3;
+  int animateStep = 1;
   double contentMargin = 0;
 
   TimePickerProvider timePickerProvider;
@@ -236,7 +236,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
 
   Widget buildStep2() {
     title_widget =
-        Image.asset('lib/src/image/onboarding/2.0x/contents_img_02@2x.png');
+        Image.asset('lib/src/image/onboarding/contents_img_02.png');
     message_widget = Container(
       padding: EdgeInsets.only(left: 50, right: 50),
       child: Text(
@@ -277,9 +277,10 @@ class OnboardAnimateState extends State<OnboardAnimate>
 
   Widget buildStep3() {
     title_widget =
-        Image.asset('lib/src/image/onboarding/2.0x/contents_img_03@2x.png');
+        Image.asset('lib/src/image/onboarding/contents_img_03.png');
     message_widget = Container(
-      padding: EdgeInsets.only(left: 75, right: 75),
+      width: 230,
+      height: 96,
       child: Text(
         "다이브에서 매일매일,\n매 순간의 감정을 기록하며\n당신을 알아가보세요",
         style: TextStyle(
@@ -294,11 +295,11 @@ class OnboardAnimateState extends State<OnboardAnimate>
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(top: 77),
+            padding: const EdgeInsets.only(top: 186),
             child: FadeTransition(
               opacity: titleAnimation,
               child: title_widget,
@@ -323,11 +324,11 @@ class OnboardAnimateState extends State<OnboardAnimate>
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           SizedBox(
-            height: 166.0,
+            height: 165.0,
           ),
           FadeTransition(
             opacity: step4MessageAnimation,
@@ -359,7 +360,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
                 )),
           ),
           SizedBox(
-            height: 135.0,
+            height: 90.0,
           ),
           FadeTransition(
             opacity: nextBtnAnimation,
@@ -388,7 +389,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
             ),
           ),
           SizedBox(
-            height: 27.0,
+            height: 35.0,
           ),
           FadeTransition(
               opacity: supportMessageAnimation,
@@ -406,71 +407,71 @@ class OnboardAnimateState extends State<OnboardAnimate>
     contentMargin = 20.0;
     return Center(
         child: Stack(
-      children: <Widget>[
-        Container(
-          padding: EdgeInsets.only(top: 80),
-          child: ScaleTransition(
-            scale: circleAnimation,
-            alignment: Alignment.center,
-            child: Image.asset('lib/src/image/onboarding/contents_img_04.png'),
-          )
-        ),
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(
-              height: 166.0,
+            Container(
+                padding: EdgeInsets.only(top: 80),
+                child: ScaleTransition(
+                  scale: circleAnimation,
+                  alignment: Alignment.center,
+                  child: Image.asset('lib/src/image/onboarding/contents_img_04.png'),
+                )
             ),
-            FadeTransition(
-              opacity: step5MessageAnimation,
-              child: Container(
-                padding: EdgeInsets.only(left: 60, right: 60),
-                child: Text(
-                  "좋았어요.\n그럼 이제부터 다이브와 함께\n당신의 감정에 집중해보세요.",
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
+            Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: 219.0,
                 ),
-              ),
-            ),
-            SizedBox(
-              height: 194.0,
-            ),
-            FadeTransition(
-              opacity: startBtnAnimation,
-              child: ButtonTheme(
-                minWidth: 316,
-                height: 60,
-                child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100.0),
-                  ),
-                  color: hexToColor("#63c7ff"),
-                  textColor: Colors.white,
-                  padding: EdgeInsets.all(8.0),
-                  onPressed: () {
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            DiaryTabController()));
-                  },
-                  child: Text(
-                    "시작하기",
-                    style: TextStyle(
-                      fontSize: 18.0,
+                FadeTransition(
+                  opacity: step5MessageAnimation,
+                  child: Container(
+                    padding: EdgeInsets.only(left: 60, right: 60),
+                    child: Text(
+                      "좋았어요.\n그럼 이제부터 다이브와 함께\n당신의 감정에 집중해보세요.",
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
                 ),
-              ),
-            )
+                SizedBox(
+                  height: 160.0,
+                ),
+                FadeTransition(
+                  opacity: startBtnAnimation,
+                  child: ButtonTheme(
+                    minWidth: 316,
+                    height: 60,
+                    child: FlatButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100.0),
+                      ),
+                      color: hexToColor("#63c7ff"),
+                      textColor: Colors.white,
+                      padding: EdgeInsets.all(8.0),
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                DiaryTabController()));
+                      },
+                      child: Text(
+                        "시작하기",
+                        style: TextStyle(
+                          fontSize: 18.0,
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ],
-        ),
-      ],
-    ));
+        ));
   }
 
   Color hexToColor(String code) {
