@@ -21,13 +21,13 @@ class BottomBar extends StatelessWidget {
                     indicatorColor: Colors.transparent,
                     tabs: <Widget>[
                       Tab(
-                          icon: Icon(Icons.supervised_user_circle, size: 18),
+                          icon: Image.asset('lib/src/image/bottombar/icon_tab_daily.png', width: 20, height: 20,),
                           child: Text(
                             '데일리',
                             style: TextStyle(fontSize: 12),
                           )),
                       Tab(
-                          icon: Icon(Icons.show_chart, size: 18),
+                          icon: Image.asset('lib/src/image/bottombar/icon_tab_chart.png', width: 20, height: 20,),
                           child: Text(
                             '통계',
                             style: TextStyle(fontSize: 12),
