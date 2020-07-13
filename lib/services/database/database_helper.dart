@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutterapp/models/basic_model.dart';
 import 'package:flutterapp/models/daily_model.dart';
 import 'package:flutterapp/models/emotion_model.dart';
 import 'package:flutterapp/models/record_has_emotion.dart';
@@ -50,6 +51,10 @@ class DBHelper {
     var emotionDDL = "CREATE TABLE $emotionTable (id TEXT PRIMARY KEY, name TEXT)";
     ddlList.add(emotionDDL);
 
+    var basicTable = Basic.tableName;
+    String basicDDL = "CREATE TABLE $basicTable(id TEXT PRIMARY KEY, today_startAt TEXT, today_endAt TEXT, status TEXT, is_push INTEGER, uuid TEXT, createdAt TEXT)";
+    ddlList.add(basicDDL);
+
     var recordHasEmotionTable = RecordHasEmotion.tableName;
     var recordHasEmotionDDL = "CREATE TABLE $recordHasEmotionTable (idx INTEGER PRIMARY KEY AUTOINCREMENT, recordId TEXT, emotionId TEXT, name TEXT)";
     ddlList.add(recordHasEmotionDDL);
@@ -57,11 +62,13 @@ class DBHelper {
     return openDatabase(
       path,
       version: 1,
-      onCreate: (Database db, int version) {
+      onCreate: (Database db, int version) async {
         ddlList.forEach((ddl) async {
           await db.execute(ddl);
         });
-      }
-    );
+        await db.rawInsert(
+            'INSERT INTO basic(id,status,is_push,uuid) VALUES("1","FST","0","0123456789")'
+        );
+      });
   }
 }
