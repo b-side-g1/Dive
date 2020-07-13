@@ -19,4 +19,9 @@ class BasicService extends ChangeNotifier{
     Basic basic = await this.selectBasicData();
     return basic.today_endAt != null ? true : false;
   }
+
+//  Future<bool> isSetTodayEndAt() async {
+//    Basic basic = await this.selectBasicData();
+//    return basic.today_endAt != null ? true : false;
+//  }
 }
