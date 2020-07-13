@@ -3,21 +3,21 @@ class RecordHasTag {
   final int idx;
   final String recordId;
   final String tagId;
-  final String name;
+  final String createdAt;
 
-  RecordHasTag({this.idx, this.recordId, this.tagId, this.name});
+  RecordHasTag({this.idx, this.recordId, this.tagId, this.createdAt});
 
   factory RecordHasTag.fromJson(Map<String, dynamic> json) => new RecordHasTag(
         idx: json["idx"],
         recordId: json["recordId"],
         tagId: json["tagId"],
-        name: json["name"],
+        createdAt: json["createdAt"],
       );
 
   Map<String, dynamic> toJson() => {
         "idx": idx,
         "recordId": recordId,
         "tagId": tagId,
-        "name": name,
+        "createdAt": createdAt
       };
 }
