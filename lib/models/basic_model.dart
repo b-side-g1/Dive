@@ -4,7 +4,7 @@ class Basic {
   final DateTime today_startAt;
   final DateTime today_endAt;
   final String status;
-  final bool is_push;
+  final int is_push;
   final String uuid;
   final DateTime createdAt;
 
