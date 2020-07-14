@@ -1,7 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutterapp/models/basic_model.dart';
 import 'package:flutterapp/services/database/database_helper.dart';
-class BasicService extends ChangeNotifier{
+class BasicService {
 
   Future<Basic> selectBasicData() async {
     final db = await DBHelper().database;
@@ -18,6 +20,12 @@ class BasicService extends ChangeNotifier{
   Future<bool> isSetTodayEndAt() async {
     Basic basic = await this.selectBasicData();
     return basic.today_endAt != null ? true : false;
+  }
+
+
+
+  void printHello() {
+    print("Hello");
   }
 
 //  Future<bool> isSetTodayEndAt() async {

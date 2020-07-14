@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
+import 'package:flutterapp/models/basic_model.dart';
 import 'package:flutterapp/models/onboard/picker_time_model.dart';
 import 'package:flutterapp/onboard/animate/picker/time_picker_widget.dart';
 import 'package:flutterapp/onboard/animate/start_dive_widget.dart';
 import 'package:flutterapp/provider/time_picker_provider.dart';
+import 'package:flutterapp/services/basic/basic_service.dart';
 import 'package:provider/provider.dart';
 
 class OnboardAnimate extends StatefulWidget {
@@ -40,6 +42,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   double contentMargin = 0;
 
   TimePickerProvider timePickerProvider;
+  BasicService basicService;
 
   void initState() {
     super.initState();
@@ -439,8 +442,8 @@ class OnboardAnimateState extends State<OnboardAnimate>
             ),
             FadeTransition(
                 opacity: startBtnAnimation,
-                child: StartDiveWidget()
-            )
+                child: FutureProvider<Basic>.value(
+                    value: basicService.selectBasicData(), child: StartDiveWidget()))
           ],
         ),
       ],
@@ -474,6 +477,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   @override
   Widget build(BuildContext context) {
     this.timePickerProvider = Provider.of<TimePickerProvider>(context);
+    this.basicService = Provider.of<BasicService>(context);
 
     /* step을 setState. -> 애니메이션 실행 */
     if (animateStep < 4) {
