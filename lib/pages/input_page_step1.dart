@@ -1,5 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../components/time_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_picker/flutter_picker.dart';
+import 'dart:convert';
+import 'dart:async';
 
 class InputPageStep1 extends StatefulWidget {
   @override
@@ -7,8 +12,71 @@ class InputPageStep1 extends StatefulWidget {
 }
 
 class _InputPageStep1State extends State<InputPageStep1> {
+  int hour, min;
+  String mid, curDate;
+  Timer _timer;
+  @protected
+  @mustCallSuper
+  void initState() {
+    super.initState();
+    setState(() {
+      var now = new DateTime.now();
+      hour = now.hour > 12 ? now.hour - 12 : now.hour;
+      min = now.minute;
+      mid = now.hour >= 12 ? "오후" : "오전";
+      curDate = "${mid} ${hour}시 ${min}분 ";
+    });
+    changeTime();
+  }
+
+  changeTime() {
+    _timer = new Timer.periodic(
+      const Duration(seconds: 10),
+      (Timer timer) => setState(
+        () {
+          var now = new DateTime.now();
+          hour = now.hour > 12 ? now.hour - 12 : now.hour;
+          min = now.minute;
+          mid = now.hour >= 12 ? "오후" : "오전";
+          curDate = "${mid} ${hour}시 ${min}분 ";
+        },
+      ),
+    );
+  }
+
+  showPickerModal(BuildContext context) {
+    print("showPickerModal");
+    const PickerData2 = '''
+[
+    [
+      오전,
+      오후
+    ],
+    [
+        11,
+        22,
+        33,
+        44
+    ],
+    [
+        "aaa",
+        "bbb",
+        "ccc"
+    ]
+]
+    ''';
+    new Picker(
+        adapter: PickerDataAdapter<String>(
+            pickerdata: new JsonDecoder().convert(PickerData2), isArray: true),
+        changeToFirst: true,
+        hideHeader: false,
+        onConfirm: (Picker picker, List value) {
+          print(value.toString());
+          print(picker.adapter.text);
+        }).showModal(context);
+  }
+
   renderTimeSelect() {
-    String date = "오전 1시 1분";
     String title = "당신의 기분을 알려주세요.";
     return Padding(
         padding: const EdgeInsets.only(top: 100),
@@ -16,7 +84,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(date,
+              Text(curDate == null ? '' : curDate,
                   style: TextStyle(
                       fontSize: 21,
                       color: const Color(0xffffffff),
@@ -30,8 +98,9 @@ class _InputPageStep1State extends State<InputPageStep1> {
                 tooltip: 'change date',
                 onPressed: () {
                   print("클릭");
+                  showPickerModal(context);
                 },
-              )
+              ),
             ],
           ),
           Text(title,
@@ -87,6 +156,8 @@ class _InputPageStep1State extends State<InputPageStep1> {
 
   @override
   Widget build(BuildContext context) {
+    print('${mid} ${hour}, ${min},  render time ');
+
     return new Scaffold(
         body: Container(
       decoration: new BoxDecoration(
