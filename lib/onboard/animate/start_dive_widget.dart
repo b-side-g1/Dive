@@ -13,7 +13,7 @@ class StartDiveWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PickerTime pickerTime = Provider.of<PickerTime>(context);
-
+    TimePickerProvider timePickerProvider = Provider.of<TimePickerProvider>(context);
     return ButtonTheme(
         minWidth: 316,
         height: 60,
@@ -24,14 +24,12 @@ class StartDiveWidget extends StatelessWidget {
           color: CommonService.hexToColor("#63c7ff"),
           textColor: Colors.white,
           padding: EdgeInsets.all(8.0),
-          onPressed: () {
-            print(pickerTime.hour);
-            print(pickerTime.ampm);
+          onPressed: () async {
 
+            await timePickerProvider.updateEndAt(pickerTime);
 
-
-//            Navigator.of(context).pushReplacement(MaterialPageRoute(
-//                builder: (BuildContext context) => DiaryTabController()));
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (BuildContext context) => DiaryTabController()));
           },
           child: Text(
             "시작하기",

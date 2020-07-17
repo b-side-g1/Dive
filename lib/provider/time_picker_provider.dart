@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
+import 'package:flutterapp/models/basic_model.dart';
 import 'package:flutterapp/models/onboard/picker_time_model.dart';
+import 'package:flutterapp/services/basic/basic_service.dart';
 
 class TimePickerProvider {
   PickerTime pickerTime;
@@ -27,11 +29,12 @@ class TimePickerProvider {
     debugPrint("[time_picker_provider.dart] #printPickerTime -> ${this.pickerTime.hour}");
   }
 
-  void saveEndAt() {
-
+  void updateEndAt(PickerTime pickerTime) async {
+    BasicService basicService = BasicService();
+    await basicService.updateEndAt(ampm: pickerTime.ampm,hour: pickerTime.hour);
+    Basic resultBasic = await basicService.selectBasicData();
+    print(resultBasic.toJson());
   }
-
-
 
   void dispose() {
     this._pickerController.close();
