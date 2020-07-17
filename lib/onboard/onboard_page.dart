@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/onboard/animate/animate_widget.dart';
+import 'package:flutterapp/provider/time_picker_provider.dart';
+import 'package:provider/provider.dart';
 
 class OnBoardPage extends StatelessWidget {
   gradientBackground() {
@@ -39,11 +41,10 @@ class OnBoardPage extends StatelessWidget {
             children: <Widget>[
               _topLightImage(),
               _bottomWaveImage(),
-              OnboardAnimate()
-//              Provider(
-//                create: (context) => TimePickerProvider(),
-//                child: OnboardAnimate() ,
-//              )
+              Provider(
+                create: (_) => TimePickerProvider(),
+                child: OnboardAnimate(),
+              )
             ],
           )),
     ));

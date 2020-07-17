@@ -6,7 +6,7 @@ class TimePickerProvider {
   PickerTime pickerTime;
 
   // ignore: close_sinks
-  StreamController<PickerTime> _pickerController = StreamController.broadcast();
+  StreamController<PickerTime> _pickerController = StreamController();
   Stream<PickerTime> get pickerStream => _pickerController.stream;
 
   PickerTime parsePickerTime(pickerData,value) {

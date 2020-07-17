@@ -41,6 +41,8 @@ class OnboardAnimateState extends State<OnboardAnimate>
   int animateStep = 3;
   double contentMargin = 0;
 
+  TimePickerProvider _timePickerProvider;
+
   void initState() {
     super.initState();
 
@@ -450,11 +452,17 @@ class OnboardAnimateState extends State<OnboardAnimate>
       case 3:
         return buildStep3();
       case 4:
-        return buildStep4();
+        return StreamProvider<PickerTime>.value(
+          value: this._timePickerProvider.pickerStream,
+          child: buildStep4(),
+        );
         break;
       case 5:
         debugPrint("buildStep5");
-        return buildStep5();
+        return StreamProvider<PickerTime>.value(
+          value: this._timePickerProvider.pickerStream,
+          child: buildStep5(),
+        );
         break;
       default:
         return buildStep5();
@@ -469,6 +477,9 @@ class OnboardAnimateState extends State<OnboardAnimate>
         messageController.forward();
       });
     }
+
+    this._timePickerProvider = Provider.of<TimePickerProvider>(context);
+
     return buildAnimate(animateStep);
   }
 }
