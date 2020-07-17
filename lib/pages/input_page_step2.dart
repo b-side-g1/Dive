@@ -1,8 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/components/feeling_tag_box.dart';
+import 'package:flutterapp/components/emotion_tag_box.dart';
 
 class InputPageStep2 extends StatefulWidget {
+  Color background;
+  List selectedFeelingTagIds = [];
+
+  InputPageStep2({Key key, this.background}): super(key : key);
+
   @override
   _InputPageStep2State createState() => _InputPageStep2State();
 }
@@ -11,7 +16,9 @@ class _InputPageStep2State extends State<InputPageStep2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+//      For Debug or develop
       backgroundColor: Color.fromRGBO(19, 62, 133, 1.0),
+//    backgroundColor: widget.background,
       body: Container(
         child: Column(
           children: <Widget>[
@@ -27,8 +34,8 @@ class _InputPageStep2State extends State<InputPageStep2> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(left: 20.1, top: 20.1, bottom: 20.1 ),
-              child: FeelingTagBox(),
+              padding: EdgeInsets.only(left: 20.1, top: 20.1, bottom: 20.1),
+              child: EmotionTagBox(),
             ),
           ],
         ),
