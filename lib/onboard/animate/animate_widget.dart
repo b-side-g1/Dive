@@ -41,9 +41,6 @@ class OnboardAnimateState extends State<OnboardAnimate>
   int animateStep = 3;
   double contentMargin = 0;
 
-  TimePickerProvider timePickerProvider;
-  BasicService basicService;
-
   void initState() {
     super.initState();
 
@@ -171,7 +168,6 @@ class OnboardAnimateState extends State<OnboardAnimate>
     step5MessageController.dispose();
     startBtnController.dispose();
 
-    this.timePickerProvider.dispose();
     debugPrint("dispose!");
 
     super.dispose();
@@ -349,13 +345,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
           FadeTransition(
             opacity: pickerAnimation,
             child: ButtonTheme(
-                minWidth: 200,
-                height: 56,
-                child: StreamProvider<PickerTime>.value(
-                  initialData: PickerTime(ampm: "오전", hour: 1),
-                  value: timePickerProvider.pickerStream,
-                  child: TimePickerWidget(),
-                )),
+                minWidth: 200, height: 56, child: TimePickerWidget()),
           ),
           SizedBox(
             height: 90.0,
@@ -440,10 +430,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
             SizedBox(
               height: 160.0,
             ),
-            FadeTransition(
-                opacity: startBtnAnimation,
-                child: FutureProvider<Basic>.value(
-                    value: basicService.selectBasicData(), child: StartDiveWidget()))
+            FadeTransition(opacity: startBtnAnimation, child: StartDiveWidget())
           ],
         ),
       ],
@@ -476,9 +463,6 @@ class OnboardAnimateState extends State<OnboardAnimate>
 
   @override
   Widget build(BuildContext context) {
-    this.timePickerProvider = Provider.of<TimePickerProvider>(context);
-    this.basicService = Provider.of<BasicService>(context);
-
     /* step을 setState. -> 애니메이션 실행 */
     if (animateStep < 4) {
       Future.delayed(const Duration(milliseconds: 1000), () {

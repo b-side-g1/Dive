@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/onboard/onboard_service.dart';
-import 'package:flutterapp/provider/time_picker_provider.dart';
-import 'package:flutterapp/services/basic/basic_service.dart';
-import 'package:provider/provider.dart';
 import 'package:flutterapp/onboard/animate/animate_widget.dart';
 
 class OnBoardPage extends StatelessWidget {
@@ -43,13 +39,7 @@ class OnBoardPage extends StatelessWidget {
             children: <Widget>[
               _topLightImage(),
               _bottomWaveImage(),
-              MultiProvider(
-                providers: [
-                  Provider<TimePickerProvider>(create: (_) => TimePickerProvider()),
-                  Provider<BasicService>(create: (_) => BasicService()),
-                ],
-                child: OnboardAnimate(),
-              )
+              OnboardAnimate()
 //              Provider(
 //                create: (context) => TimePickerProvider(),
 //                child: OnboardAnimate() ,

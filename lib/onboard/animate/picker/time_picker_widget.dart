@@ -6,10 +6,27 @@ import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutterapp/onboard/animate/picker/picker_data.dart';
 import 'package:flutterapp/models/onboard/picker_time_model.dart';
 import 'package:flutterapp/provider/time_picker_provider.dart';
+import 'package:flutterapp/services/basic/basic_service.dart';
 import 'package:provider/provider.dart';
 
-class TimePickerWidget extends StatelessWidget {
-  showPickerModal(TimePickerProvider timePickerProvider, BuildContext context) {
+class TimePickerWidget extends StatefulWidget {
+
+  @override
+  TimePickerWidgetState createState() => TimePickerWidgetState();
+}
+
+class TimePickerWidgetState extends State<TimePickerWidget> {
+  PickerTime pickerTime = PickerTime(ampm: "오전", hour: 1);
+  BasicService basicService = BasicService();
+
+  PickerTime parsePickerTime(pickerData, value) {
+    String ampm = pickerData[0][value[0]];
+    int hour = pickerData[1][value[1]];
+
+    return PickerTime(ampm: ampm, hour: hour);
+  }
+
+  showPickerModal(BuildContext context) {
     final pickerData = JsonDecoder().convert(PickerData);
 
     Picker(
@@ -18,23 +35,21 @@ class TimePickerWidget extends StatelessWidget {
         changeToFirst: true,
         hideHeader: false,
         selectedTextStyle: TextStyle(color: Colors.blue),
-        onConfirm: (Picker picker, List value) {
-          timePickerProvider.changePickerTime(pickerData, value);
+        onConfirm: (Picker picker, List value) async {
+          setState(() {
+            this.pickerTime = this.parsePickerTime(pickerData, value);
+          });
         }).showModal(context); //_scaffoldKey.currentState);
   }
 
   @override
   Widget build(BuildContext context) {
-    TimePickerProvider timePickerProvider =
-        Provider.of<TimePickerProvider>(context);
-    PickerTime dataPickerTime = Provider.of<PickerTime>(context);
-
     return OutlineButton(
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              "${dataPickerTime.ampm} ${dataPickerTime.hour}시",
+              "${this.pickerTime.ampm} ${this.pickerTime.hour}시",
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w300,
@@ -47,7 +62,7 @@ class TimePickerWidget extends StatelessWidget {
           ],
         ),
         onPressed: () {
-          showPickerModal(timePickerProvider, context);
+          showPickerModal(context);
         },
         borderSide:
             BorderSide(color: Colors.grey, width: 5, style: BorderStyle.solid),
