@@ -395,6 +395,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
 
   Widget buildStep5() {
     contentMargin = 20.0;
+    print("buildStep5!");
     return Center(
         child: Stack(
       children: <Widget>[
@@ -453,6 +454,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
         return buildStep3();
       case 4:
         return StreamProvider<PickerTime>.value(
+          initialData: PickerTime(ampm: "오전", hour: 1),
           value: this._timePickerProvider.pickerStream,
           child: buildStep4(),
         );

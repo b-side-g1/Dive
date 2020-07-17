@@ -16,8 +16,11 @@ class TimePickerWidget extends StatefulWidget {
 }
 
 class TimePickerWidgetState extends State<TimePickerWidget> {
+  TimePickerProvider _timePickerProvider;
+
   PickerTime pickerTime = PickerTime(ampm: "오전", hour: 1);
   BasicService basicService = BasicService();
+
 
   PickerTime parsePickerTime(pickerData, value) {
     String ampm = pickerData[0][value[0]];
@@ -36,20 +39,23 @@ class TimePickerWidgetState extends State<TimePickerWidget> {
         hideHeader: false,
         selectedTextStyle: TextStyle(color: Colors.blue),
         onConfirm: (Picker picker, List value) async {
-          setState(() {
-            this.pickerTime = this.parsePickerTime(pickerData, value);
-          });
+          this._timePickerProvider.changePickerTime(pickerData, value);
+//          setState(() {
+//            this.pickerTime = this.parsePickerTime(pickerData, value);
+//          });
         }).showModal(context); //_scaffoldKey.currentState);
   }
 
   @override
   Widget build(BuildContext context) {
+    this._timePickerProvider = Provider.of<TimePickerProvider>(context);
+
     return OutlineButton(
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              "${this.pickerTime.ampm} ${this.pickerTime.hour}시",
+              "${Provider.of<PickerTime>(context).ampm} ${Provider.of<PickerTime>(context).hour}시",
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w300,
