@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'dart:convert';
 import 'dart:async';
+import 'package:numberpicker/numberpicker.dart';
 
 class InputPageStep1 extends StatefulWidget {
   @override
@@ -12,7 +13,7 @@ class InputPageStep1 extends StatefulWidget {
 }
 
 class _InputPageStep1State extends State<InputPageStep1> {
-  int hour, min;
+  int hour, min, score;
   String mid, curDate;
   Timer _timer;
   @protected
@@ -25,6 +26,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
       min = now.minute;
       mid = now.hour >= 12 ? "오후" : "오전";
       curDate = "${mid} ${hour}시 ${min}분 ";
+      score = 50;
     });
     // changeTime();
   }
@@ -57,12 +59,12 @@ class _InputPageStep1State extends State<InputPageStep1> {
         changeToFirst: true,
         hideHeader: false,
         onConfirm: (Picker picker, List value) {
-          print('type ${value[0]}');
           setState(() {
             mid = value[0] == 0 ? "오전" : "오후";
             hour = value[1];
             min = value[2];
             curDate = "${mid} ${hour}시 ${min}분 ";
+            score = 50;
           });
         }).showModal(context);
   }
@@ -104,22 +106,20 @@ class _InputPageStep1State extends State<InputPageStep1> {
   }
 
   renderScoreSelect() {
-    var score = new List<Widget>(10);
-    for (var i = 0; i < score.length; i++) {
-      var val = i * 10;
+    // List<int> score = [for (var i = 0; i <= 100; i += 10) i];
 
-      score[i] = Text(
-        val.toString(),
-        style: TextStyle(
-          fontFamily: 'Roboto',
-          color: Color(0xffffffff),
-          fontSize: 28,
-          fontWeight: FontWeight.w300,
-          fontStyle: FontStyle.normal,
-          letterSpacing: 0.28,
+    Decoration _decoration = new BoxDecoration(
+      border: new Border(
+        top: new BorderSide(
+          style: BorderStyle.solid,
+          color: Colors.black26,
         ),
-      );
-    }
+        bottom: new BorderSide(
+          style: BorderStyle.solid,
+          color: Colors.black26,
+        ),
+      ),
+    );
 
     return Padding(
         padding: const EdgeInsets.only(top: 30),
@@ -135,11 +135,35 @@ class _InputPageStep1State extends State<InputPageStep1> {
             )),
             child: Container(
               child: Center(
-                  child: ListWheelScrollView(
-                children: score,
-                itemExtent: 60,
-                diameterRatio: 1.5,
-              )),
+                  child: new NumberPicker.integer(
+                      initialValue: score,
+                      minValue: 0,
+                      maxValue: 100,
+                      step: 10,
+                      infiniteLoop: true,
+                      decoration: _decoration,
+                      onChanged: (newValue) => setState(() => score = newValue))
+                  // child: ListWheelScrollView(
+                  //     children: [
+                  //   for (var i in score)
+                  //     Text(
+                  //       i.toString(),
+                  //       style: TextStyle(
+                  //         fontFamily: 'Roboto',
+                  //         color: Color(0xffffffff),
+                  //         fontSize: 28,
+                  //         fontWeight: FontWeight.w300,
+                  //         fontStyle: FontStyle.normal,
+                  //         letterSpacing: 0.28,
+                  //       ),
+                  //     )
+                  // ],
+                  //     itemExtent: 60,
+                  //     diameterRatio: 1.5,
+                  //     onSelectedItemChanged: (i) {
+                  //       print('${i}___changed value');
+                  //     })
+                  ),
             ),
           )
         ]));
