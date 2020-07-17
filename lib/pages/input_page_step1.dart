@@ -26,53 +26,44 @@ class _InputPageStep1State extends State<InputPageStep1> {
       mid = now.hour >= 12 ? "오후" : "오전";
       curDate = "${mid} ${hour}시 ${min}분 ";
     });
-    changeTime();
+    // changeTime();
   }
 
-  changeTime() {
-    _timer = new Timer.periodic(
-      const Duration(seconds: 10),
-      (Timer timer) => setState(
-        () {
-          var now = new DateTime.now();
-          hour = now.hour > 12 ? now.hour - 12 : now.hour;
-          min = now.minute;
-          mid = now.hour >= 12 ? "오후" : "오전";
-          curDate = "${mid} ${hour}시 ${min}분 ";
-        },
-      ),
-    );
-  }
+  // changeTime() {
+  //   _timer = new Timer.periodic(
+  //     const Duration(seconds: 10),
+  //     (Timer timer) => setState(
+  //       () {
+  //         var now = new DateTime.now();
+  //         hour = now.hour > 12 ? now.hour - 12 : now.hour;
+  //         min = now.minute;
+  //         mid = now.hour >= 12 ? "오후" : "오전";
+  //         curDate = "${mid} ${hour}시 ${min}분 ";
+  //       },
+  //     ),
+  //   );
+  // }
 
   showPickerModal(BuildContext context) {
     print("showPickerModal");
-    const PickerData2 = '''
-[
-    [
-      오전,
-      오후
-    ],
-    [
-        11,
-        22,
-        33,
-        44
-    ],
-    [
-        "aaa",
-        "bbb",
-        "ccc"
-    ]
-]
-    ''';
+    List<String> midArr = ["오전", "오후"];
+    List<int> timeArr = [for (var i = 0; i <= 12; i += 1) i];
+    List<int> minArr = [for (var i = 0; i < 60; i += 1) i];
+    var timePicker = [midArr, timeArr, minArr];
+
     new Picker(
-        adapter: PickerDataAdapter<String>(
-            pickerdata: new JsonDecoder().convert(PickerData2), isArray: true),
+        adapter:
+            PickerDataAdapter<String>(pickerdata: timePicker, isArray: true),
         changeToFirst: true,
         hideHeader: false,
         onConfirm: (Picker picker, List value) {
-          print(value.toString());
-          print(picker.adapter.text);
+          print('type ${value[0]}');
+          setState(() {
+            mid = value[0] == 0 ? "오전" : "오후";
+            hour = value[1];
+            min = value[2];
+            curDate = "${mid} ${hour}시 ${min}분 ";
+          });
         }).showModal(context);
   }
 
