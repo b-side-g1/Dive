@@ -13,7 +13,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
   Future<String> createEditTagDialog(BuildContext context) {
     return showDialog(context: context,builder: (context) {
       return AlertDialog(
-        title: Text("예제"),
+        title: Text("태그편집"),
         content: Text("Content!"),
         actions: <Widget>[
           MaterialButton(
