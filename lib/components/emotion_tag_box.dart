@@ -70,7 +70,7 @@ class _EmotionTagBoxState extends State<EmotionTagBox> {
           emotionTags.add(EmotionTag(
             id: id,
             title: emotionNames[id - 1],
-            activeColor: Color.fromRGBO(255, 159, 222, 1),
+            activeColors: [Color.fromRGBO(255, 159, 222, 1), Color.fromRGBO(255, 177, 229, 1)],
             onTap: _onTap(id, emotionNames[id - 1]),
             isActivated: widget.emotions.where((element) => element['index'] == id).length == 1,
           ));
@@ -78,7 +78,7 @@ class _EmotionTagBoxState extends State<EmotionTagBox> {
           emotionTags.add(EmotionTag(
             id: id,
             title: emotionNames[id - 1],
-            activeColor: Color.fromRGBO(60, 160, 217, 1),
+            activeColors: [Color.fromRGBO(60, 160, 217, 1), Color.fromRGBO(99, 177, 221, 1)],
             onTap: _onTap(id, emotionNames[id - 1]),
             isActivated: widget.emotions.where((element) => element['index'] == id).length == 1,
           ));
@@ -86,7 +86,7 @@ class _EmotionTagBoxState extends State<EmotionTagBox> {
           emotionTags.add(EmotionTag(
             id: id,
             title: emotionNames[id - 1],
-            activeColor: Color.fromRGBO(86, 113, 210, 1),
+            activeColors: [Color.fromRGBO(86, 113, 210, 1), Color.fromRGBO(100, 119, 188, 1)],
             onTap: _onTap(id, emotionNames[id - 1]),
             isActivated: widget.emotions.where((element) => element['index'] == id).length == 1,
           ));

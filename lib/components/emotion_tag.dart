@@ -7,11 +7,16 @@ class EmotionTag extends StatefulWidget {
   double width = 34;
   double height = 34;
   Function onTap;
-  Color activeColor;
+  List<Color> activeColors;
   bool isActivated;
 
   EmotionTag(
-      {Key key, this.id, this.title, this.onTap, this.activeColor, this.isActivated})
+      {Key key,
+      this.id,
+      this.title,
+      this.onTap,
+      this.activeColors,
+      this.isActivated})
       : super(key: key);
 
   @override
@@ -29,9 +34,13 @@ class _EmotionTagState extends State<EmotionTag> {
           height: widget.width,
           width: widget.height,
           decoration: BoxDecoration(
-            color: widget.isActivated
-                ? widget.activeColor
-                : Color.fromRGBO(255, 255, 255, 0.03),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: widget.isActivated
+                  ? widget.activeColors
+                  : [Color.fromRGBO(255, 255, 255, 0.03), Color.fromRGBO(255, 255, 255, 0.03)],
+            ),
 //          image: DecorationImage(
 //            image: AssetImage('lib/src/image/tags/icon_1_off.png'),
 //            fit: BoxFit.scaleDown,
