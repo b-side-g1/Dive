@@ -29,23 +29,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
       curDate = "${mid} ${hour}시 ${min}분 ";
       score = 50;
     });
-    // changeTime();
   }
-
-  // changeTime() {
-  //   _timer = new Timer.periodic(
-  //     const Duration(seconds: 10),
-  //     (Timer timer) => setState(
-  //       () {
-  //         var now = new DateTime.now();
-  //         hour = now.hour > 12 ? now.hour - 12 : now.hour;
-  //         min = now.minute;
-  //         mid = now.hour >= 12 ? "오후" : "오전";
-  //         curDate = "${mid} ${hour}시 ${min}분 ";
-  //       },
-  //     ),
-  //   );
-  // }
 
   showTimePicker(BuildContext context) {
     print("showTimePicker");
@@ -130,13 +114,10 @@ class _InputPageStep1State extends State<InputPageStep1> {
               child: Center(
                 child: Container(
                     height: 170,
-                    // decoration: BoxDecoration(border: Border.all(width: 1)),
                     child: new ListWheelScrollView.useDelegate(
                       itemExtent: 60,
                       diameterRatio: 1.5,
                       physics: FixedExtentScrollPhysics(),
-                      // useMagnifier: true,
-                      // magnification: 1.5,
                       onSelectedItemChanged: (i) {
                         print('${scoreList[i]}___changed value');
                         setState(() {
@@ -169,7 +150,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
   renderNextStep() {
     return Expanded(
       child: Container(
-          // decoration: BoxDecoration(border: Border.all(width: 1)),
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
@@ -189,7 +169,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
               margin: EdgeInsets.only(bottom: 20),
               height: 60,
               width: MediaQuery.of(context).size.width,
-              // decoration: BoxDecoration(border: Border.all(width: 1)),
               child: IconButton(
                 icon: Image.asset(
                   'lib/src/image/daily/noti_dive_deeper.png',
