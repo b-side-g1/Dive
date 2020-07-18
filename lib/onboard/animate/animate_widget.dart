@@ -38,7 +38,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Animation<double> startBtnAnimation;
   Animation<double> circleAnimation;
 
-  int animateStep = 3;
+  int animateStep = 1;
   double contentMargin = 0;
 
   TimePickerProvider _timePickerProvider;
