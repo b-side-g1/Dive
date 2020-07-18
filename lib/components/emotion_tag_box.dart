@@ -60,31 +60,33 @@ class _EmotionTagBoxState extends State<EmotionTagBox> {
     }
 
     List<EmotionTag> emotionTags = [];
-    for (int i = 1; i <= 18; i++) {
-      if (i <= 6) {
-        emotionTags.add(EmotionTag(
-          id: i,
-          title: emotionNames[i - 1],
-          activeColor: Color.fromRGBO(255, 159, 222, 1),
-          onTap: _onTap(i, emotionNames[i - 1]),
-          isActivated: widget.emotions.where((element) => element['index'] == i).length == 1,
-        ));
-      } else if (i <= 10) {
-        emotionTags.add(EmotionTag(
-          id: i,
-          title: emotionNames[i - 1],
-          activeColor: Color.fromRGBO(60, 160, 217, 1),
-          onTap: _onTap(i, emotionNames[i - 1]),
-          isActivated: widget.emotions.where((element) => element['index'] == i).length == 1,
-        ));
-      } else {
-        emotionTags.add(EmotionTag(
-          id: i,
-          title: emotionNames[i - 1],
-          activeColor: Color.fromRGBO(86, 113, 210, 1),
-          onTap: _onTap(i, emotionNames[i - 1]),
-          isActivated: widget.emotions.where((element) => element['index'] == i).length == 1,
-        ));
+    for (int i = 1; i <= 6; i++) {
+      for(int id = i; id <= 18; id += 6) {
+        if (id <= 6) {
+          emotionTags.add(EmotionTag(
+            id: id,
+            title: emotionNames[id - 1],
+            activeColor: Color.fromRGBO(255, 159, 222, 1),
+            onTap: _onTap(id, emotionNames[id - 1]),
+            isActivated: widget.emotions.where((element) => element['index'] == id).length == 1,
+          ));
+        } else if (id <= 10) {
+          emotionTags.add(EmotionTag(
+            id: id,
+            title: emotionNames[id - 1],
+            activeColor: Color.fromRGBO(60, 160, 217, 1),
+            onTap: _onTap(id, emotionNames[id - 1]),
+            isActivated: widget.emotions.where((element) => element['index'] == id).length == 1,
+          ));
+        } else {
+          emotionTags.add(EmotionTag(
+            id: id,
+            title: emotionNames[id - 1],
+            activeColor: Color.fromRGBO(86, 113, 210, 1),
+            onTap: _onTap(id, emotionNames[id - 1]),
+            isActivated: widget.emotions.where((element) => element['index'] == id).length == 1,
+          ));
+        }
       }
     }
 
