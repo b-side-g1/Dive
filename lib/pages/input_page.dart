@@ -18,10 +18,10 @@ class _InputPageState extends State<InputPage> {
   void handlerPageView(int index) {
     print("handlerPageView ${index}");
     // use this to animate to the page
-    // _controller.animateToPage(index);
+    _controller.animateToPage(index);
 
     // // or this to jump to it without animating
-    // _controller.jumpToPage(index);
+    _controller.jumpToPage(index);
   }
 
   @override
@@ -56,7 +56,7 @@ class _InputPagAnimationState extends State<InputPagAnimation> {
     return AnimatedOpacity(
       child: InputPage(),
       opacity: 0.5,
-      duration: const Duration(seconds: 1),
+      duration: Duration(seconds: 1),
     );
   }
 }

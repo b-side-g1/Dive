@@ -133,33 +133,39 @@ class _InputPageStep1State extends State<InputPageStep1> {
             )),
             child: Container(
               child: Center(
-                child: new ListWheelScrollView.useDelegate(
-                  itemExtent: 60,
-                  diameterRatio: 1.5,
-                  useMagnifier: true,
-                  onSelectedItemChanged: (i) {
-                    print('${scoreList[i]}___changed value');
-                    setState(() {
-                      score = scoreList[i];
-                    });
-                  },
-                  childDelegate: ListWheelChildLoopingListDelegate(
-                    children: [
-                      for (var i in scoreList)
-                        Text(
-                          i.toString(),
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            color: Color(0xffffffff),
-                            fontSize: 28,
-                            fontWeight: FontWeight.w300,
-                            fontStyle: FontStyle.normal,
-                            letterSpacing: 0.28,
-                          ),
-                        )
-                    ],
-                  ),
-                ),
+                child: Container(
+                    // alignment: Alignment(-0.9, -0.9),
+                    height: 170,
+                    // decoration: BoxDecoration(border: Border.all(width: 1)),
+                    child: new ListWheelScrollView.useDelegate(
+                      itemExtent: 60,
+                      diameterRatio: 1.5,
+                      physics: FixedExtentScrollPhysics(),
+                      // useMagnifier: true,
+                      // magnification: 1.5,
+                      onSelectedItemChanged: (i) {
+                        print('${scoreList[i]}___changed value');
+                        setState(() {
+                          score = scoreList[i];
+                        });
+                      },
+                      childDelegate: ListWheelChildLoopingListDelegate(
+                        children: [
+                          for (var i in scoreList)
+                            Text(
+                              i.toString(),
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                color: Color(0xffffffff),
+                                fontSize: 28,
+                                fontWeight: FontWeight.w300,
+                                fontStyle: FontStyle.normal,
+                                letterSpacing: 0.28,
+                              ),
+                            )
+                        ],
+                      ),
+                    )),
               ),
             ),
           )
@@ -169,43 +175,43 @@ class _InputPageStep1State extends State<InputPageStep1> {
   renderNextStep() {
     return Expanded(
       child: Container(
-          decoration: BoxDecoration(border: Border.all(width: 1)),
+          // decoration: BoxDecoration(border: Border.all(width: 1)),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.only(bottom: 70),
-                height: 35,
-                width: MediaQuery.of(context).size.width * 0.8,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('lib/src/image/daily/img_shadow.png'),
-                  ),
-                ),
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(bottom: 70),
+            height: 35,
+            width: MediaQuery.of(context).size.width * 0.8,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('lib/src/image/daily/img_shadow.png'),
               ),
-              Container(
-                  margin: EdgeInsets.only(bottom: 20),
-                  height: 60,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: BoxDecoration(border: Border.all(width: 1)),
-                  child: IconButton(
-                    icon: Image.asset(
-                      'lib/src/image/daily/noti_dive_deeper.png',
-                    ),
-                    tooltip: 'next step',
-                    onPressed: () {
-                      print("go to page 2");
-                      widget.handlerPageView(1);
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => InputPageStep2()),
-                      // );
-                    },
-                  )),
-            ],
-          )),
+            ),
+          ),
+          Container(
+              margin: EdgeInsets.only(bottom: 20),
+              height: 60,
+              width: MediaQuery.of(context).size.width,
+              // decoration: BoxDecoration(border: Border.all(width: 1)),
+              child: IconButton(
+                icon: Image.asset(
+                  'lib/src/image/daily/noti_dive_deeper.png',
+                ),
+                tooltip: 'next step',
+                onPressed: () {
+                  print("go to page 2");
+                  widget.handlerPageView(1);
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => InputPageStep2()),
+                  // );
+                },
+              )),
+        ],
+      )),
     );
   }
 
