@@ -1,13 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../components/time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
-import 'dart:convert';
 import 'dart:async';
-import 'package:numberpicker/numberpicker.dart';
 import 'package:flutterapp/pages/input_page_step2.dart';
-import 'package:flutterapp/pages/input_page.dart';
+import 'package:flutterapp/pages/daily_page.dart';
 
 class InputPageStep1 extends StatefulWidget {
   InputPageStep1({Key key, this.handlerPageView}) : super(key: key);
@@ -76,7 +73,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
   renderTimeSelect() {
     String title = "당신의 기분을 알려주세요.";
     return Padding(
-        padding: const EdgeInsets.only(top: 140),
+        padding: const EdgeInsets.only(top: 20),
         child: Column(children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -86,13 +83,11 @@ class _InputPageStep1State extends State<InputPageStep1> {
                       fontSize: 21,
                       color: const Color(0xffffffff),
                       fontWeight: FontWeight.w700,
-                      // height: 0.6,
                       fontStyle: FontStyle.normal)),
               Container(
                 padding: const EdgeInsets.all(0.0),
                 height: 30,
                 width: 30,
-                // decoration: BoxDecoration(border: Border.all(width: 1)),
                 child: IconButton(
                   icon: Image.asset(
                     'lib/src/image/daily/icon_arrow.png',
@@ -134,7 +129,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
             child: Container(
               child: Center(
                 child: Container(
-                    // alignment: Alignment(-0.9, -0.9),
                     height: 170,
                     // decoration: BoxDecoration(border: Border.all(width: 1)),
                     child: new ListWheelScrollView.useDelegate(
@@ -202,12 +196,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
                 ),
                 tooltip: 'next step',
                 onPressed: () {
-                  print("go to page 2");
                   widget.handlerPageView(1);
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => InputPageStep2()),
-                  // );
                 },
               )),
         ],
@@ -215,10 +204,37 @@ class _InputPageStep1State extends State<InputPageStep1> {
     );
   }
 
+  renderClose() {
+    return Container(
+      alignment: Alignment.centerRight,
+      width: MediaQuery.of(context).size.width * 0.8,
+      margin: const EdgeInsets.only(top: 35),
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+            color: Color.fromRGBO(0, 0, 0, 0.3), shape: BoxShape.circle),
+        child: IconButton(
+          icon: Image.asset(
+            'lib/src/image/daily/icon_x.png',
+            height: 15,
+            width: 15,
+          ),
+          tooltip: 'close',
+          onPressed: () {
+            //TODO : navigator 오류
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => DailyPage()),
+            // );
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    // print('${mid} ${hour}, ${min},  render time ');
-
     return new Scaffold(
         body: Container(
       decoration: new BoxDecoration(
@@ -226,6 +242,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
       ),
       child: Column(
         children: <Widget>[
+          renderClose(),
           renderTimeSelect(),
           renderScoreSelect(),
           renderNextStep()

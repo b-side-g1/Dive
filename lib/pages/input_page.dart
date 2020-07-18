@@ -17,11 +17,11 @@ class _InputPageState extends State<InputPage> {
 
   void handlerPageView(int index) {
     print("handlerPageView ${index}");
-    // use this to animate to the page
-    _controller.animateToPage(index);
-
-    // // or this to jump to it without animating
-    _controller.jumpToPage(index);
+    //TODO : page change error
+    // // use this to animate to the page
+    // _controller.animateToPage(index);
+    // // // or this to jump to it without animating
+    // _controller.jumpToPage(index);
   }
 
   @override
