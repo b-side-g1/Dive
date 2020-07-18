@@ -46,8 +46,8 @@ class _InputPageStep1State extends State<InputPageStep1> {
   //   );
   // }
 
-  showPickerModal(BuildContext context) {
-    print("showPickerModal");
+  showTimePicker(BuildContext context) {
+    print("showTimePicker");
     List<String> midArr = ["오전", "오후"];
     List<int> timeArr = [for (var i = 0; i <= 12; i += 1) i];
     List<int> minArr = [for (var i = 0; i < 60; i += 1) i];
@@ -64,7 +64,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
             hour = value[1];
             min = value[2];
             curDate = "${mid} ${hour}시 ${min}분 ";
-            score = 50;
+            score = null;
           });
         }).showModal(context);
   }
@@ -90,8 +90,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
                 ),
                 tooltip: 'change date',
                 onPressed: () {
-                  print("클릭");
-                  showPickerModal(context);
+                  showTimePicker(context);
                 },
               ),
             ],
@@ -106,20 +105,20 @@ class _InputPageStep1State extends State<InputPageStep1> {
   }
 
   renderScoreSelect() {
-    // List<int> score = [for (var i = 0; i <= 100; i += 10) i];
+    List<int> scoreList = [for (var i = 0; i <= 100; i += 10) i];
 
-    Decoration _decoration = new BoxDecoration(
-      border: new Border(
-        top: new BorderSide(
-          style: BorderStyle.solid,
-          color: Colors.black26,
-        ),
-        bottom: new BorderSide(
-          style: BorderStyle.solid,
-          color: Colors.black26,
-        ),
-      ),
-    );
+    // Decoration _decoration = new BoxDecoration(
+    //   border: new Border(
+    //     top: new BorderSide(
+    //       style: BorderStyle.solid,
+    //       color: Colors.black26,
+    //     ),
+    //     bottom: new BorderSide(
+    //       style: BorderStyle.solid,
+    //       color: Colors.black26,
+    //     ),
+    //   ),
+    // );
 
     return Padding(
         padding: const EdgeInsets.only(top: 30),
@@ -135,35 +134,68 @@ class _InputPageStep1State extends State<InputPageStep1> {
             )),
             child: Container(
               child: Center(
-                  child: new NumberPicker.integer(
-                      initialValue: score,
-                      minValue: 0,
-                      maxValue: 100,
-                      step: 10,
-                      infiniteLoop: true,
-                      decoration: _decoration,
-                      onChanged: (newValue) => setState(() => score = newValue))
-                  // child: ListWheelScrollView(
-                  //     children: [
-                  //   for (var i in score)
-                  //     Text(
-                  //       i.toString(),
-                  //       style: TextStyle(
-                  //         fontFamily: 'Roboto',
-                  //         color: Color(0xffffffff),
-                  //         fontSize: 28,
-                  //         fontWeight: FontWeight.w300,
-                  //         fontStyle: FontStyle.normal,
-                  //         letterSpacing: 0.28,
-                  //       ),
-                  //     )
-                  // ],
-                  //     itemExtent: 60,
-                  //     diameterRatio: 1.5,
-                  //     onSelectedItemChanged: (i) {
-                  //       print('${i}___changed value');
-                  //     })
+                //  child:
+                // new NumberPicker.integer(
+                //     initialValue: score,
+                //     minValue: 0,
+                //     maxValue: 100,
+                //     step: 10,
+                //     infiniteLoop: true,
+                //     decoration: _decoration,
+                //     onChanged: (newValue) => setState(() => score = newValue))
+                //     child: ListWheelScrollView(
+                //   children: [
+                //     for (var i in scoreList)
+                //       Text(
+                //         i.toString(),
+                //         style: TextStyle(
+                //           fontFamily: 'Roboto',
+                //           color: Color(0xffffffff),
+                //           fontSize: 28,
+                //           fontWeight: FontWeight.w300,
+                //           fontStyle: FontStyle.normal,
+                //           letterSpacing: 0.28,
+                //         ),
+                //       )
+                //   ],
+                //   useMagnifier: true,
+                //   itemExtent: 60,
+                //   diameterRatio: 1.5,
+                //   onSelectedItemChanged: (i) {
+                //     // print('${scoreList[i]}___changed value');
+                //     setState(() {
+                //       score = scoreList[i];
+                //     });
+                //   },
+                // )
+                child: new ListWheelScrollView.useDelegate(
+                  itemExtent: 60,
+                  diameterRatio: 1.5,
+                  useMagnifier: true,
+                  onSelectedItemChanged: (i) {
+                    print('${scoreList[i]}___changed value');
+                    setState(() {
+                      score = scoreList[i];
+                    });
+                  },
+                  childDelegate: ListWheelChildLoopingListDelegate(
+                    children: [
+                      for (var i in scoreList)
+                        Text(
+                          i.toString(),
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            color: Color(0xffffffff),
+                            fontSize: 28,
+                            fontWeight: FontWeight.w300,
+                            fontStyle: FontStyle.normal,
+                            letterSpacing: 0.28,
+                          ),
+                        )
+                    ],
                   ),
+                ),
+              ),
             ),
           )
         ]));
