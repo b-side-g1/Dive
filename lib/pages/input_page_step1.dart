@@ -107,19 +107,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
   renderScoreSelect() {
     List<int> scoreList = [for (var i = 0; i <= 100; i += 10) i];
 
-    // Decoration _decoration = new BoxDecoration(
-    //   border: new Border(
-    //     top: new BorderSide(
-    //       style: BorderStyle.solid,
-    //       color: Colors.black26,
-    //     ),
-    //     bottom: new BorderSide(
-    //       style: BorderStyle.solid,
-    //       color: Colors.black26,
-    //     ),
-    //   ),
-    // );
-
     return Padding(
         padding: const EdgeInsets.only(top: 30),
         child:
@@ -134,40 +121,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
             )),
             child: Container(
               child: Center(
-                //  child:
-                // new NumberPicker.integer(
-                //     initialValue: score,
-                //     minValue: 0,
-                //     maxValue: 100,
-                //     step: 10,
-                //     infiniteLoop: true,
-                //     decoration: _decoration,
-                //     onChanged: (newValue) => setState(() => score = newValue))
-                //     child: ListWheelScrollView(
-                //   children: [
-                //     for (var i in scoreList)
-                //       Text(
-                //         i.toString(),
-                //         style: TextStyle(
-                //           fontFamily: 'Roboto',
-                //           color: Color(0xffffffff),
-                //           fontSize: 28,
-                //           fontWeight: FontWeight.w300,
-                //           fontStyle: FontStyle.normal,
-                //           letterSpacing: 0.28,
-                //         ),
-                //       )
-                //   ],
-                //   useMagnifier: true,
-                //   itemExtent: 60,
-                //   diameterRatio: 1.5,
-                //   onSelectedItemChanged: (i) {
-                //     // print('${scoreList[i]}___changed value');
-                //     setState(() {
-                //       score = scoreList[i];
-                //     });
-                //   },
-                // )
                 child: new ListWheelScrollView.useDelegate(
                   itemExtent: 60,
                   diameterRatio: 1.5,
