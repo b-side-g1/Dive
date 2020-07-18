@@ -13,95 +13,97 @@ class _InputPageStep3State extends State<InputPageStep3> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-          child: Column(
+          child: SingleChildScrollView(
+            child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Container(
-              padding: EdgeInsets.only(top: 110, left: 70, right: 70),
-              child: Center(
-                  child: Text(
-                "그렇게 느끼는 이유는...",
-                style: TextStyle(fontSize: 21, fontWeight: FontWeight.w700),
-              ))),
-          Container(
-              padding: EdgeInsets.only(top: 30, left: 20, right: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text(
-                    "이유태그",
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
-                  ),
-                  FlatButton(
-                    padding: EdgeInsets.all(0),
-                    onPressed: () {},
-                    child: Row(
-                      children: <Widget>[
-                        Icon(Icons.edit),
-                        SizedBox(
-                          width: 3,
-                        ),
-                        Text(
-                          "태그편집",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w400),
-                        ),
-                      ],
+            Container(
+                padding: EdgeInsets.only(top: 110, left: 70, right: 70),
+                child: Center(
+                    child: Text(
+                  "그렇게 느끼는 이유는...",
+                  style: TextStyle(fontSize: 21, fontWeight: FontWeight.w700),
+                ))),
+            Container(
+                padding: EdgeInsets.only(top: 30, left: 20, right: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "이유태그",
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
                     ),
-                  )
-                ],
-              )),
-          Container(
-              padding: EdgeInsets.only(top: 10, left: 20, right: 75),
-              child: ReasonTagWidget()),
-          Container(
-              padding: EdgeInsets.only(top: 50, left: 20, right: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "이유적기",
-                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
-                  ),
-                ],
-              )),
-          Container(
-              padding: EdgeInsets.only(top: 13, left: 20, right: 20),
-              child: TextFormField(
-                cursorColor: CommonService.hexToColor("#34b7eb"),
-                decoration: new InputDecoration(
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
-                    enabledBorder: InputBorder.none,
-                    errorBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    hintText: "더 자세히 떠올려보자"),
-              )),
-          Container(
-            padding: EdgeInsets.only(top: 100, left: 20, right: 20),
-            child: ButtonTheme(
-                minWidth: 316,
-                height: 60,
-                child: FlatButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(100.0),
-                  ),
-                  color: CommonService.hexToColor("#63c7ff"),
-                  textColor: Colors.white,
-                  padding: EdgeInsets.all(8.0),
-                  onPressed: () {
-                  },
-                  child: Text(
-                    "기록하기",
-                    style: TextStyle(
-                      fontSize: 18.0,
-                    ),
-                  ),
+                    FlatButton(
+                      padding: EdgeInsets.all(0),
+                      onPressed: () {},
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.edit),
+                          SizedBox(
+                            width: 3,
+                          ),
+                          Text(
+                            "태그편집",
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
                 )),
-          )
+            Container(
+                padding: EdgeInsets.only(top: 10, left: 20, right: 75),
+                child: ReasonTagWidget()),
+            Container(
+                padding: EdgeInsets.only(top: 50, left: 20, right: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "이유적기",
+                      style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+                    ),
+                  ],
+                )),
+            Container(
+                padding: EdgeInsets.only(top: 13, left: 20, right: 20),
+                child: TextFormField(
+                  cursorColor: CommonService.hexToColor("#34b7eb"),
+                  decoration: new InputDecoration(
+                      border: InputBorder.none,
+                      focusedBorder: InputBorder.none,
+                      enabledBorder: InputBorder.none,
+                      errorBorder: InputBorder.none,
+                      disabledBorder: InputBorder.none,
+                      hintText: "더 자세히 떠올려보자"),
+                )),
+            Container(
+              padding: EdgeInsets.only(top: 100, left: 20, right: 20),
+              child: ButtonTheme(
+                  minWidth: 316,
+                  height: 60,
+                  child: FlatButton(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(100.0),
+                    ),
+                    color: CommonService.hexToColor("#63c7ff"),
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(8.0),
+                    onPressed: () {
+                    },
+                    child: Text(
+                      "기록하기",
+                      style: TextStyle(
+                        fontSize: 18.0,
+                      ),
+                    ),
+                  )),
+            )
         ],
-      )),
+      ),
+          )),
     );
   }
 }
