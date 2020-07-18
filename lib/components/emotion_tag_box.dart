@@ -47,7 +47,11 @@ class _EmotionTagBoxState extends State<EmotionTagBox> {
                 null)
               widget.emotions
                   .removeWhere((element) => element['index'] == index);
-            else
+            else if (widget.emotions.length == 5) {
+              //TODO: Toast 등으로 변경
+              print('이미 5개를 모두 선택하였습니다.');
+              return;
+            } else
               widget.emotions.add({'index': index, 'name': name});
           });
 //      return () => setState(() {
@@ -61,7 +65,7 @@ class _EmotionTagBoxState extends State<EmotionTagBox> {
 
     List<EmotionTag> emotionTags = [];
     for (int i = 1; i <= 6; i++) {
-      for(int id = i; id <= 18; id += 6) {
+      for (int id = i; id <= 18; id += 6) {
         if (id <= 6) {
           emotionTags.add(EmotionTag(
             id: id,
