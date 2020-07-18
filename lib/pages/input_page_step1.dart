@@ -167,25 +167,46 @@ class _InputPageStep1State extends State<InputPageStep1> {
   }
 
   renderNextStep() {
-    return Container(
-        padding: const EdgeInsets.all(0.0),
-        height: 60,
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(border: Border.all(width: 1)),
-        child: IconButton(
-          icon: Image.asset(
-            'lib/src/image/daily/noti_dive_deeper.png',
-          ),
-          tooltip: 'next step',
-          onPressed: () {
-            print("go to page 2");
-            widget.handlerPageView(1);
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => InputPageStep2()),
-            // );
-          },
-        ));
+    return Expanded(
+      child: Container(
+          decoration: BoxDecoration(border: Border.all(width: 1)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(bottom: 70),
+                height: 35,
+                width: MediaQuery.of(context).size.width * 0.8,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('lib/src/image/daily/img_shadow.png'),
+                  ),
+                ),
+              ),
+              Container(
+                  margin: EdgeInsets.only(bottom: 20),
+                  height: 60,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(border: Border.all(width: 1)),
+                  child: IconButton(
+                    icon: Image.asset(
+                      'lib/src/image/daily/noti_dive_deeper.png',
+                    ),
+                    tooltip: 'next step',
+                    onPressed: () {
+                      print("go to page 2");
+                      widget.handlerPageView(1);
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => InputPageStep2()),
+                      // );
+                    },
+                  )),
+            ],
+          )),
+    );
   }
 
   @override
