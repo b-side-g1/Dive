@@ -11,11 +11,18 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  int step = 1;
-
   PageController _controller = PageController(
     initialPage: 0,
   );
+
+  void handlerPageView(int index) {
+    print("handlerPageView ${index}");
+    // use this to animate to the page
+    // _controller.animateToPage(index);
+
+    // // or this to jump to it without animating
+    // _controller.jumpToPage(index);
+  }
 
   @override
   void dispose() {
@@ -29,7 +36,7 @@ class _InputPageState extends State<InputPage> {
       controller: _controller,
       scrollDirection: Axis.vertical,
       children: [
-        InputPageStep1(),
+        InputPageStep1(handlerPageView: handlerPageView),
         InputPageStep2(),
         InputPageStep3(),
       ],

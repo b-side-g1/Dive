@@ -6,8 +6,12 @@ import 'package:flutter_picker/flutter_picker.dart';
 import 'dart:convert';
 import 'dart:async';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:flutterapp/pages/input_page_step2.dart';
+import 'package:flutterapp/pages/input_page.dart';
 
 class InputPageStep1 extends StatefulWidget {
+  InputPageStep1({Key key, this.handlerPageView}) : super(key: key);
+  Function handlerPageView;
   @override
   _InputPageStep1State createState() => _InputPageStep1State();
 }
@@ -72,7 +76,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
   renderTimeSelect() {
     String title = "당신의 기분을 알려주세요.";
     return Padding(
-        padding: const EdgeInsets.only(top: 100),
+        padding: const EdgeInsets.only(top: 140),
         child: Column(children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -82,16 +86,24 @@ class _InputPageStep1State extends State<InputPageStep1> {
                       fontSize: 21,
                       color: const Color(0xffffffff),
                       fontWeight: FontWeight.w700,
+                      // height: 0.6,
                       fontStyle: FontStyle.normal)),
-              IconButton(
-                icon: Image.asset(
-                  'lib/src/image/daily/icon_arrow.png',
-                  height: 24,
+              Container(
+                padding: const EdgeInsets.all(0.0),
+                height: 30,
+                width: 30,
+                // decoration: BoxDecoration(border: Border.all(width: 1)),
+                child: IconButton(
+                  icon: Image.asset(
+                    'lib/src/image/daily/icon_arrow.png',
+                    height: 60,
+                    width: 60,
+                  ),
+                  tooltip: 'change date',
+                  onPressed: () {
+                    showTimePicker(context);
+                  },
                 ),
-                tooltip: 'change date',
-                onPressed: () {
-                  showTimePicker(context);
-                },
               ),
             ],
           ),
@@ -108,7 +120,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
     List<int> scoreList = [for (var i = 0; i <= 100; i += 10) i];
 
     return Padding(
-        padding: const EdgeInsets.only(top: 30),
+        padding: const EdgeInsets.only(top: 25),
         child:
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
           Container(
@@ -154,9 +166,31 @@ class _InputPageStep1State extends State<InputPageStep1> {
         ]));
   }
 
+  renderNextStep() {
+    return Container(
+        padding: const EdgeInsets.all(0.0),
+        height: 60,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(border: Border.all(width: 1)),
+        child: IconButton(
+          icon: Image.asset(
+            'lib/src/image/daily/noti_dive_deeper.png',
+          ),
+          tooltip: 'next step',
+          onPressed: () {
+            print("go to page 2");
+            widget.handlerPageView(1);
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => InputPageStep2()),
+            // );
+          },
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
-    print('${mid} ${hour}, ${min},  render time ');
+    // print('${mid} ${hour}, ${min},  render time ');
 
     return new Scaffold(
         body: Container(
@@ -164,7 +198,11 @@ class _InputPageStep1State extends State<InputPageStep1> {
         color: Color.fromRGBO(43, 99, 194, 1.0),
       ),
       child: Column(
-        children: <Widget>[renderTimeSelect(), renderScoreSelect()],
+        children: <Widget>[
+          renderTimeSelect(),
+          renderScoreSelect(),
+          renderNextStep()
+        ],
       ),
     ));
   }
