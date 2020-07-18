@@ -9,6 +9,25 @@ class InputPageStep3 extends StatefulWidget {
 }
 
 class _InputPageStep3State extends State<InputPageStep3> {
+
+  Future<String> createEditTagDialog(BuildContext context) {
+    return showDialog(context: context,builder: (context) {
+      return AlertDialog(
+        title: Text("예제"),
+        content: Text("Content!"),
+        actions: <Widget>[
+          MaterialButton(
+            elevation: 5.0,
+            child: Text("Submit"),
+            onPressed: () {
+              Navigator.of(context).pop("test parameter");
+            },
+          )
+        ],
+      );
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +55,11 @@ class _InputPageStep3State extends State<InputPageStep3> {
                     ),
                     FlatButton(
                       padding: EdgeInsets.all(0),
-                      onPressed: () {},
+                      onPressed: () {
+                        createEditTagDialog(context).then((value) {
+                          debugPrint("[input_page_step3.dart] createEditTagDialog value ->  ${value}");
+                        });
+                      },
                       child: Row(
                         children: <Widget>[
                           Icon(Icons.edit),
