@@ -34,13 +34,16 @@ class _InputPageState extends State<InputPage> {
 
   @override
   Widget build(BuildContext context) {
-    // rx이용
+    // rx이
     return PageView(
       controller: _controller,
       scrollDirection: Axis.vertical,
       children: [
         InputPageStep1(),
         InputPageStep2(
+          // 테스트해보진 않았지만, 변경 내용을 특별한 함수나 rx방식 없이
+          // InputPage에서 step2의 변경을 트래킹할 수 있을 겁니다.
+          // 빈 리스트가 아닌 경우의 처리는 고려치 않았기에, 정상동작하지 않을 수 있습니다.
           emotions: emotions,
         ),
         InputPageStep3(),
