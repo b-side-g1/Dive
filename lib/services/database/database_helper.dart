@@ -8,7 +8,7 @@ import 'package:flutterapp/models/tag_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutterapp/commons/static.dart';
-
+import 'package:flutterapp/services/common/common_service.dart';
 class DBHelper {
   DBHelper._();
 
@@ -69,9 +69,11 @@ class DBHelper {
         await db.rawInsert(
             'INSERT INTO basic(id,status,is_push,uuid) VALUES("1","FST","0","0123456789")'
         );
-        TagNames.forEach((element) async {
+        TagNames.forEach((tag) async {
+          String uuid = CommonService.generateUUID();
           await db.rawInsert(
-              'INSERT INTO tag(id,name) VALUES("1")'
+              'INSERT INTO tag(id,name) VALUES(?,?)',
+              [uuid,tag]
           );
         });
       });
