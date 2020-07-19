@@ -3,18 +3,19 @@ class RecordHasEmotion {
   final int idx;
   final String recordId;
   final String emotionId;
-  final String name;
+  final String createdAt;
 
-  RecordHasEmotion({this.idx, this.recordId, this.emotionId, this.name});
+  RecordHasEmotion({this.idx, this.recordId, this.emotionId, this.createdAt});
 
   factory RecordHasEmotion.fromJson(Map<String, dynamic> json) =>
       new RecordHasEmotion(
         idx: json["idx"],
         recordId: json["recordId"],
         emotionId: json["emotionId"],
-        name: json["name"],
+        createdAt: json["createdAt"],
       );
 
   Map<String, dynamic> toJson() =>
-      {"idx": idx, "recordId": recordId, "emotionId": emotionId, "name": name,};
+      {"idx": idx, "recordId": recordId, "emotionId": emotionId,
+        "createdAt": createdAt};
 }
