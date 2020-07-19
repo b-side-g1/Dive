@@ -17,4 +17,15 @@ class TagService {
         res.isNotEmpty ? res.map((c) => Tag.fromJson(c)).toList() : [];
     return tags;
   }
+
+  Future<List<Tag>> selectAllTags() async {
+    final db = await DBHelper().database;
+
+    var res = await db.query(tagTableName);
+
+    List<Tag> tags =
+    res.isNotEmpty ? res.map((c) => Tag.fromJson(c)).toList() : [];
+
+    return tags;
+  }
 }
