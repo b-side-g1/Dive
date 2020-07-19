@@ -45,8 +45,9 @@ class _EditTagListState extends State<EditTagList> {
 
     this._tags = Provider.of<List<Tag>>(context);
 
+
     return Container(
-      child: AnimatedList(
+      child: this._tags == null ? Text("로딩중") : AnimatedList(
         key: _listKey,
         initialItemCount: this._tags.length,
         itemBuilder: (context,index,animation) => _buildItem(context,_tags[index],animation),
