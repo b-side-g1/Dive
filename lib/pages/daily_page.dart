@@ -191,9 +191,7 @@ class _DailyPageState extends State<DailyPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => SettingPage(
-                              title: "통계",
-                            )));
+                        builder: (context) => SettingPage()));
               },
             ),
           )

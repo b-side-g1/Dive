@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
-import 'package:flutterapp/onboard/animate/picker/pricker_widget.dart';
-import 'package:flutterapp/controller/diary_tab_controller.dart';
+import 'package:flutterapp/models/basic_model.dart';
+import 'package:flutterapp/models/onboard/picker_time_model.dart';
+import 'package:flutterapp/onboard/animate/picker/time_picker_widget.dart';
+import 'package:flutterapp/onboard/animate/start_dive_widget.dart';
+import 'package:flutterapp/provider/time_picker_provider.dart';
+import 'package:flutterapp/services/basic/basic_service.dart';
+import 'package:provider/provider.dart';
 
 class OnboardAnimate extends StatefulWidget {
   @override
@@ -21,6 +26,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   AnimationController supportMessageController;
   AnimationController step5MessageController;
   AnimationController startBtnController;
+  AnimationController circleController;
 
   Animation<double> titleAnimation;
   Animation<double> messageAnimation;
@@ -30,9 +36,12 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Animation<double> supportMessageAnimation;
   Animation<double> step5MessageAnimation;
   Animation<double> startBtnAnimation;
+  Animation<double> circleAnimation;
 
   int animateStep = 1;
   double contentMargin = 0;
+
+  TimePickerProvider _timePickerProvider;
 
   void initState() {
     super.initState();
@@ -56,6 +65,9 @@ class OnboardAnimateState extends State<OnboardAnimate>
     startBtnController = AnimationController(
         duration: const Duration(milliseconds: 500), vsync: this);
 
+    circleController = AnimationController(
+        duration: const Duration(milliseconds: 3500), vsync: this, value: 0.3);
+
     titleAnimation =
         CurvedAnimation(parent: titleController, curve: Curves.fastOutSlowIn);
     messageAnimation =
@@ -74,6 +86,8 @@ class OnboardAnimateState extends State<OnboardAnimate>
         parent: step5MessageController, curve: Curves.fastOutSlowIn);
     startBtnAnimation = CurvedAnimation(
         parent: startBtnController, curve: Curves.fastOutSlowIn);
+    circleAnimation =
+        CurvedAnimation(parent: circleController, curve: Curves.fastOutSlowIn);
 
     titleAnimation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
@@ -112,6 +126,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
       if (status == AnimationStatus.dismissed) {
         setState(() {
           animateStep++;
+          circleController.forward();
           Future.delayed(const Duration(milliseconds: 1000), () {
             step5MessageController.forward();
           });
@@ -154,7 +169,9 @@ class OnboardAnimateState extends State<OnboardAnimate>
     supportMessageController.dispose();
     step5MessageController.dispose();
     startBtnController.dispose();
+
     debugPrint("dispose!");
+
     super.dispose();
   }
 
@@ -216,8 +233,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   }
 
   Widget buildStep2() {
-    title_widget =
-        Image.asset('lib/src/image/onboarding/contents_img_02.png');
+    title_widget = Image.asset('lib/src/image/onboarding/contents_img_02.png');
     message_widget = Container(
       padding: EdgeInsets.only(left: 50, right: 50),
       child: Text(
@@ -257,8 +273,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   }
 
   Widget buildStep3() {
-    title_widget =
-        Image.asset('lib/src/image/onboarding/contents_img_03.png');
+    title_widget = Image.asset('lib/src/image/onboarding/contents_img_03.png');
     message_widget = Container(
       width: 230,
       height: 96,
@@ -301,6 +316,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Widget buildStep4() {
     contentMargin = 20.0;
     title_widget = Image.asset('lib/src/image/onboarding/contents_img_03.png');
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.max,
@@ -331,36 +347,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
           FadeTransition(
             opacity: pickerAnimation,
             child: ButtonTheme(
-                minWidth: 200,
-                height: 56,
-                child: Builder(builder: (context) {
-                  return OutlineButton(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Text(
-                            "오전 12시",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.white),
-                          ),
-                          Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.white,
-                          ),
-                        ],
-                      ),
-                      onPressed: () {
-                        showPickerModal(context);
-                      },
-                      borderSide: BorderSide(
-                          color: Colors.grey,
-                          width: 5,
-                          style: BorderStyle.solid),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: new BorderRadius.circular(30.0)));
-                })),
+                minWidth: 200, height: 56, child: TimePickerWidget()),
           ),
           SizedBox(
             height: 90.0,
@@ -408,66 +395,49 @@ class OnboardAnimateState extends State<OnboardAnimate>
 
   Widget buildStep5() {
     contentMargin = 20.0;
-    title_widget = Image.asset('lib/src/image/onboarding/contents_img_03.png');
+    print("buildStep5!");
     return Center(
         child: Stack(
+      children: <Widget>[
+        Container(
+            padding: EdgeInsets.only(top: 80),
+            child: ScaleTransition(
+              scale: circleAnimation,
+              alignment: Alignment.center,
+              child:
+                  Image.asset('lib/src/image/onboarding/contents_img_04.png'),
+            )),
+        Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  height: 219.0,
-                ),
-                FadeTransition(
-                  opacity: step5MessageAnimation,
-                  child: Container(
-                    padding: EdgeInsets.only(left: 60, right: 60),
-                    child: Text(
-                      "좋았어요.\n그럼 이제부터 다이브와 함께\n당신의 감정에 집중해보세요.",
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 160.0,
-                ),
-                FadeTransition(
-                  opacity: startBtnAnimation,
-                  child: ButtonTheme(
-                    minWidth: 316,
-                    height: 60,
-                    child: FlatButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(100.0),
-                      ),
-                      color: hexToColor("#63c7ff"),
-                      textColor: Colors.white,
-                      padding: EdgeInsets.all(8.0),
-                      onPressed: () {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                DiaryTabController()));
-                      },
-                      child: Text(
-                        "시작하기",
-                        style: TextStyle(
-                          fontSize: 18.0,
-                        ),
-                      ),
-                    ),
-                  ),
-                )
-              ],
+            SizedBox(
+              height: 219.0,
             ),
+            FadeTransition(
+              opacity: step5MessageAnimation,
+              child: Container(
+                padding: EdgeInsets.only(left: 60, right: 60),
+                child: Text(
+                  "좋았어요.\n그럼 이제부터 다이브와 함께\n당신의 감정에 집중해보세요.",
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 160.0,
+            ),
+            FadeTransition(opacity: startBtnAnimation, child: StartDiveWidget())
           ],
-        ));
+        ),
+      ],
+    ));
   }
 
   Color hexToColor(String code) {
@@ -483,11 +453,18 @@ class OnboardAnimateState extends State<OnboardAnimate>
       case 3:
         return buildStep3();
       case 4:
-        return buildStep4();
+        return StreamProvider<PickerTime>.value(
+          initialData: PickerTime(ampm: "오전", hour: 1),
+          value: this._timePickerProvider.pickerStream,
+          child: buildStep4(),
+        );
         break;
       case 5:
         debugPrint("buildStep5");
-        return buildStep5();
+        return StreamProvider<PickerTime>.value(
+          value: this._timePickerProvider.pickerStream,
+          child: buildStep5(),
+        );
         break;
       default:
         return buildStep5();
@@ -502,6 +479,9 @@ class OnboardAnimateState extends State<OnboardAnimate>
         messageController.forward();
       });
     }
+
+    this._timePickerProvider = Provider.of<TimePickerProvider>(context);
+
     return buildAnimate(animateStep);
   }
 }
