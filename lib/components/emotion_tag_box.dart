@@ -1,27 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutterapp/commons/static.dart';
 
 import 'emotion_tag.dart';
-
-List emotionNames = [
-  '신남',
-  '행복함',
-  '기분좋음',
-  '편안함',
-  '사랑돋음',
-  '설렘',
-  '복잡함',
-  '생각많음',
-  '지루함',
-  '쏘쏘',
-  '짜증남',
-  '화남',
-  '무서움',
-  '답답함',
-  '우울함',
-  '당황스러움',
-  '슬픔',
-  '아픔'
-];
 
 class EmotionTagBox extends StatefulWidget {
   List emotions;
@@ -69,25 +49,25 @@ class _EmotionTagBoxState extends State<EmotionTagBox> {
         if (id <= 6) {
           emotionTags.add(EmotionTag(
             id: id,
-            title: emotionNames[id - 1],
+            title: EmotionNames[id - 1],
             activeColors: [Color.fromRGBO(255, 159, 222, 1), Color.fromRGBO(255, 177, 229, 1)],
-            onTap: _onTap(id, emotionNames[id - 1]),
+            onTap: _onTap(id, EmotionNames[id - 1]),
             isActivated: widget.emotions.where((element) => element['index'] == id).length == 1,
           ));
         } else if (id <= 10) {
           emotionTags.add(EmotionTag(
             id: id,
-            title: emotionNames[id - 1],
+            title: EmotionNames[id - 1],
             activeColors: [Color.fromRGBO(60, 160, 217, 1), Color.fromRGBO(99, 177, 221, 1)],
-            onTap: _onTap(id, emotionNames[id - 1]),
+            onTap: _onTap(id, EmotionNames[id - 1]),
             isActivated: widget.emotions.where((element) => element['index'] == id).length == 1,
           ));
         } else {
           emotionTags.add(EmotionTag(
             id: id,
-            title: emotionNames[id - 1],
+            title: EmotionNames[id - 1],
             activeColors: [Color.fromRGBO(86, 113, 210, 1), Color.fromRGBO(100, 119, 188, 1)],
-            onTap: _onTap(id, emotionNames[id - 1]),
+            onTap: _onTap(id, EmotionNames[id - 1]),
             isActivated: widget.emotions.where((element) => element['index'] == id).length == 1,
           ));
         }
