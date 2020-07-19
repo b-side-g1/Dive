@@ -68,6 +68,9 @@ flutter:
     - lib/src/image/onboarding/2.0x/
     - lib/src/image/onboarding/3.0x/
     - lib/src/image/daily/
+    - lib/src/image/tags/
+    - lib/src/image/tags/2.0x/
+    - lib/src/image/tags/3.0x/
     - lib/src/image/daily/2.0x/
     - lib/src/image/daily/3.0x/
     - lib/src/image/bottombar/
