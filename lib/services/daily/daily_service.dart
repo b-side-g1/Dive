@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutterapp/models/daily_model.dart';
 import 'package:flutterapp/services/database/database_helper.dart';
 
@@ -16,7 +15,8 @@ class DailyService {
     var res = await db.query(Daily.tableName,
         where: 'day = ? and month = ? and year = ?',
         whereArgs: [date.day, date.month, date.year]);
-    return res[0];
+
+    return res.isEmpty ? null : Daily.fromJson(res[0]);
   }
 
   insertDaily(Daily daily) async {

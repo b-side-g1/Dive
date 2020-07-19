@@ -1,5 +1,5 @@
 name: flutterapp
-description: flutterapp
+description: A new Flutter application.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -35,6 +35,7 @@ dependencies:
   provider: ^3.0.0+1
   charts_flutter: ^0.9.0
   flutter_native_splash: ^0.1.9
+  uuid: ^2.2.0
   custom_switch: ^0.0.1
   package_info: ^0.4.1
 #  flutter_rounded_date_picker: 1.0.0
@@ -61,12 +62,21 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - lib/src/image/
     - lib/src/image/splash/
     - lib/src/image/onboarding/
     - lib/src/image/onboarding/2.0x/
     - lib/src/image/onboarding/3.0x/
     - lib/src/image/daily/
+    - lib/src/image/daily/2.0x/
+    - lib/src/image/daily/3.0x/
+    - lib/src/image/bottombar/
+    - lib/src/image/bottombar/2.0x/
+    - lib/src/image/bottombar/3.0x/
+    - lib/src/drawable-hdpi/
+    - lib/src/drawable-mdpi/
+    - lib/src/drawable-xhdpi/
+    - lib/src/drawable-xxhdpi/
+    - lib/src/drawable-xxxhdpi/
     - lib/src/image/setting/
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
