@@ -2,7 +2,7 @@ class Basic {
   static final tableName = 'basic';
   final String id;
   final DateTime today_startAt;
-  final DateTime today_endAt;
+  final String today_endAt;
   final String status;
   final int is_push;
   final String uuid;
@@ -37,4 +37,10 @@ class Basic {
         "uuid": uuid,
         "createdAt": createdAt
       };
+
+
+
+
+
+
 }
