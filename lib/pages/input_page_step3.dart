@@ -13,7 +13,6 @@ class InputPageStep3 extends StatefulWidget {
 }
 
 class _InputPageStep3State extends State<InputPageStep3> {
-
   Future<String> createEditTagDialog(BuildContext context) {
     return showDialog(
         context: context,
@@ -28,8 +27,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                 ),
               ),
             ]),
-            content:
-            MultiProvider(
+            content: MultiProvider(
               providers: [
                 FutureProvider(builder: (_) => TagProvider().getAllTags())
               ],
@@ -59,7 +57,6 @@ class _InputPageStep3State extends State<InputPageStep3> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Container(
           child: SingleChildScrollView(
@@ -75,7 +72,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                   style: TextStyle(fontSize: 21, fontWeight: FontWeight.w700),
                 ))),
             Container(
-                padding: EdgeInsets.only(top: 30, left: 20, right: 20),
+                padding: EdgeInsets.only(top: 20, left: 20, right: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
@@ -108,9 +105,18 @@ class _InputPageStep3State extends State<InputPageStep3> {
                     )
                   ],
                 )),
+
             Container(
-                padding: EdgeInsets.only(top: 10, left: 20, right: 75),
-                child: ReasonTagWidget()),
+              height: 120,
+              padding: EdgeInsets.only(left: 20, right: 20),
+              alignment: Alignment.centerLeft,
+              child: MultiProvider(
+                providers: [
+                  FutureProvider(builder: (_) => TagProvider().getAllTags())
+                ],
+                child: ReasonTagWidget(),
+              ),
+            ),
             Container(
                 padding: EdgeInsets.only(top: 50, left: 20, right: 20),
                 child: Row(
@@ -136,7 +142,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                       hintText: "더 자세히 떠올려보자"),
                 )),
             Container(
-              padding: EdgeInsets.only(top: 100, left: 20, right: 20),
+              padding: EdgeInsets.only(top: 50, left: 20, right: 20),
               child: ButtonTheme(
                   minWidth: 316,
                   height: 60,
