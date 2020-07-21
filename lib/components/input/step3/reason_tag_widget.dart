@@ -10,12 +10,14 @@ class ReasonTagWidget extends StatefulWidget {
 }
 
 class _BuildReasonTagState extends State<ReasonTagWidget> {
-  List<bool> selecteds = List();
+  List<bool> selecteds;
   List<Tag> tags;
 
   @override
   void initState() {
     super.initState();
+    this.selecteds = List(50);
+    this.selecteds = this.selecteds.map((e) => e == true ? true : false).toList();
   }
 
   @override
@@ -39,13 +41,13 @@ class _BuildReasonTagState extends State<ReasonTagWidget> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100.0),
                 ),
-                color: this.selecteds[index]
+                color: selecteds[index]
                     ? CommonService.hexToColor("#63c7ff")
                     : CommonService.hexToColor("#2f4262"),
                 textColor: Colors.white,
                 onPressed: () {
                   setState(() {
-                    this.selecteds[index] =  this.selecteds[index] ? false : true;
+                    selecteds[index] = selecteds[index] ? false : true;
                   });
                 },
                 child: Text(

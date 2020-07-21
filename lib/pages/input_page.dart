@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/input_page_step1.dart';
 import 'package:flutterapp/pages/input_page_step2.dart';
 import 'package:flutterapp/pages/input_page_step3.dart';
-import 'package:flutterapp/provider/tag_provider.dart';
+import 'file:///D:/android/diary-app/lib/provider/input/tag_provider.dart';
 import 'package:provider/provider.dart';
 
 class InputPage extends StatefulWidget {

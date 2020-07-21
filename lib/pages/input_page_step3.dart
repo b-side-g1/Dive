@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/components/input/step3/reason_tag_widget.dart';
 import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/pages/input/step3/edit_tag_list.dart';
-import 'package:flutterapp/provider/tag_provider.dart';
+import 'file:///D:/android/diary-app/lib/provider/input/tag_provider.dart';
 import 'package:flutterapp/services/common/common_service.dart';
 import 'package:flutterapp/services/tag/tag_service.dart';
 import 'package:provider/provider.dart';
@@ -105,14 +105,15 @@ class _InputPageStep3State extends State<InputPageStep3> {
                     )
                   ],
                 )),
-
             Container(
               height: 120,
               padding: EdgeInsets.only(left: 20, right: 20),
               alignment: Alignment.centerLeft,
               child: MultiProvider(
                 providers: [
-                  FutureProvider(builder: (_) => TagProvider().getAllTags())
+                  FutureProvider(
+                      builder: (_) => TagProvider().getAllTags(),
+                      initialData: [Tag(id: '1', name: '테스트')]),
                 ],
                 child: ReasonTagWidget(),
               ),

@@ -11,13 +11,9 @@ void main() {
     expect(uuid.length, 32);
   });
 
-  test('for test.', () {
-    for(int i=0; i<10; i++) {
-
-      if(i==5) {
-        break;
-      }
-      print(i);
-    }
+  test('list.', () {
+    List<bool> bools = List();
+    bools.add(true);
+    print(bools[0]);
 });
 }
