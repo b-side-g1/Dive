@@ -67,6 +67,9 @@ flutter:
     - lib/src/image/onboarding/2.0x/
     - lib/src/image/onboarding/3.0x/
     - lib/src/image/daily/
+    - lib/src/image/tags/
+    - lib/src/image/tags/2.0x/
+    - lib/src/image/tags/3.0x/
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
