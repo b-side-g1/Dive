@@ -10,6 +10,9 @@ class ReasonTagWidget extends StatefulWidget {
 }
 
 class _BuildReasonTagState extends State<ReasonTagWidget> {
+  List<bool> selecteds = List();
+  List<Tag> tags;
+
   @override
   void initState() {
     super.initState();
@@ -17,7 +20,8 @@ class _BuildReasonTagState extends State<ReasonTagWidget> {
 
   @override
   Widget build(BuildContext context) {
-    List<Tag> tags = Provider.of<List<Tag>>(context);
+    print("Build!");
+    this.tags = Provider.of<List<Tag>>(context);
 
     return GridView.count(
         padding: EdgeInsets.all(0),
@@ -27,19 +31,25 @@ class _BuildReasonTagState extends State<ReasonTagWidget> {
             (MediaQuery.of(context).size.height / 4),
         crossAxisSpacing: 8,
         mainAxisSpacing: 10,
-        children: List.generate(tags.length, (index) {
+        children: List.generate(this.tags.length, (index) {
           return ButtonTheme(
               minWidth: 49,
-              height:30,
+              height: 30,
               child: FlatButton(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(100.0),
                 ),
-                color: CommonService.hexToColor("#63c7ff"),
+                color: this.selecteds[index]
+                    ? CommonService.hexToColor("#63c7ff")
+                    : CommonService.hexToColor("#2f4262"),
                 textColor: Colors.white,
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    this.selecteds[index] =  this.selecteds[index] ? false : true;
+                  });
+                },
                 child: Text(
-                  "${tags[index].name}",
+                  "${this.tags[index].name}",
                   style: TextStyle(
                     fontSize: 14.0,
                   ),
