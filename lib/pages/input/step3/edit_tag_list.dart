@@ -11,7 +11,6 @@ class EditTagList extends StatefulWidget {
 }
 
 class _EditTagListState extends State<EditTagList> {
-  final GlobalKey<AnimatedListState> _listKey = GlobalKey<AnimatedListState>();
   List<Tag> _tags;
 
   @override
@@ -19,24 +18,52 @@ class _EditTagListState extends State<EditTagList> {
     super.initState();
   }
 
-  Widget _buildItem(
-      BuildContext context, Tag item, Animation<double> animation) {
-    TextStyle textStyle = new TextStyle(fontSize: 20);
-
-    return Padding(
-      padding: const EdgeInsets.all(2.0),
-      child: SizeTransition(
-        sizeFactor: animation,
-        axis: Axis.vertical,
-        child: SizedBox(
-          height: 50.0,
-          child: Card(
-            child: Center(
-              child: Text(item.name, style: textStyle),
-            ),
+  Future<void> _showAddTagDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Center(child: Text('새 태그 추가')),
+          content: TextFormField(
+            cursorColor: CommonService.hexToColor("#34b7eb"),
+            decoration: new InputDecoration(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: CommonService.hexToColor("#d0d5d9"), width: 1.0)
+                ),
+                errorBorder: InputBorder.none,
+                disabledBorder: InputBorder.none,
+                hintText: "태그를 추가하세요 (최대 10자)"),
           ),
-        ),
-      ),
+          actions: <Widget>[
+            Container(width: 260, child: Divider(color:CommonService.hexToColor("#d0d5d9") )),
+            SizedBox(
+              width: double.maxFinite,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  FlatButton(
+                    child: Text("취소",style: TextStyle(
+                      fontSize: 15.0,
+                      color: CommonService.hexToColor("#111111")
+                    ),),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  Container(height: 47, child: VerticalDivider(color:CommonService.hexToColor("#d0d5d9") )),
+                  FlatButton(
+                    child: Text("추가",style: TextStyle(
+                      fontSize: 15.0,
+                      color: CommonService.hexToColor("#63c7ff")
+                    ),),
+                  )
+                ],
+              ),
+            )
+          ],
+        );
+      },
     );
   }
 
@@ -57,10 +84,17 @@ class _EditTagListState extends State<EditTagList> {
                             Icon(Icons.add,
                                 color: CommonService.hexToColor("#c6ccd4")),
                             SizedBox(width: 8),
-                            Text(
-                              "새 태그 추가",
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w400),
+                            GestureDetector(
+                              onTap: () {
+                                _showAddTagDialog(context).then((value) {
+
+                                });
+                              },
+                              child: Text(
+                                "새 태그 추가",
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.w400),
+                              ),
                             ),
                           ],
                         )
@@ -86,15 +120,5 @@ class _EditTagListState extends State<EditTagList> {
                 const Divider(height: 0.0,),
             itemCount: this._tags.length + 1);
 
-    return Container(
-      child: this._tags == null
-          ? Text("로딩중")
-          : AnimatedList(
-              key: _listKey,
-              initialItemCount: this._tags.length,
-              itemBuilder: (context, index, animation) =>
-                  _buildItem(context, _tags[index], animation),
-            ),
-    );
   }
 }
