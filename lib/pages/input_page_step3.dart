@@ -16,8 +16,10 @@ class _InputPageStep3State extends State<InputPageStep3> {
   Future<String> createEditTagDialog(BuildContext context) {
     return showDialog(
         context: context,
+
         builder: (context) {
           return AlertDialog(
+
             title: Stack(children: <Widget>[
               Center(
                 child: Text(
