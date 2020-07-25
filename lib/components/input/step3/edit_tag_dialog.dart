@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/components/input/step3/edit_tag_list.dart';
+import 'package:flutterapp/components/input/step3/save_tag_button.dart';
 import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/provider/input/tag_provider.dart';
 import 'package:flutterapp/services/common/common_service.dart';
@@ -30,19 +31,9 @@ class EditTagDialog extends StatelessWidget {
       actions: <Widget>[
         SizedBox(
           width: double.maxFinite,
-          child: ButtonTheme(
-              height: 44,
-              child: FlatButton(
-                color: CommonService.hexToColor("#63c7ff"),
-                textColor: Colors.white,
-                onPressed: () {},
-                child: Text(
-                  "저장",
-                  style: TextStyle(
-                    fontSize: 16.0,
-                  ),
-                ),
-              )),
+          child: StreamProvider.value(
+            value: provider.tags,
+              child: SaveTagButton())
         )
       ],
     );

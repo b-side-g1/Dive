@@ -6,8 +6,10 @@ import 'package:flutterapp/services/common/common_service.dart';
 import 'package:provider/provider.dart';
 
 class ReasonTagWidget extends StatefulWidget {
+
   @override
   _BuildReasonTagState createState() => _BuildReasonTagState();
+
 }
 
 class _BuildReasonTagState extends State<ReasonTagWidget> {
@@ -23,10 +25,10 @@ class _BuildReasonTagState extends State<ReasonTagWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final provider =Provider.of<TagProvider>(context);
+//    final provider =Provider.of<TagProvider>(context);
     this.tags =Provider.of<List<Tag>>(context);
 
-    return GridView.count(
+    return this.tags == null ? Text("로딩중") : GridView.count(
         padding: EdgeInsets.all(0),
         crossAxisCount: 4,
         shrinkWrap: true,
