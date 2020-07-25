@@ -18,6 +18,11 @@ class TagProvider {
     return tagService.selectAllTags();
   }
 
+  Future<Tag> addTag(Tag tagParam) async {
+    TagService tagService = new TagService();
+    return tagService.insertTag(tagParam);
+  }
+
   void dispose() {
     this._tagController.close();
   }

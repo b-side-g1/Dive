@@ -32,4 +32,15 @@ Future<void> main() async {
 
     expect(0, 0);
   });
+
+  test('TAG 등록', () async {
+    sqfliteFfiInit();
+    String path = "D:\\android\\diary-app\\diary_app_database.db";
+    var db = await databaseFactoryFfi.openDatabase(path);
+    final tagParam = Tag(id: "123456789", name: "테스트1");
+    final res = await db.insert(Tag.tableName,tagParam.toJson());
+    print(res);
+    await db.close();
+    expect(0, 0);
+  });
 }
