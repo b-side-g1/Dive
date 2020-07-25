@@ -10,8 +10,21 @@ class TagProvider {
   Tag tag;
 
   // ignore: close_sinks
-  StreamController<Tag> _tagController = StreamController();
-  Stream<Tag> get tagStream => _tagController.stream;
+  final _tagsController = StreamController<List<Tag>>.broadcast();
+
+  StreamSink<List<Tag>> get _inTags => _tagsController.sink;
+
+  Stream<List<Tag>> get tags => _tagsController.stream;
+
+  final _addTagController = StreamController<Tag>.broadcast();
+  StreamSink<Tag> get inAddTag => _addTagController.sink;
+
+  TagProvider() {
+    print('construct!');
+    getTags();
+
+    _addTagController.stream.listen(_handleAddTag);
+  }
 
   Future<List<Tag>> getAllTags() async {
     TagService tagService = new TagService();
@@ -23,8 +36,21 @@ class TagProvider {
     return tagService.insertTag(tagParam);
   }
 
+  void getTags() async {
+    List<Tag> tags = await TagService().selectAllTags();
+    _inTags.add(tags);
+  }
+
+  void _handleAddTag(Tag tagParam) async {
+    await TagService().insertTag(tagParam);
+
+    getTags();
+  }
+
+
   void dispose() {
-    this._tagController.close();
+    this._tagsController.close();
+    this._addTagController.close();
   }
 
 }

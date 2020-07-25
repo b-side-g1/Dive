@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/flutter_tags.dart';
 import 'package:flutterapp/models/tag_model.dart';
+import 'package:flutterapp/provider/input/tag_provider.dart';
 import 'package:flutterapp/services/common/common_service.dart';
 import 'package:provider/provider.dart';
 
@@ -22,8 +23,8 @@ class _BuildReasonTagState extends State<ReasonTagWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print("Build!");
-    this.tags = Provider.of<List<Tag>>(context);
+    final provider =Provider.of<TagProvider>(context);
+    this.tags =Provider.of<List<Tag>>(context);
 
     return GridView.count(
         padding: EdgeInsets.all(0),

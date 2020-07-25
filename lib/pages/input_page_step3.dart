@@ -56,9 +56,12 @@ class _InputPageStep3State extends State<InputPageStep3> {
           );
         });
   }
-
+  TagProvider tagProvider;
   @override
   Widget build(BuildContext context) {
+
+    tagProvider = Provider.of<TagProvider>(context);
+
     return Scaffold(
       body: Container(
           child: SingleChildScrollView(
@@ -111,14 +114,10 @@ class _InputPageStep3State extends State<InputPageStep3> {
               height: 120,
               padding: EdgeInsets.only(left: 20, right: 20),
               alignment: Alignment.centerLeft,
-              child: MultiProvider(
-                providers: [
-                  FutureProvider(
-                      builder: (_) => TagProvider().getAllTags(),
-                      initialData: [Tag(id: '1', name: '테스트')]),
-                ],
-                child: ReasonTagWidget(),
-              ),
+              child: StreamProvider<List<Tag>>.value(
+                  initialData: [Tag(name: 'asdf',id: 'asdf')],
+                  value: tagProvider.tags,
+                  child: ReasonTagWidget()),
             ),
             Container(
                 padding: EdgeInsets.only(top: 50, left: 20, right: 20),
