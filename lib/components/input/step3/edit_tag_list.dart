@@ -11,6 +11,7 @@ class EditTagList extends StatefulWidget {
 
 class _EditTagListState extends State<EditTagList> {
   List<Tag> _tags;
+  TagProvider _tagProvider;
   final addTagController = TextEditingController();
 
   @override
@@ -72,12 +73,9 @@ class _EditTagListState extends State<EditTagList> {
                   FlatButton(
                     onPressed: () {
                       String inputTag = this.addTagController.text.toString();
-                      tagProvider
-                          .addTag(Tag(
-                              id: CommonService.generateUUID(), name: inputTag))
-                          .then((value) {
-                        Navigator.of(context).pop(value.name);
-                      });
+//                      tagProvider.inAddTag.add(Tag(
+//                          id: CommonService.generateUUID(), name: inputTag));
+                      Navigator.of(context).pop(inputTag);
                     },
                     child: Text(
                       "추가",
@@ -98,7 +96,9 @@ class _EditTagListState extends State<EditTagList> {
   @override
   Widget build(BuildContext context) {
     this._tags = Provider.of<List<Tag>>(context);
+    this._tagProvider = Provider.of<TagProvider>(context);
 
+    print("build Edit Tag List!");
     return this._tags == null
         ? Text("로딩중")
         : Provider(
@@ -117,7 +117,7 @@ class _EditTagListState extends State<EditTagList> {
                                 GestureDetector(
                                   onTap: () {
                                     _showAddTagDialog(context).then((value) {
-                                      print("value : $value");
+                                      this._tagProvider.inAddTag.add(Tag(id: CommonService.generateUUID(),name: value));
                                     });
                                   },
                                   child: Text(

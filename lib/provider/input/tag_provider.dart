@@ -37,6 +37,7 @@ class TagProvider {
   }
 
   void getTags() async {
+    print("getTags!");
     List<Tag> tags = await TagService().selectAllTags();
     _inTags.add(tags);
   }
