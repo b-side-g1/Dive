@@ -16,12 +16,8 @@ class _InputPageState extends State<InputPage> {
   );
 
   void handlerPageView(int index) {
-    print("handlerPageView ${index}");
-    //TODO : page change error
-    // // use this to animate to the page
-    // _controller.animateToPage(index);
-    // // // or this to jump to it without animating
-    // _controller.jumpToPage(index);
+    _controller.animateToPage(index,
+        curve: Curves.easeIn, duration: Duration(microseconds: 400));
   }
 
   @override
