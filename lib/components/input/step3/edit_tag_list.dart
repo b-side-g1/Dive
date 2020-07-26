@@ -25,13 +25,13 @@ class _EditTagListState extends State<EditTagList> {
 
   @override
   void dispose() {
-
+    print("[edit_tag_list].dart #dispose!");
     this._tagProvider.dispose();
-
     super.dispose();
   }
 
-  Future<TagDialogEntity<String>> _showAddTagDialog(BuildContext context) async {
+  Future<TagDialogEntity<String>> _showAddTagDialog(
+      BuildContext context) async {
     print("[edit_tag_list.dart] called _showAddTagDialog!");
 
     return showDialog<TagDialogEntity<String>>(
@@ -55,59 +55,61 @@ class _EditTagListState extends State<EditTagList> {
                 alignment: Alignment.centerLeft,
                 child: index == 0
                     ? Row(
-                  children: <Widget>[
-                    Icon(Icons.add,
-                        color: CommonService.hexToColor("#c6ccd4")),
-                    SizedBox(width: 8),
-                    GestureDetector(
-                      onTap: () {
-                        _showAddTagDialog(context).then((value) {
-                          print("[edit_tag_list.dart] _showAddTagDialog then -> ${value.isConfirm}" );
-                          print("[edit_tag_list.dart] _showAddTagDialog then -> ${value.value}" );
+                        children: <Widget>[
+                          Icon(Icons.add,
+                              color: CommonService.hexToColor("#c6ccd4")),
+                          SizedBox(width: 8),
+                          GestureDetector(
+                            onTap: () {
+                              _showAddTagDialog(context).then((value) {
+                                print(
+                                    "[edit_tag_list.dart] _showAddTagDialog then -> ${value.isConfirm}");
+                                print(
+                                    "[edit_tag_list.dart] _showAddTagDialog then -> ${value.value}");
 
-                          if(value.isConfirm) {
-                            this._tags.add(Tag(id: CommonService.generateUUID(),name: value.value));
-                            List<Tag> copys = List.from(this._tags);
-                            this._tagProvider.inTags.add(copys);
-                          }
-                        });
-                      },
-                      child: Text(
-                        "새 태그 추가",
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
-                  ],
-                )
+                                if (value.isConfirm) {
+                                  this._tags.add(Tag(
+                                      id: CommonService.generateUUID(),
+                                      name: value.value));
+                                  List<Tag> copys = List.from(this._tags);
+                                  this._tagProvider.inTags.add(copys);
+                                }
+                              });
+                            },
+                            child: Text(
+                              "새 태그 추가",
+                              style: TextStyle(
+                                  fontSize: 14, fontWeight: FontWeight.w400),
+                            ),
+                          ),
+                        ],
+                      )
                     : Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "${this._tags[index - 1].name}",
-                      style: TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w400),
-                    ),
-                    GestureDetector(
-                        onTap: () {
-                          print("click");
-                        },
-                        child: Text(
-                          "삭제",
-                          style: TextStyle(
-                              fontSize: 14.0,
-                              color: CommonService.hexToColor(
-                                  "#63c7ff")),
-                        ))
-                  ],
-                ));
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            "${this._tags[index - 1].name}",
+                            style: TextStyle(
+                                fontSize: 14.0, fontWeight: FontWeight.w400),
+                          ),
+                          GestureDetector(
+                              onTap: () {
+                                this._tags.removeAt(index - 1);
+                                List<Tag> copys = List.from(this._tags);
+                                this._tagProvider.inTags.add(copys);
+                              },
+                              child: Text(
+                                "삭제",
+                                style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: CommonService.hexToColor("#63c7ff")),
+                              ))
+                        ],
+                      ));
           },
-          separatorBuilder: (BuildContext context, int index) =>
-          const Divider(
-            height: 0.0,
-          ),
+          separatorBuilder: (BuildContext context, int index) => const Divider(
+                height: 0.0,
+              ),
           itemCount: this._tags.length + 1),
     );
   }
@@ -121,7 +123,6 @@ class _EditTagListState extends State<EditTagList> {
     this._tagProvider = Provider.of<TagProvider>(context);
 
     print("build Edit Tag List! ${this._tags}");
-    return this._tags == null
-        ? Text("로딩중") : this.buildEditTagListView();
+    return this._tags == null ? Text("로딩중") : this.buildEditTagListView();
   }
 }
