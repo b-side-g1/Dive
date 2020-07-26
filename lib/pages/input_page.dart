@@ -14,7 +14,7 @@ class _InputPageState extends State<InputPage> {
   PageController _controller = PageController(
     initialPage: 0,
   );
-
+  int step = 1;
   void handlerPageView(int index) {
     _controller.animateToPage(index,
         curve: Curves.easeIn, duration: Duration(microseconds: 400));
@@ -28,7 +28,6 @@ class _InputPageState extends State<InputPage> {
 
   renderClose() {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.8,
       child: Container(
         width: 40,
         height: 40,
@@ -49,8 +48,40 @@ class _InputPageState extends State<InputPage> {
     );
   }
 
+  renderSteper(step) {
+    return Container(
+      margin: EdgeInsets.only(top: 25),
+      height: MediaQuery.of(context).size.height - 40,
+      child: Stack(
+        children: <Widget>[
+          Opacity(
+            opacity: 0.20000000298023224,
+            child: new Container(
+                width: 4,
+                decoration: new BoxDecoration(
+                    color: Color(0xff000000),
+                    borderRadius: new BorderRadius.only(
+                      topLeft: const Radius.circular(40.0),
+                      topRight: const Radius.circular(40.0),
+                    ))),
+          ),
+          Positioned(
+              child: Container(
+                  width: 4,
+                  height:
+                      ((MediaQuery.of(context).size.height - 40) / 3) * step,
+                  decoration: new BoxDecoration(
+                      color: Color(0xff33f7fe),
+                      borderRadius: BorderRadius.circular(100)))),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('${MediaQuery.of(context).size.height / 3 * step} __ height');
+
     return Scaffold(
       body: Container(
         child: Stack(
@@ -64,16 +95,21 @@ class _InputPageState extends State<InputPage> {
                 InputPageStep3(),
               ],
               onPageChanged: (page) {
+                print("page 변경 ${page}");
                 setState(() {
-                  // _selectedIndex = page;
+                  step = page.toInt() + 1;
                 });
               },
             ),
             Positioned(
-              left: 180.0,
-              top: 40.0,
-              child: renderClose(),
-            ),
+                right: 20.0,
+                top: 40.0,
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[renderClose(), renderSteper(step)],
+                  ),
+                )),
           ],
         ),
       ),

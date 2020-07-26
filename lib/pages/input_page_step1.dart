@@ -150,11 +150,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
   renderNextStep() {
     return Expanded(
       child: Container(
-          // decoration: BoxDecoration(
-          //     border: Border.all(
-          //   color: Colors.red, //                   <--- border color
-          //   width: 1.0,
-          // )),
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
@@ -165,6 +160,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
             height: 35,
             width: MediaQuery.of(context).size.width * 0.8,
             decoration: BoxDecoration(
+              border: Border.all(color: Colors.yellowAccent),
               image: DecorationImage(
                 image: AssetImage('lib/src/image/daily/img_shadow.png'),
               ),
@@ -204,7 +200,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
   Widget build(BuildContext context) {
     return new Scaffold(
         body: Container(
-      padding: EdgeInsets.only(top: 70),
+      padding: EdgeInsets.only(top: 130),
       decoration: new BoxDecoration(
         color: Color.fromRGBO(43, 99, 194, 1.0),
       ),
