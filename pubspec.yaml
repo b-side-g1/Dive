@@ -35,9 +35,11 @@ dependencies:
   provider: ^3.0.0+1
   charts_flutter: ^0.9.0
   flutter_native_splash: ^0.1.9
-
-
-#  flutter_rounded_date_picker: 1.0.0
+  uuid: ^2.2.0
+  custom_switch: ^0.0.1
+  package_info: ^0.4.1
+  numberpicker: ^1.2.0
+  #  flutter_rounded_date_picker: 1.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -67,6 +69,15 @@ flutter:
     - lib/src/image/onboarding/2.0x/
     - lib/src/image/onboarding/3.0x/
     - lib/src/image/daily/
+    - lib/src/image/daily/2.0x/
+    - lib/src/image/daily/3.0x/
+    - lib/src/image/bottombar/
+    - lib/src/image/drawable-hdpi/
+    - lib/src/image/drawable-mdpi/
+    - lib/src/image/drawable-xhdpi/
+    - lib/src/image/drawable-xxhdpi/
+    - lib/src/image/drawable-xxxhdpi/
+    - lib/src/image/setting/
     - lib/src/image/tags/
     - lib/src/image/tags/2.0x/
     - lib/src/image/tags/3.0x/
