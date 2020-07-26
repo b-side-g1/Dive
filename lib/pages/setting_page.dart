@@ -1,51 +1,135 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/pages/backup_setting_page.dart';
-import 'package:flutterapp/pages/push_setting_page.dart';
-import 'package:flutterapp/pages/tag_setting_page.dart';
-import 'package:flutterapp/pages/version_setting_page.dart';
+import 'package:package_info/package_info.dart';
 
-class SettingPage extends StatelessWidget {
-  SettingPage({this.title});
-  final String title;
-  
+class SettingPage extends StatefulWidget {
+  _SettingPageState createState() => _SettingPageState();
+}
+
+class _SettingPageState extends State<SettingPage> {
+  bool _isPush = true;
+  String _appVersion = "0.0.0";
+  String _currentEndAt = "오전 12시";
+
+  @override
+  void initState() {
+    super.initState();
+    PackageInfo.fromPlatform() // pubspec.yaml에 있는 config 값 갖고 올 수 있다!
+        .then((value) => {
+              setState(() {
+                _appVersion = value.version;
+              })
+            });
+  }
+
+  _setPush(bool isPush) {
+    setState(() {
+      _isPush = isPush;
+    });
+  }
+
+  Widget pushOnOffWidget() {
+    //    print(Theme.of(context).platform == TargetPlatform.android); // 이런식으로 플랫폼 확인 가능
+    return CupertinoSwitch(
+      // ios 용 스위치 버튼임
+      activeColor: Colors.blue,
+      value: _isPush,
+      onChanged: _setPush,
+    );
+  }
+
+  Widget todayEndAtWidget() {
+    return Row(
+      children: <Widget>[
+        Text(
+          _currentEndAt,
+          style: TextStyle(fontSize: 15, color: Colors.black),
+        ),
+        InkWell(
+          child: Padding(
+            padding: EdgeInsets.only(left: 6),
+            child: Image.asset(
+              'lib/src/image/setting/icon_arrow.png',
+              width: 15,
+              height: 14,
+            ),
+          ),
+          onTap: () {
+            print("시간 변경"); // change Date
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget currentVersionWidget() {
+    return Text(
+      _appVersion,
+      style: TextStyle(fontSize: 15, color: Color(0xff00a3ff)),
+    );
+  }
+
+  Widget _bgContainer() {
+    return FittedBox(
+      fit: BoxFit.fill, // width 100% 적용!
+      child: Image.asset(
+        'lib/src/image/setting/bg.png',
+        height: 120,
+      ),
+    );
+  }
+
+  Widget settingWidget(String title, Widget widget) {
+    return Container(
+      height: 60,
+      decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.grey, width: 0.25))),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(left: 13),
+            child: Text(
+              title,
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.left,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(right: 15),
+            child: widget,
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(this.title)),
-        body: ListView(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            "설정",
+            style: TextStyle(color: Colors.black),
+          ),
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.black),
+          elevation: 0.0, // appBar shadow 처리 없애는 설정
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            RaisedButton(
-                child: Text('알림 설정'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => PushSettingPage()),
-                  );
-                }),
-            RaisedButton(
-                child: Text('태그 설정'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => TagSettingPage()),
-                  );
-                }),
-            RaisedButton(
-                child: Text('백업'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => BackupSettingPage()),
-                  );
-                }),
-            RaisedButton(
-                child: Text('버전'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => VersionSettingPage()),
-                  );
-                }),
+            Flexible(
+              child: ListView(
+                children: <Widget>[
+                  settingWidget('푸시 설정', pushOnOffWidget()),
+                  settingWidget('하루 마감시간 설정', todayEndAtWidget()),
+                  settingWidget('현재 버전', currentVersionWidget()),
+                ],
+              ),
+            ),
+            _bgContainer(),
           ],
         ));
   }

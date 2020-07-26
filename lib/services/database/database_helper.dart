@@ -1,15 +1,12 @@
-import 'dart:io';
-
 import 'package:flutterapp/models/basic_model.dart';
 import 'package:flutterapp/models/daily_model.dart';
 import 'package:flutterapp/models/emotion_model.dart';
 import 'package:flutterapp/models/record_has_emotion.dart';
 import 'package:flutterapp/models/record_has_tag.dart';
-import 'package:flutterapp/models/tag_model.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 import 'package:flutterapp/models/record_model.dart';
+import 'package:flutterapp/models/tag_model.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
 class DBHelper {
   DBHelper._();
@@ -31,6 +28,7 @@ class DBHelper {
     String path = join(await getDatabasesPath(), 'diary_app_database.db');
 
     var ddlList = [];
+
     var recordTable = Record.tableName;
     var recordDDL = "CREATE TABLE $recordTable (id TEXT PRIMARY KEY, score INTEGER, description TEXT, dailyId TEXT, createdAt TEXT, updatedAt TEXT)";
     ddlList.add(recordDDL);
@@ -40,24 +38,25 @@ class DBHelper {
     ddlList.add(dailyDDL);
 
     var tagTable = Tag.tableName;
-    var tagDDL = "CREATE TABLE $tagTable (id TEXT PRIMARY KEY, name TEXT)";
+    var tagDDL = "CREATE TABLE $tagTable (id TEXT PRIMARY KEY, name TEXT, createdAt TEXT, deletedAt TEXT)";
     ddlList.add(tagDDL);
 
     var recordHasTagTable = RecordHasTag.tableName;
-    var recordHasTagDDL = "CREATE TABLE $recordHasTagTable (idx INTEGER PRIMARY KEY AUTOINCREMENT, recordId TEXT, tagId TEXT, name TEXT)";
+    var recordHasTagDDL = "CREATE TABLE $recordHasTagTable (idx INTEGER PRIMARY KEY AUTOINCREMENT, recordId TEXT, tagId TEXT, createdAt TEXT)";
     ddlList.add(recordHasTagDDL);
 
     var emotionTable = Emotion.tableName;
-    var emotionDDL = "CREATE TABLE $emotionTable (id TEXT PRIMARY KEY, name TEXT)";
+    var emotionDDL = "CREATE TABLE $emotionTable (id TEXT PRIMARY KEY, name TEXT, createdAt TEXT, deletedAt TEXT)";
     ddlList.add(emotionDDL);
 
+    var recordHasEmotionTable = RecordHasEmotion.tableName;
+    var recordHasEmotionDDL = "CREATE TABLE $recordHasEmotionTable (idx INTEGER PRIMARY KEY AUTOINCREMENT, recordId TEXT, emotionId TEXT, createdAt TEXT)";
+    ddlList.add(recordHasEmotionDDL);
+
     var basicTable = Basic.tableName;
-    String basicDDL = "CREATE TABLE $basicTable(id TEXT PRIMARY KEY, today_startAt TEXT, today_endAt TEXT, status TEXT, is_push INTEGER, uuid TEXT, createdAt TEXT)";
+    String basicDDL = "CREATE TABLE $basicTable (id TEXT PRIMARY KEY, today_startAt TEXT, today_endAt TEXT, status TEXT, is_push INTEGER, uuid TEXT, createdAt TEXT)";
     ddlList.add(basicDDL);
 
-    var recordHasEmotionTable = RecordHasEmotion.tableName;
-    var recordHasEmotionDDL = "CREATE TABLE $recordHasEmotionTable (idx INTEGER PRIMARY KEY AUTOINCREMENT, recordId TEXT, emotionId TEXT, name TEXT)";
-    ddlList.add(recordHasEmotionDDL);
 
     return openDatabase(
       path,
