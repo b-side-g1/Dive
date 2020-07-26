@@ -22,6 +22,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
   void initState() {
     super.initState();
     setState(() {
+      //TODO : step1 data
       var now = new DateTime.now();
       hour = now.hour > 12 ? now.hour - 12 : now.hour;
       min = now.minute;
@@ -160,7 +161,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
             height: 35,
             width: MediaQuery.of(context).size.width * 0.8,
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.yellowAccent),
               image: DecorationImage(
                 image: AssetImage('lib/src/image/daily/img_shadow.png'),
               ),
