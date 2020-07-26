@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/components/input/step3/add_tag_dialog.dart';
+import 'package:flutterapp/components/input/step3/model/tag_dialog_entity_model.dart';
 import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/provider/input/tag_provider.dart';
 import 'package:flutterapp/services/common/common_service.dart';
@@ -11,8 +13,10 @@ class EditTagList extends StatefulWidget {
 
 class _EditTagListState extends State<EditTagList> {
   List<Tag> _tags;
+  List<Tag> _localTags;
   TagProvider _tagProvider;
-  final addTagController = TextEditingController();
+
+  List<Tag> _testList;
 
   @override
   void initState() {
@@ -21,74 +25,20 @@ class _EditTagListState extends State<EditTagList> {
 
   @override
   void dispose() {
-    this.addTagController.dispose();
+
+    this._tagProvider.dispose();
+
     super.dispose();
   }
 
-  Future<String> _showAddTagDialog(BuildContext context) async {
-    final tagProvider = Provider.of<TagProvider>(context);
+  Future<TagDialogEntity<String>> _showAddTagDialog(BuildContext context) async {
+    print("[edit_tag_list.dart] called _showAddTagDialog!");
 
-    return showDialog<String>(
+    return showDialog<TagDialogEntity<String>>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Center(child: Text('새 태그 추가')),
-          content: TextFormField(
-            controller: this.addTagController,
-            cursorColor: CommonService.hexToColor("#34b7eb"),
-            decoration: new InputDecoration(
-                border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                        color: CommonService.hexToColor("#d0d5d9"),
-                        width: 1.0)),
-                errorBorder: InputBorder.none,
-                disabledBorder: InputBorder.none,
-                hintText: "태그를 추가하세요 (최대 10자)"),
-          ),
-          actions: <Widget>[
-            Container(
-                width: 260,
-                child: Divider(color: CommonService.hexToColor("#d0d5d9"))),
-            SizedBox(
-              width: double.maxFinite,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  FlatButton(
-                    child: Text(
-                      "취소",
-                      style: TextStyle(
-                          fontSize: 15.0,
-                          color: CommonService.hexToColor("#111111")),
-                    ),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                  Container(
-                      height: 47,
-                      child: VerticalDivider(
-                          color: CommonService.hexToColor("#d0d5d9"))),
-                  FlatButton(
-                    onPressed: () {
-                      String inputTag = this.addTagController.text.toString();
-//                      tagProvider.inAddTag.add(Tag(
-//                          id: CommonService.generateUUID(), name: inputTag));
-                      Navigator.of(context).pop(inputTag);
-                    },
-                    child: Text(
-                      "추가",
-                      style: TextStyle(
-                          fontSize: 15.0,
-                          color: CommonService.hexToColor("#63c7ff")),
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        );
+        return AddTagDialog();
       },
     );
   }
@@ -112,7 +62,14 @@ class _EditTagListState extends State<EditTagList> {
                     GestureDetector(
                       onTap: () {
                         _showAddTagDialog(context).then((value) {
-                          this._tagProvider.inAddTag.add(Tag(id: CommonService.generateUUID(),name: value));
+                          print("[edit_tag_list.dart] _showAddTagDialog then -> ${value.isConfirm}" );
+                          print("[edit_tag_list.dart] _showAddTagDialog then -> ${value.value}" );
+
+                          if(value.isConfirm) {
+                            this._tags.add(Tag(id: CommonService.generateUUID(),name: value.value));
+                            List<Tag> copys = List.from(this._tags);
+                            this._tagProvider.inTags.add(copys);
+                          }
                         });
                       },
                       child: Text(
@@ -155,28 +112,13 @@ class _EditTagListState extends State<EditTagList> {
     );
   }
 
-  Widget buildTestEditTagListView() {
-    return Container(
-      height: 300.0, // Change as per your requirement
-      width: 300.0, // Change as per your requirement
-      child: ListView.builder(
-        shrinkWrap: true,
-        itemCount: 5,
-        itemBuilder: (BuildContext context, int index) {
-          return ListTile(
-            title: Text('Gujarat, India'),
-          );
-        },
-      ),
-    );
-  }
-
-
   @override
   Widget build(BuildContext context) {
-    this._tags = Provider.of<List<Tag>>(context);
-    this._tagProvider = Provider.of<TagProvider>(context);
+    print("[edit_tag_list.dart] #build!");
 
+    this._tags = Provider.of<List<Tag>>(context);
+    this._localTags = this._tags;
+    this._tagProvider = Provider.of<TagProvider>(context);
 
     print("build Edit Tag List! ${this._tags}");
     return this._tags == null

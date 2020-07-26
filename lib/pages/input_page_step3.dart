@@ -14,6 +14,8 @@ class InputPageStep3 extends StatefulWidget {
 class _InputPageStep3State extends State<InputPageStep3> {
   TagProvider tagProvider;
   List<Tag> _tags;
+
+
   Future<List<Tag>> createEditTagDialog(BuildContext context) {
     return showDialog(
         context: context,

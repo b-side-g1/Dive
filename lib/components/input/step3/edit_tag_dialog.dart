@@ -25,16 +25,11 @@ class EditTagDialog extends StatelessWidget {
           initialData: [Tag(id: '1253315', name: 'asdf24')],
           value: provider.tags,
           child: EditTagList()),
-    );
-
-
-    return AlertDialog(
-      title: Stack(children: <Widget>[]),
       actions: <Widget>[
         SizedBox(
             width: double.maxFinite,
             child: StreamProvider.value(
-                value: provider.tags, child: SaveTagButton()))
+                value: provider.tests, child: SaveTagButton()))
       ],
     );
   }

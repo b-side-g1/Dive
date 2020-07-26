@@ -12,18 +12,25 @@ class TagProvider {
   // ignore: close_sinks
   final _tagsController = StreamController<List<Tag>>.broadcast();
 
-  StreamSink<List<Tag>> get _inTags => _tagsController.sink;
+  StreamSink<List<Tag>> get inTags => _tagsController.sink;
 
   Stream<List<Tag>> get tags => _tagsController.stream;
 
+  // ignore: close_sinks
   final _addTagController = StreamController<Tag>.broadcast();
   StreamSink<Tag> get inAddTag => _addTagController.sink;
+
+  // ignore: close_sinks
+  final _testController = StreamController<List<Tag>>.broadcast();
+  Stream<List<Tag>> get tests => _testController.stream;
+  StreamSink<List<Tag>> get inTest => _testController.sink;
 
   TagProvider() {
     print('construct!');
     getTags();
 
-    _addTagController.stream.listen(_handleAddTag);
+//    _addTagController.stream.listen(_handleAddTag);
+//    _localTagController.stream.listen(_handleLocalTags);
   }
 
   Future<List<Tag>> getAllTags() async {
@@ -31,27 +38,25 @@ class TagProvider {
     return tagService.selectAllTags();
   }
 
-  Future<Tag> addTag(Tag tagParam) async {
-    TagService tagService = new TagService();
-    return tagService.insertTag(tagParam);
-  }
-
   void getTags() async {
     print("getTags!");
     List<Tag> tags = await TagService().selectAllTags();
-    _inTags.add(tags);
+    inTags.add(tags);
   }
 
-  void _handleAddTag(Tag tagParam) async {
+  void handleAddTag(Tag tagParam) async {
     await TagService().insertTag(tagParam);
-
     getTags();
   }
 
+  void handleLocalTags(List<Tag> tags) async {
+    inTags.add(tags);
+  }
 
   void dispose() {
     this._tagsController.close();
     this._addTagController.close();
+    this._testController.close();
   }
 
 }
