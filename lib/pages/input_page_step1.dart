@@ -150,6 +150,11 @@ class _InputPageStep1State extends State<InputPageStep1> {
   renderNextStep() {
     return Expanded(
       child: Container(
+          // decoration: BoxDecoration(
+          //     border: Border.all(
+          //   color: Colors.red, //                   <--- border color
+          //   width: 1.0,
+          // )),
           child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
@@ -166,20 +171,32 @@ class _InputPageStep1State extends State<InputPageStep1> {
             ),
           ),
           Container(
-              margin: EdgeInsets.only(bottom: 20),
-              height: 60,
-              width: MediaQuery.of(context).size.width,
-              child: IconButton(
-                icon: Image.asset(
-                  'lib/src/image/daily/noti_dive_deeper.png',
-                ),
-                tooltip: 'next step',
-                onPressed: () {
-                  widget.handlerPageView(1);
-                },
-              )),
+            margin: EdgeInsets.only(bottom: 20),
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+                color: Color.fromRGBO(0, 0, 0, 0.3), shape: BoxShape.circle),
+            child: IconButton(
+              icon: Image.asset(
+                'lib/src/image/daily/icon_down.png',
+                height: 16,
+                width: 16,
+              ),
+              tooltip: 'next step',
+              onPressed: () {
+                widget.handlerPageView(1);
+              },
+            ),
+          ),
         ],
       )),
+    );
+  }
+
+  renderBackground() {
+    return Container(
+      alignment: Alignment.bottomCenter,
+      child: Image.asset('lib/src/image/daily/bg_white_gradient.png'),
     );
   }
 
@@ -191,11 +208,16 @@ class _InputPageStep1State extends State<InputPageStep1> {
       decoration: new BoxDecoration(
         color: Color.fromRGBO(43, 99, 194, 1.0),
       ),
-      child: Column(
+      child: Stack(
         children: <Widget>[
-          renderTimeSelect(),
-          renderScoreSelect(),
-          renderNextStep()
+          renderBackground(),
+          Column(
+            children: <Widget>[
+              renderTimeSelect(),
+              renderScoreSelect(),
+              renderNextStep(),
+            ],
+          )
         ],
       ),
     ));

@@ -33,12 +33,12 @@ class _InputPageState extends State<InputPage> {
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-            color: Color.fromRGBO(0, 0, 0, 0.3), shape: BoxShape.circle),
+            color: Color.fromRGBO(0, 0, 0, 0.0), shape: BoxShape.rectangle),
         child: IconButton(
           icon: Image.asset(
             'lib/src/image/daily/icon_x.png',
-            height: 15,
-            width: 15,
+            height: 16,
+            width: 16,
           ),
           tooltip: 'close',
           onPressed: () {
