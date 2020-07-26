@@ -50,10 +50,12 @@ class _InputPageStep3State extends State<InputPageStep3> {
             FlatButton(
               padding: EdgeInsets.all(0),
               onPressed: () {
-                createEditTagDialog(context).then((value) {
-                  print("[input_page_step3] EditTagDialog then! ${value}");
-                  this.tagProvider =  Provider.of<TagProvider>(context);
-                });
+                print("[input_page_step3.dart] onPressed!");
+                createEditTagDialog(context);
+//                createEditTagDialog(context).then((value) {
+//                  print("[input_page_step3] EditTagDialog then! ${value}");
+//                  this.tagProvider =  Provider.of<TagProvider>(context);
+//                });
               },
               child: Row(
                 children: <Widget>[

@@ -14,27 +14,27 @@ class EditTagDialog extends StatelessWidget {
     final provider = Provider.of<TagProvider>(context);
 
     return AlertDialog(
-      title: Stack(children: <Widget>[
-        Center(
-          child: Text(
-            "태그편집",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700),
-          ),
+      title: Center(
+        child: Text(
+          "태그편집",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700),
         ),
-      ]),
-
+      ),
       content: StreamProvider.value(
-        initialData: [Tag(id: '1253315',name: 'asdf24')],
+          initialData: [Tag(id: '1253315', name: 'asdf24')],
           value: provider.tags,
           child: EditTagList()),
+    );
+
+
+    return AlertDialog(
+      title: Stack(children: <Widget>[]),
       actions: <Widget>[
         SizedBox(
-          width: double.maxFinite,
-          child: StreamProvider.value(
-            value: provider.tags,
-              child: SaveTagButton())
-        )
+            width: double.maxFinite,
+            child: StreamProvider.value(
+                value: provider.tags, child: SaveTagButton()))
       ],
     );
   }

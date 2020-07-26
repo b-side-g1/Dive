@@ -93,70 +93,93 @@ class _EditTagListState extends State<EditTagList> {
     );
   }
 
+  Widget buildEditTagListView() {
+    return Container(
+      width: 280,
+      height: 324,
+      child: ListView.separated(
+          shrinkWrap: true,
+          itemBuilder: (BuildContext context, int index) {
+            return Container(
+                height: 50,
+                alignment: Alignment.centerLeft,
+                child: index == 0
+                    ? Row(
+                  children: <Widget>[
+                    Icon(Icons.add,
+                        color: CommonService.hexToColor("#c6ccd4")),
+                    SizedBox(width: 8),
+                    GestureDetector(
+                      onTap: () {
+                        _showAddTagDialog(context).then((value) {
+                          this._tagProvider.inAddTag.add(Tag(id: CommonService.generateUUID(),name: value));
+                        });
+                      },
+                      child: Text(
+                        "새 태그 추가",
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                  ],
+                )
+                    : Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "${this._tags[index - 1].name}",
+                      style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400),
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          print("click");
+                        },
+                        child: Text(
+                          "삭제",
+                          style: TextStyle(
+                              fontSize: 14.0,
+                              color: CommonService.hexToColor(
+                                  "#63c7ff")),
+                        ))
+                  ],
+                ));
+          },
+          separatorBuilder: (BuildContext context, int index) =>
+          const Divider(
+            height: 0.0,
+          ),
+          itemCount: this._tags.length + 1),
+    );
+  }
+
+  Widget buildTestEditTagListView() {
+    return Container(
+      height: 300.0, // Change as per your requirement
+      width: 300.0, // Change as per your requirement
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: 5,
+        itemBuilder: (BuildContext context, int index) {
+          return ListTile(
+            title: Text('Gujarat, India'),
+          );
+        },
+      ),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     this._tags = Provider.of<List<Tag>>(context);
     this._tagProvider = Provider.of<TagProvider>(context);
 
-    print("build Edit Tag List!");
+
+    print("build Edit Tag List! ${this._tags}");
     return this._tags == null
-        ? Text("로딩중")
-        : Provider(
-            create: (_) => TagProvider(),
-            child: ListView.separated(
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                      height: 50,
-                      alignment: Alignment.centerLeft,
-                      child: index == 0
-                          ? Row(
-                              children: <Widget>[
-                                Icon(Icons.add,
-                                    color: CommonService.hexToColor("#c6ccd4")),
-                                SizedBox(width: 8),
-                                GestureDetector(
-                                  onTap: () {
-                                    _showAddTagDialog(context).then((value) {
-                                      this._tagProvider.inAddTag.add(Tag(id: CommonService.generateUUID(),name: value));
-                                    });
-                                  },
-                                  child: Text(
-                                    "새 태그 추가",
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ),
-                              ],
-                            )
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  "${this._tags[index - 1].name}",
-                                  style: TextStyle(
-                                      fontSize: 14.0,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                                GestureDetector(
-                                    onTap: () {
-                                      print("click");
-                                    },
-                                    child: Text(
-                                      "삭제",
-                                      style: TextStyle(
-                                          fontSize: 14.0,
-                                          color: CommonService.hexToColor(
-                                              "#63c7ff")),
-                                    ))
-                              ],
-                            ));
-                },
-                separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(
-                      height: 0.0,
-                    ),
-                itemCount: this._tags.length + 1),
-          );
+        ? Text("로딩중") : this.buildEditTagListView();
   }
 }
