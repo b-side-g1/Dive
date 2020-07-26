@@ -15,14 +15,11 @@ class _InputPageStep3State extends State<InputPageStep3> {
   TagProvider tagProvider;
   List<Tag> _tags;
 
-
   Future<List<Tag>> createEditTagDialog(BuildContext context) {
     return showDialog(
         context: context,
         builder: (context) {
-          return Provider(
-            create: (_) => TagProvider(),
-              child: EditTagDialog());
+          return Provider(create: (_) => TagProvider(), child: EditTagDialog());
         });
   }
 
@@ -53,7 +50,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
               padding: EdgeInsets.all(0),
               onPressed: () {
                 print("[input_page_step3.dart] onPressed!");
-                createEditTagDialog(context);
+                createEditTagDialog(context).then((value) {});
 //                createEditTagDialog(context).then((value) {
 //                  print("[input_page_step3] EditTagDialog then! ${value}");
 //                  this.tagProvider =  Provider.of<TagProvider>(context);
@@ -127,7 +124,6 @@ class _InputPageStep3State extends State<InputPageStep3> {
             ),
           )),
     );
-
 
     return Scaffold(
       body: Container(

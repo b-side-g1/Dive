@@ -21,6 +21,10 @@ class TagProvider {
   StreamSink<Tag> get inAddTag => _addTagController.sink;
 
   // ignore: close_sinks
+  final _deleteTagController = StreamController<Tag>.broadcast();
+  StreamSink<Tag> get inDeleteTag => _deleteTagController.sink;
+
+  // ignore: close_sinks
   final _testController = StreamController<List<Tag>>.broadcast();
   Stream<List<Tag>> get tests => _testController.stream;
   StreamSink<List<Tag>> get inTest => _testController.sink;
@@ -29,7 +33,8 @@ class TagProvider {
     print('construct!');
     getTags();
 
-//    _addTagController.stream.listen(_handleAddTag);
+    _addTagController.stream.listen(_handleAddTag);
+    _deleteTagController.stream.listen(_handleDeleteTag);
 //    _localTagController.stream.listen(_handleLocalTags);
   }
 
@@ -44,8 +49,13 @@ class TagProvider {
     inTags.add(tags);
   }
 
-  void handleAddTag(Tag tagParam) async {
+  void _handleAddTag(Tag tagParam) async {
     await TagService().insertTag(tagParam);
+    getTags();
+  }
+
+  void _handleDeleteTag(Tag tagParam) async {
+    await TagService().deleteTag(tagParam);
     getTags();
   }
 
@@ -57,6 +67,7 @@ class TagProvider {
     this._tagsController.close();
     this._addTagController.close();
     this._testController.close();
+    this._deleteTagController.close();
   }
 
 }

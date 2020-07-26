@@ -22,7 +22,7 @@ class TagService {
   Future<List<Tag>> selectAllTags() async {
     final db = await DBHelper().database;
 
-    var res = await db.query(tagTableName);
+    var res = await db.rawQuery("SELECT * FROM ${Tag.tableName} WHERE deletedAt is NULL");
 
     List<Tag> tags =
         res.isNotEmpty ? res.map((c) => Tag.fromJson(c)).toList() : [];
@@ -34,6 +34,14 @@ class TagService {
     final db = await DBHelper().database;
 
     await db.insert(Tag.tableName, tag.toJson());
+
+    return tag;
+  }
+
+  Future<Tag> deleteTag(Tag tag) async {
+    final db = await DBHelper().database;
+    final nowDate = DateTime.now().toString();
+    await db.rawUpdate("UPDATE ${Tag.tableName} SET deletedAt = ? WHERE id = ?",[nowDate,tag.id]);
 
     return tag;
   }

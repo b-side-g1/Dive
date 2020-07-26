@@ -18,10 +18,8 @@ class SaveTagButton extends StatelessWidget {
           color: CommonService.hexToColor("#63c7ff"),
           textColor: Colors.white,
           onPressed: () {
-            for(Tag i in this._tags) {
-              print("[save_tag_button.dart] #onPressed! ${i.name}");
-            }
-//            Navigator.of(context).pop(this._tags);
+              print("[save_tag_button.dart] #onPressed! ${this._tags}");
+            Navigator.of(context).pop(this._tags);
           },
           child: Text(
             "저장",

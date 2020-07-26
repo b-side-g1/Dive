@@ -13,10 +13,10 @@ class EditTagList extends StatefulWidget {
 
 class _EditTagListState extends State<EditTagList> {
   List<Tag> _tags;
-  List<Tag> _localTags;
   TagProvider _tagProvider;
 
-  List<Tag> _testList;
+  List<Tag> _addedTags;
+  List<Tag> _removedTags;
 
   @override
   void initState() {
@@ -68,11 +68,9 @@ class _EditTagListState extends State<EditTagList> {
                                     "[edit_tag_list.dart] _showAddTagDialog then -> ${value.value}");
 
                                 if (value.isConfirm) {
-                                  this._tags.add(Tag(
+                                  this._tagProvider.inAddTag.add(Tag(
                                       id: CommonService.generateUUID(),
                                       name: value.value));
-                                  List<Tag> copys = List.from(this._tags);
-                                  this._tagProvider.inTags.add(copys);
                                 }
                               });
                             },
@@ -94,9 +92,12 @@ class _EditTagListState extends State<EditTagList> {
                           ),
                           GestureDetector(
                               onTap: () {
-                                this._tags.removeAt(index - 1);
-                                List<Tag> copys = List.from(this._tags);
-                                this._tagProvider.inTags.add(copys);
+//                                this._tags.removeAt(index - 1);
+//                                List<Tag> copys = List.from(this._tags);
+                                this
+                                    ._tagProvider
+                                    .inDeleteTag
+                                    .add(this._tags[index - 1]);
                               },
                               child: Text(
                                 "삭제",
@@ -119,7 +120,6 @@ class _EditTagListState extends State<EditTagList> {
     print("[edit_tag_list.dart] #build!");
 
     this._tags = Provider.of<List<Tag>>(context);
-    this._localTags = this._tags;
     this._tagProvider = Provider.of<TagProvider>(context);
 
     print("build Edit Tag List! ${this._tags}");

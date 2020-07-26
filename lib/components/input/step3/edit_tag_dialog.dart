@@ -11,6 +11,7 @@ class EditTagDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     final provider = Provider.of<TagProvider>(context);
 
     return AlertDialog(
@@ -23,13 +24,13 @@ class EditTagDialog extends StatelessWidget {
       ),
       content: StreamProvider.value(
           initialData: [Tag(id: '1253315', name: 'asdf24')],
-          value: provider.tags,
+            value: provider.tags,
           child: EditTagList()),
       actions: <Widget>[
         SizedBox(
             width: double.maxFinite,
             child: StreamProvider.value(
-                value: provider.tests, child: SaveTagButton()))
+                value: provider.tags, child: SaveTagButton()))
       ],
     );
   }
