@@ -57,7 +57,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
   renderTimeSelect() {
     String title = "당신의 기분을 알려주세요.";
     return Padding(
-        padding: const EdgeInsets.only(top: 20),
+        padding: const EdgeInsets.only(top: 0),
         child: Column(children: <Widget>[
           Row(
             mainAxisAlignment: MainAxisAlignment.center,

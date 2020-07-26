@@ -27,6 +27,32 @@ class _InputPageState extends State<InputPage> {
   }
 
   renderClose() {
+    void _showDialog() {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          // return object of type Dialog
+          return AlertDialog(
+            content: new Text("저장되지 않은 데이터는 삭제됩니다.\n취소하시겠습니까?"),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text("아니오"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              new FlatButton(
+                child: new Text("네"),
+                onPressed: () {
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+
     return Container(
       child: Container(
         width: 40,
@@ -41,7 +67,7 @@ class _InputPageState extends State<InputPage> {
           ),
           tooltip: 'close',
           onPressed: () {
-            Navigator.pop(context);
+            _showDialog();
           },
         ),
       ),
@@ -80,8 +106,6 @@ class _InputPageState extends State<InputPage> {
 
   @override
   Widget build(BuildContext context) {
-    print('${MediaQuery.of(context).size.height / 3 * step} __ height');
-
     return Scaffold(
       body: Container(
         child: Stack(
@@ -95,7 +119,6 @@ class _InputPageState extends State<InputPage> {
                 InputPageStep3(),
               ],
               onPageChanged: (page) {
-                print("page 변경 ${page}");
                 setState(() {
                   step = page.toInt() + 1;
                 });
