@@ -32,9 +32,7 @@ class _InputPageState extends State<InputPage> {
 
   renderClose() {
     return Container(
-      alignment: Alignment.centerRight,
       width: MediaQuery.of(context).size.width * 0.8,
-      margin: const EdgeInsets.only(top: 35),
       child: Container(
         width: 40,
         height: 40,
@@ -75,7 +73,11 @@ class _InputPageState extends State<InputPage> {
                 });
               },
             ),
-            renderClose(),
+            Positioned(
+              left: 180.0,
+              top: 40.0,
+              child: renderClose(),
+            ),
           ],
         ),
       ),

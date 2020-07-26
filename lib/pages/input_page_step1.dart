@@ -187,6 +187,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
   Widget build(BuildContext context) {
     return new Scaffold(
         body: Container(
+      padding: EdgeInsets.only(top: 70),
       decoration: new BoxDecoration(
         color: Color.fromRGBO(43, 99, 194, 1.0),
       ),
