@@ -48,11 +48,7 @@ class _InputPageState extends State<InputPage> {
           ),
           tooltip: 'close',
           onPressed: () {
-            //TODO : navigator 오류
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => DailyPage()),
-            // );
+            Navigator.pop(context);
           },
         ),
       ),
@@ -62,26 +58,26 @@ class _InputPageState extends State<InputPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        // child: Text('Click'),
-        child: Icon(Icons.access_alarm),
-        onPressed: () => {print('hello')},
-        backgroundColor: Colors.pink,
-      ),
-      body: PageView(
-        controller: _controller,
-        scrollDirection: Axis.vertical,
-        children: [
-          // renderClose(),
-          InputPageStep1(handlerPageView: handlerPageView),
-          InputPageStep2(),
-          InputPageStep3(),
-        ],
-        onPageChanged: (page) {
-          setState(() {
-            // _selectedIndex = page;
-          });
-        },
+      body: Container(
+        child: Stack(
+          children: <Widget>[
+            PageView(
+              controller: _controller,
+              scrollDirection: Axis.vertical,
+              children: [
+                InputPageStep1(handlerPageView: handlerPageView),
+                InputPageStep2(),
+                InputPageStep3(),
+              ],
+              onPageChanged: (page) {
+                setState(() {
+                  // _selectedIndex = page;
+                });
+              },
+            ),
+            renderClose(),
+          ],
+        ),
       ),
     );
   }
