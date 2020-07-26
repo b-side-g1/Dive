@@ -30,16 +30,59 @@ class _InputPageState extends State<InputPage> {
     super.dispose();
   }
 
+  renderClose() {
+    return Container(
+      alignment: Alignment.centerRight,
+      width: MediaQuery.of(context).size.width * 0.8,
+      margin: const EdgeInsets.only(top: 35),
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+            color: Color.fromRGBO(0, 0, 0, 0.3), shape: BoxShape.circle),
+        child: IconButton(
+          icon: Image.asset(
+            'lib/src/image/daily/icon_x.png',
+            height: 15,
+            width: 15,
+          ),
+          tooltip: 'close',
+          onPressed: () {
+            //TODO : navigator 오류
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => DailyPage()),
+            // );
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      controller: _controller,
-      scrollDirection: Axis.vertical,
-      children: [
-        InputPageStep1(handlerPageView: handlerPageView),
-        InputPageStep2(),
-        InputPageStep3(),
-      ],
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        // child: Text('Click'),
+        child: Icon(Icons.access_alarm),
+        onPressed: () => {print('hello')},
+        backgroundColor: Colors.pink,
+      ),
+      body: PageView(
+        controller: _controller,
+        scrollDirection: Axis.vertical,
+        children: [
+          // renderClose(),
+          InputPageStep1(handlerPageView: handlerPageView),
+          InputPageStep2(),
+          InputPageStep3(),
+        ],
+        onPageChanged: (page) {
+          setState(() {
+            // _selectedIndex = page;
+          });
+        },
+      ),
     );
   }
 }

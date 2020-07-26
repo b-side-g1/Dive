@@ -183,35 +183,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
     );
   }
 
-  renderClose() {
-    return Container(
-      alignment: Alignment.centerRight,
-      width: MediaQuery.of(context).size.width * 0.8,
-      margin: const EdgeInsets.only(top: 35),
-      child: Container(
-        width: 40,
-        height: 40,
-        decoration: BoxDecoration(
-            color: Color.fromRGBO(0, 0, 0, 0.3), shape: BoxShape.circle),
-        child: IconButton(
-          icon: Image.asset(
-            'lib/src/image/daily/icon_x.png',
-            height: 15,
-            width: 15,
-          ),
-          tooltip: 'close',
-          onPressed: () {
-            //TODO : navigator 오류
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => DailyPage()),
-            // );
-          },
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -221,7 +192,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
       ),
       child: Column(
         children: <Widget>[
-          renderClose(),
           renderTimeSelect(),
           renderScoreSelect(),
           renderNextStep()
