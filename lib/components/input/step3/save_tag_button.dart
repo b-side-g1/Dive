@@ -5,12 +5,10 @@ import 'package:provider/provider.dart';
 
 class SaveTagButton extends StatelessWidget {
 
-  List<Tag> _tags;
-
   @override
   Widget build(BuildContext context) {
 
-    this._tags = Provider.of<List<Tag>>(context);
+    final providerTags = Provider.of<List<Tag>>(context);
 
     return ButtonTheme(
         height: 44,
@@ -18,8 +16,7 @@ class SaveTagButton extends StatelessWidget {
           color: CommonService.hexToColor("#63c7ff"),
           textColor: Colors.white,
           onPressed: () {
-              print("[save_tag_button.dart] #onPressed! ${this._tags}");
-            Navigator.of(context).pop(this._tags);
+            Navigator.of(context).pop(providerTags);
           },
           child: Text(
             "저장",

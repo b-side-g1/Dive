@@ -13,7 +13,6 @@ class InputPageStep3 extends StatefulWidget {
 
 class _InputPageStep3State extends State<InputPageStep3> {
   TagProvider tagProvider;
-  List<Tag> _tags;
 
   Future<List<Tag>> createEditTagDialog(BuildContext context) {
     return showDialog(
@@ -48,13 +47,10 @@ class _InputPageStep3State extends State<InputPageStep3> {
             ),
             FlatButton(
               padding: EdgeInsets.all(0),
-              onPressed: () {
-                print("[input_page_step3.dart] onPressed!");
-                createEditTagDialog(context).then((value) {});
-//                createEditTagDialog(context).then((value) {
-//                  print("[input_page_step3] EditTagDialog then! ${value}");
-//                  this.tagProvider =  Provider.of<TagProvider>(context);
-//                });
+              onPressed: () async {
+                createEditTagDialog(context).then((value) {
+                  this.tagProvider.getTags();
+                });
               },
               child: Row(
                 children: <Widget>[

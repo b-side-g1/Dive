@@ -7,8 +7,6 @@ import 'package:flutterapp/services/common/common_service.dart';
 import 'package:provider/provider.dart';
 
 class EditTagDialog extends StatelessWidget {
-  List<Tag> tags;
-
   @override
   Widget build(BuildContext context) {
 

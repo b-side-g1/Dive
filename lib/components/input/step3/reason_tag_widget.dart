@@ -28,6 +28,7 @@ class _BuildReasonTagState extends State<ReasonTagWidget> {
 //    final provider =Provider.of<TagProvider>(context);
     this.tags =Provider.of<List<Tag>>(context);
     print("[reason_tag_widget.dart] #build! ");
+    print("[reason_tag_widget.dart] this.tags.length -> ${this.tags.length} ");
     return this.tags == null ? Text("로딩중") : GridView.count(
         padding: EdgeInsets.all(0),
         crossAxisCount: 4,
