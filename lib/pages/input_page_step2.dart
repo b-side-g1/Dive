@@ -1,7 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/components/emotion_tag_box.dart';
 
 class InputPageStep2 extends StatefulWidget {
+  Color background;
+  List emotions;
+
+  InputPageStep2({Key key, this.background, this.emotions}) : super(key: key);
+
   @override
   _InputPageStep2State createState() => _InputPageStep2State();
 }
@@ -9,19 +15,30 @@ class InputPageStep2 extends StatefulWidget {
 class _InputPageStep2State extends State<InputPageStep2> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(image: AssetImage('lib/src/image/marble.png')),
-      ),
-      child: Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('lib/src/image/marble_shadow.png'),
-                alignment: Alignment(0.0, 0.75)),
-            border: Border.all(
-              width: 1,
-              color: Colors.pink, //
-            )),
+    return Scaffold(
+//      For Debug or develop
+      backgroundColor: Color.fromRGBO(19, 62, 133, 1.0),
+//    backgroundColor: widget.background,
+      body: Container(
+        child: Column(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(top: 30),
+              child: Text(
+                '지금 떠오르는 감정들',
+                style: TextStyle(
+                  color: Color.fromRGBO(255, 255, 255, 1),
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 20.1, top: 20.1, bottom: 20.1),
+              child: EmotionTagBox(emotions: widget.emotions,),
+            ),
+          ],
+        ),
       ),
     );
   }
