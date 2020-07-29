@@ -18,3 +18,16 @@ final List EmotionNames = [
   '슬픔',
   '아픔'
 ];
+
+final List<String> TagNames = [
+  '일',
+  '가족',
+  '친구',
+  '애인',
+  '쉼',
+  '운동',
+  '모임',
+  '취미',
+  '쇼핑',
+  '알콜',
+];

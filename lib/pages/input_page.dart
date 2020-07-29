@@ -1,8 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/pages/input_page_step1.dart';
 import 'package:flutterapp/pages/input_page_step2.dart';
 import 'package:flutterapp/pages/input_page_step3.dart';
+import 'package:flutterapp/provider/input/tag_provider.dart';
+import 'package:flutterapp/provider/input/tag_provider.dart';
+import 'package:provider/provider.dart';
 
 class InputPage extends StatefulWidget {
   @override
@@ -130,7 +134,17 @@ class _InputPageState extends State<InputPage> {
               // 빈 리스트가 아닌 경우의 처리는 고려치 않았기에, 정상동작하지 않을 수 있습니다.
               emotions: emotions,
               ),
-                InputPageStep3(),
+                MultiProvider(
+                    providers: [
+                      StreamProvider<List<Tag>>.value(
+                        value: TagProvider().tags,
+                      ),
+                      Provider<TagProvider>(
+                        create: (_) => TagProvider(),
+                      )
+                    ],
+                    child: InputPageStep3()
+                )
               ],
               onPageChanged: (page) {
                 setState(() {

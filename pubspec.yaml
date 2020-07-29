@@ -38,6 +38,8 @@ dependencies:
   uuid: ^2.2.0
   custom_switch: ^0.0.1
   package_info: ^0.4.1
+  flutter_tags: ^0.4.8+2
+#  flutter_rounded_date_picker: 1.0.0
   numberpicker: ^1.2.0
   #  flutter_rounded_date_picker: 1.0.0
 
