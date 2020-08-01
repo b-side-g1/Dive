@@ -7,7 +7,8 @@ import 'package:flutterapp/models/record_model.dart';
 import 'package:flutterapp/models/tag_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-
+import 'package:flutterapp/commons/static.dart';
+import 'package:flutterapp/services/common/common_service.dart';
 class DBHelper {
   DBHelper._();
 
@@ -34,7 +35,7 @@ class DBHelper {
     ddlList.add(recordDDL);
 
     var dailyTable = Daily.tableName;
-    var dailyDDL = "CREATE TABLE $dailyTable (id TEXT PRIMARY KEY, startAt TEXT, endAt TEXT, weekday INTEGER, day INTEGER, week INTEGER, month INTEGER, year INTEGER)";
+    var dailyDDL = "CREATE TABLE $dailyTable (id TEXT PRIMARY KEY, startTimestamp INTEGER, endTimestamp INTEGER, startAt TEXT, endAt TEXT, weekday INTEGER, day INTEGER, week INTEGER, month INTEGER, year INTEGER)";
     ddlList.add(dailyDDL);
 
     var tagTable = Tag.tableName;
@@ -68,6 +69,13 @@ class DBHelper {
         await db.rawInsert(
             'INSERT INTO basic(id,status,is_push,uuid) VALUES("1","FST","0","0123456789")'
         );
+        TagNames.forEach((tag) async {
+          String uuid = CommonService.generateUUID();
+          await db.rawInsert(
+              'INSERT INTO tag(id,name) VALUES(?,?)',
+              [uuid,tag]
+          );
+        });
       });
   }
 }

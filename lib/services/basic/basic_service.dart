@@ -26,13 +26,13 @@ class BasicService {
     return basic.today_endAt != null ? true : false;
   }
 
-  updateEndAt({String ampm, int hour}) async {
+  updateEndAt(String hour) async {
     final db = await DBHelper().database;
     int updateCount = await db.rawUpdate('''
     UPDATE ${Basic.tableName} 
-    SET today_endAt = ?
+    SET today_endAt = ?, today_startAt = ?
     WHERE id = ?
-    ''', ['${ampm}:${hour}', '1']);
+    ''', [hour, hour ,'1']);
     return updateCount;
   }
 
