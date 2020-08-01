@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutterapp/commons/static.dart';
+import 'package:flutterapp/services/common/common_service.dart';
 
 import 'emotion_tag.dart';
 
@@ -29,8 +30,7 @@ class _EmotionTagBoxState extends State<EmotionTagBox> {
                   .removeWhere((element) => element['index'] == index);
             else if (widget.emotions.length == 5) {
               //TODO: Toast 등으로 변경
-              print('이미 5개를 모두 선택하였습니다.');
-              return;
+              return CommonService.showToast("5개까지만 선택이 가능합니다.");
             } else
               widget.emotions.add({'index': index, 'name': name});
           });
