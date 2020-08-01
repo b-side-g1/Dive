@@ -14,24 +14,27 @@ class BottomBar extends StatelessWidget {
                     topLeft: const Radius.circular(20.0),
                     topRight: const Radius.circular(20.0))),
             child: Container(
-                height: 50,
+                height: 70,
                 child: TabBar(
                     labelColor: Colors.white,
                     unselectedLabelColor: Colors.white60,
                     indicatorColor: Colors.transparent,
                     tabs: <Widget>[
                       Tab(
-                          icon: Image.asset('lib/src/image/bottombar/icon_tab_daily.png', width: 20, height: 20,),
+                          icon: Image.asset(
+                            "assets/images/icon_tab_daily.png", width: 20, height: 20,),
                           child: Text(
                             '데일리',
                             style: TextStyle(fontSize: 12),
                           )),
                       Tab(
-                          icon: Image.asset('lib/src/image/bottombar/icon_tab_chart.png', width: 20, height: 20,),
+                          icon: Image(
+                            image: AssetImage("assets/images/icon_tab_chart.png"), width: 20, height: 20,
+                          ),
                           child: Text(
                             '통계',
                             style: TextStyle(fontSize: 12),
-                          ))
+                          )),
                     ]))));
   }
 }
