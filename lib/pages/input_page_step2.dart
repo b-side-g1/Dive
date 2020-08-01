@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/components/emotion_tag_box.dart';
+import 'package:flutterapp/inherited/state_container.dart';
 
 class InputPageStep2 extends StatefulWidget {
   Color background;
@@ -13,8 +14,10 @@ class InputPageStep2 extends StatefulWidget {
 }
 
 class _InputPageStep2State extends State<InputPageStep2> {
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
 //      For Debug or develop
       backgroundColor: Color.fromRGBO(19, 62, 133, 1.0),

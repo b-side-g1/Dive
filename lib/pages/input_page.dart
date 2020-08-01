@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterapp/inherited/state_container.dart';
 import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/pages/input_page_step1.dart';
 import 'package:flutterapp/pages/input_page_step2.dart';
@@ -28,6 +29,8 @@ class _InputPageState extends State<InputPage> {
     initialPage: 0,
   );
   int step = 1;
+  int testScore;
+
   void handlerPageView(int index) {
     _controller.animateToPage(index,
         curve: Curves.easeIn, duration: Duration(microseconds: 400));
@@ -119,6 +122,10 @@ class _InputPageState extends State<InputPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    final container = StateContainer.of(context);
+    testScore = container.score;
+
     return Scaffold(
       body: Container(
         child: Stack(
