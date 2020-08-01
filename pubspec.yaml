@@ -39,7 +39,6 @@ dependencies:
   custom_switch: ^0.0.1
   package_info: ^0.4.1
   flutter_tags: ^0.4.8+2
-#  flutter_rounded_date_picker: 1.0.0
   numberpicker: ^1.2.0
   #  flutter_rounded_date_picker: 1.0.0
   fluttertoast: ^7.0.1
@@ -95,11 +94,42 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+     - family: NotoSans
+       fonts:
+         - asset: assets/fonts/NotoSans-Regular.ttf
+         - asset: assets/fonts/NotoSans-Bold.ttf
+           weight: 700
+
+     - family: NotoSansKR
+       fonts:
+         - asset: assets/fonts/NotoSansKR-Bold.otf
+           weight: 700
+         - asset: assets/fonts/NotoSansKR-Light.otf
+           weight: 100
+
+     - family: RobotoMono
+       fonts:
+         - asset: assets/fonts/RobotoMono-Bold.ttf
+           weight: 700
+         - asset: assets/fonts/RobotoMono-Light.ttf
+           weight: 100
+         - asset: assets/fonts/RobotoMono-Medium.ttf
+           weight: 300
+         - asset: assets/fonts/RobotoMono-Regular.ttf
+           weight: 400
+
+     - family: Montserrat
+       fonts:
+         - asset: assets/fonts/Montserrat-Regular.ttf
+         - asset: assets/fonts/Montserrat-Light.ttf
+           weight: 100
+         - asset: assets/fonts/Montserrat-Medium.ttf
+           weight: 300
+         - asset: assets/fonts/Montserrat-Bold.ttf
+           weight: 700
+
+
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
