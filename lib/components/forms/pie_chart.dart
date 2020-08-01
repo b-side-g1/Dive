@@ -29,7 +29,7 @@ class PieChart extends CustomPainter {
 
   void drawArc(Paint paint, Canvas canvas, Offset center, double radius) {
     double arcAngle = 2 * pi * (percentage / 100);
-    paint..color = Colors.white;
+    paint..color = Color(0xff33f7fe);
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius), -pi / 2, arcAngle, false, paint);
   }
 
