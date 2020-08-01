@@ -454,7 +454,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
         return buildStep3();
       case 4:
         return StreamProvider<PickerTime>.value(
-          initialData: PickerTime(ampm: "오전", hour: 1),
+          initialData: PickerTime(hour: '00'),
           value: this._timePickerProvider.pickerStream,
           child: buildStep4(),
         );

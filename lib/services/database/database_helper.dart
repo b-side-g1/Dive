@@ -35,7 +35,7 @@ class DBHelper {
     ddlList.add(recordDDL);
 
     var dailyTable = Daily.tableName;
-    var dailyDDL = "CREATE TABLE $dailyTable (id TEXT PRIMARY KEY, startAt TEXT, endAt TEXT, weekday INTEGER, day INTEGER, week INTEGER, month INTEGER, year INTEGER)";
+    var dailyDDL = "CREATE TABLE $dailyTable (id TEXT PRIMARY KEY, startTimestamp INTEGER, endTimestamp INTEGER, startAt TEXT, endAt TEXT, weekday INTEGER, day INTEGER, week INTEGER, month INTEGER, year INTEGER)";
     ddlList.add(dailyDDL);
 
     var tagTable = Tag.tableName;
