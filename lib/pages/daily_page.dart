@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/components/record_card.dart';
 import 'package:flutterapp/models/basic_model.dart';
 import 'package:flutterapp/models/daily_model.dart';
+import 'package:flutterapp/models/emotion_model.dart';
 import 'package:flutterapp/models/record_model.dart';
+import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/pages/setting_page.dart';
 import 'package:flutterapp/services/basic/basic_service.dart';
 import 'package:flutterapp/services/daily/daily_service.dart';
@@ -19,7 +21,6 @@ class DailyPage extends StatefulWidget {
 }
 
 class _DailyPageState extends State<DailyPage> {
-  Basic _basic;
   DateTime _today = DateTime.now();
   DateTime _date = DateTime.now();
   int _dailyScore = 0;
@@ -27,7 +28,6 @@ class _DailyPageState extends State<DailyPage> {
   bool isToday = true;
   bool isEmpty = true;
 
-  BasicService _basicService = BasicService();
   RecordService _recordService = RecordService();
   DailyService _dailyService = DailyService();
 
@@ -74,7 +74,11 @@ class _DailyPageState extends State<DailyPage> {
         context: context,
         initialDate: _date,
         firstDate: new DateTime(2020),
-        lastDate: DateTime.now());
+        lastDate: DateTime.now(),
+        cancelText: "취소",
+        confirmText: "확인",
+        helpText: ""
+    );
     if (picked != null)
       setState(() {
         _date = picked;
@@ -91,8 +95,8 @@ class _DailyPageState extends State<DailyPage> {
     * */
     if (isToday && isEmpty) {
       return Text(
-        "지금 이 순간 \n나의 기분을 남겨보세요",
-        style: TextStyle(fontSize: 17),
+        "지금 이 순간 \n나의 기분을 남겨보세요.",
+        style: TextStyle(fontSize: 17, fontFamily: "NotoSans"),
         textAlign: TextAlign.center,
       );
     }
@@ -102,12 +106,12 @@ class _DailyPageState extends State<DailyPage> {
         children: <Widget>[
           Text(
             _dailyScore.toString(),
-            style: TextStyle(fontSize: 17),
+            style: TextStyle(fontSize: 34, fontFamily: "Montserrat", fontWeight: FontWeight.w700),
             textAlign: TextAlign.center,
           ),
           Text(
             "오늘 하루의 점수",
-            style: TextStyle(fontSize: 17),
+            style: TextStyle(fontSize: 17, fontFamily: "NotoSans"),
             textAlign: TextAlign.center,
           )
         ],
@@ -115,8 +119,8 @@ class _DailyPageState extends State<DailyPage> {
     }
     if (!isToday && isEmpty) {
       return Text(
-        "이날은 기록했던\n기분이 없네요",
-        style: TextStyle(fontSize: 17),
+        "이날은 기록했던\n기분이 없네요.",
+        style: TextStyle(fontSize: 17, fontFamily: "NotoSans"),
         textAlign: TextAlign.center,
       );
     }
@@ -126,7 +130,7 @@ class _DailyPageState extends State<DailyPage> {
         children: <Widget>[
           Text(
             _dailyScore.toString(),
-            style: TextStyle(fontSize: 17),
+            style: TextStyle(fontSize: 34, fontFamily: "Montserrat", fontWeight: FontWeight.w700),
             textAlign: TextAlign.center,
           ),
           Text(
@@ -153,17 +157,19 @@ class _DailyPageState extends State<DailyPage> {
                 children: <Widget>[
                   Container(
                     child: Icon(Icons.calendar_today),
-                    margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    margin: EdgeInsets.only(right: 10),
                   ),
                   Text(
                     new DateFormat("M.d").format(date),
                     style: TextStyle(fontSize: 19),
                   ),
-                  Icon(Icons.keyboard_arrow_down)
+                  Container(
+                    child: Image.asset("assets/images/icon_date_arrow.png"),
+                    margin: EdgeInsets.only(left: 5),
+                  )
                 ],
               )),
           Container(
-            margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
             child: _currentStatusContainer(),
           ),
         ],
@@ -174,24 +180,21 @@ class _DailyPageState extends State<DailyPage> {
   Widget _topNav(BuildContext context) {
     return Container(
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Image.asset(
-            'lib/src/image/daily/Topnav_logo.png',
-            height: 16,
+            'assets/images/topnav_logo.png',
             fit: BoxFit.fill,
           ),
           Container(
-            margin: EdgeInsets.fromLTRB(273, 0, 0, 0),
+            margin: EdgeInsets.only(right: 10),
             child: IconButton(
               icon: Image.asset(
-                'lib/src/image/daily/Topnav_icon_setting.png',
-                height: 24,
+                'assets/images/topnav_icon_setting.png',
               ),
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SettingPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SettingPage()));
               },
             ),
           )
@@ -204,7 +207,7 @@ class _DailyPageState extends State<DailyPage> {
     return FittedBox(
       fit: BoxFit.fill, // width 100% 적용!
       child: Image.asset(
-        'lib/src/image/daily/img_wave.png',
+        'assets/images/img_wave.png',
         height: 160,
       ),
     );
@@ -213,7 +216,7 @@ class _DailyPageState extends State<DailyPage> {
   Widget _createRecordContainer(BuildContext context) {
     if (!isToday && isEmpty) {
       return Image.asset(
-        'lib/src/image/daily/icon_empty.png',
+        'assets/images/icon_empty.png',
         height: 140,
       );
     }
@@ -223,7 +226,7 @@ class _DailyPageState extends State<DailyPage> {
             context, MaterialPageRoute(builder: (context) => InputPage()));
       },
       child: Image.asset(
-        'lib/src/image/daily/btn_dive.png',
+        'assets/images/btn_dive.png',
         height: 140,
       ),
     );
@@ -231,52 +234,53 @@ class _DailyPageState extends State<DailyPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: <Widget>[
-        SliverAppBar(
-          pinned: true, // 스크롤 내릴때 남아 있음
-          backgroundColor: Colors.white,
-          expandedHeight: 56.0,
-          flexibleSpace: FlexibleSpaceBar(
-              centerTitle: true,
-              titlePadding: EdgeInsets.fromLTRB(15, 0, 0, 5),
-              title: _topNav(context)),
-        ),
-        SliverFixedExtentList(
-          itemExtent: 121.0,
-          delegate: SliverChildListDelegate([
-            _dailyContainer(context, _date),
-          ]),
-        ),
-        SliverFixedExtentList(
-          itemExtent: 160.0,
-          delegate: SliverChildListDelegate([
-            _waveContainer(),
-          ]),
-        ),
-        SliverFixedExtentList(
-          itemExtent: !isToday && !isEmpty ? 0 : 150.0,
-          // TODO: 없애야 되는데 height 0으로 변경한 거;;리팩토링 필수
-          delegate: SliverChildListDelegate([
-            _createRecordContainer(context),
-          ]),
-        ),
-        SliverFixedExtentList(
-          itemExtent: 150.0,
-          delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
-              return Container(
-                alignment: Alignment.center,
-                padding: EdgeInsets.all(10),
-                child: RecordCard(
-                  record: _recordList[index],
-                ),
-              );
-            },
-            childCount: _recordList == null ? 0 : _recordList.length,
-          ),
-        ),
-      ],
-    );
+    return Scaffold(
+        backgroundColor: Colors.white,
+        body: CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              pinned: true, // 스크롤 내릴때 남아 있음
+              backgroundColor: Colors.white,
+              expandedHeight: 56.0,
+              flexibleSpace: FlexibleSpaceBar(
+                  centerTitle: true,
+                  titlePadding: EdgeInsets.fromLTRB(15, 0, 0, 5),
+                  title: _topNav(context)),
+            ),
+            SliverFixedExtentList(
+              itemExtent: 121.0,
+              delegate: SliverChildListDelegate([
+                _dailyContainer(context, _date),
+              ]),
+            ),
+            SliverFixedExtentList(
+              itemExtent: 160.0,
+              delegate: SliverChildListDelegate([
+                _waveContainer(),
+              ]),
+            ),
+            SliverFixedExtentList(
+              itemExtent: !isToday && !isEmpty ? 0 : 150.0,
+              // TODO: 없애야 되는데 height 0으로 변경한 거;;리팩토링 필수
+              delegate: SliverChildListDelegate([
+                _createRecordContainer(context),
+              ]),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  return Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.all(10),
+                    child: RecordCard(
+                      record: _recordList[index],
+                    ),
+                  );
+                },
+                childCount: _recordList == null ? 0 : _recordList.length,
+              ),
+            ),
+          ],
+        ));
   }
 }
