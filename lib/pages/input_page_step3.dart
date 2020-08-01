@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/components/input/step3/edit_tag_dialog.dart';
 import 'package:flutterapp/components/input/step3/reason_tag_widget.dart';
 import 'package:flutterapp/inherited/state_container.dart';
+import 'package:flutterapp/models/emotion_model.dart';
+import 'package:flutterapp/models/record_model.dart';
 import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/provider/input/tag_provider.dart';
 import 'package:flutterapp/services/common/common_service.dart';
@@ -14,6 +16,7 @@ class InputPageStep3 extends StatefulWidget {
 
 class _InputPageStep3State extends State<InputPageStep3> {
   TagProvider tagProvider;
+  TextEditingController _textEditingController = TextEditingController();
 
   Future<List<Tag>> createEditTagDialog(BuildContext context) {
     return showDialog(
@@ -92,7 +95,8 @@ class _InputPageStep3State extends State<InputPageStep3> {
         ));
     Widget writeReasonField = Container(
         padding: EdgeInsets.only(top: 13, left: 20, right: 20),
-        child: TextFormField(
+        child: TextField(
+          controller: _textEditingController,
           cursorColor: CommonService.hexToColor("#34b7eb"),
           decoration: new InputDecoration(
               border: InputBorder.none,
@@ -115,9 +119,19 @@ class _InputPageStep3State extends State<InputPageStep3> {
             textColor: Colors.white,
             padding: EdgeInsets.all(8.0),
             onPressed: () {
-              print("점수 : ${container.score}");
-              print("감정태그 : ${container.emotions}");
-              print("이유태그 : ${container.tags}");
+              Record recordParam = Record(
+                  id: CommonService.generateUUID(),
+                  score: container.score,
+//                emotions: container.emotions,
+                  emotions: [
+                    Emotion(id: CommonService.generateUUID(), name: "신남"),
+                    Emotion(id: CommonService.generateUUID(), name: "행복함"),
+                    Emotion(id: CommonService.generateUUID(), name: "기분좋음")
+                  ],
+                  tags: container.tags,
+                  createdAt: DateTime.now().toString(),
+                  updatedAt: DateTime.now().toString(),
+                  description: _textEditingController.text);
             },
             child: Text(
               "기록하기",
@@ -127,7 +141,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
             ),
           )),
     );
-
+//    SingleChildScrollView
     return Scaffold(
       body: Container(
           child: SingleChildScrollView(
