@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/flutter_tags.dart';
+import 'package:flutterapp/inherited/state_container.dart';
 import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/provider/input/tag_provider.dart';
 import 'package:flutterapp/services/common/common_service.dart';
@@ -33,6 +34,8 @@ class _BuildReasonTagState extends State<ReasonTagWidget> {
     this.tags = Provider.of<List<Tag>>(context);
     print("[reason_tag_widget.dart] #build! ");
     print("[reason_tag_widget.dart] this.tags.length -> ${this.tags.length} ");
+
+    final container = StateContainer.of(context);
 
     return this.tags == null
         ? Text("로딩중")
@@ -68,6 +71,8 @@ class _BuildReasonTagState extends State<ReasonTagWidget> {
                           selectedTags.add(this.tags[index]);
                           selectedCount++;
                           selecteds[index] = true;
+
+                          container.updateTags(selectedTags);
                         }
                       });
                     },

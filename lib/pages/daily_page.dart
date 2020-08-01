@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/components/record_card.dart';
+import 'package:flutterapp/inherited/state_container.dart';
 import 'package:flutterapp/models/basic_model.dart';
 import 'package:flutterapp/models/daily_model.dart';
 import 'package:flutterapp/models/record_model.dart';
@@ -220,7 +221,7 @@ class _DailyPageState extends State<DailyPage> {
     return InkWell(
       onTap: () {
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => InputPage()));
+            context, MaterialPageRoute(builder: (context) => StateContainer(child: InputPage())));
       },
       child: Image.asset(
         'lib/src/image/daily/btn_dive.png',

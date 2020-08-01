@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutterapp/commons/static.dart';
+import 'package:flutterapp/inherited/state_container.dart';
 import 'package:flutterapp/services/common/common_service.dart';
 
 import 'emotion_tag.dart';
@@ -20,6 +21,9 @@ class _EmotionTagBoxState extends State<EmotionTagBox> {
 
   @override
   Widget build(BuildContext context) {
+
+    final container = StateContainer.of(context);
+
     _onTap(int index, String name) {
       return () => setState(() {
             if (widget.emotions.singleWhere(
@@ -33,6 +37,7 @@ class _EmotionTagBoxState extends State<EmotionTagBox> {
               return CommonService.showToast("5개까지만 선택이 가능합니다.");
             } else
               widget.emotions.add({'index': index, 'name': name});
+            container.updateEmotions(widget.emotions);
           });
 //      return () => setState(() {
 //            _activatedEmotionTagIds.contains()
