@@ -18,15 +18,14 @@ class TimePickerWidget extends StatefulWidget {
 class TimePickerWidgetState extends State<TimePickerWidget> {
   TimePickerProvider _timePickerProvider;
 
-  PickerTime pickerTime = PickerTime(ampm: "오전", hour: 1);
+  PickerTime pickerTime = PickerTime(hour: '00');
   BasicService basicService = BasicService();
 
 
   PickerTime parsePickerTime(pickerData, value) {
-    String ampm = pickerData[0][value[0]];
-    int hour = pickerData[1][value[1]];
+    String hour = pickerData[0][value[0]];
 
-    return PickerTime(ampm: ampm, hour: hour);
+    return PickerTime(hour: hour);
   }
 
   showPickerModal(BuildContext context) {
@@ -55,7 +54,7 @@ class TimePickerWidgetState extends State<TimePickerWidget> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              "${Provider.of<PickerTime>(context).ampm} ${Provider.of<PickerTime>(context).hour}시",
+              "${Provider.of<PickerTime>(context).hour}시",
               style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w300,

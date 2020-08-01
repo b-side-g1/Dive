@@ -12,10 +12,9 @@ class TimePickerProvider {
   Stream<PickerTime> get pickerStream => _pickerController.stream;
 
   PickerTime parsePickerTime(pickerData,value) {
-    String ampm = pickerData[0][value[0]];
-    int hour = pickerData[1][value[1]];
+    String hour = pickerData[0][value[0]];
 
-    return PickerTime(ampm: ampm, hour: hour);
+    return PickerTime(hour: hour);
   }
 
   void changePickerTime(pickerData,value) {
@@ -25,13 +24,12 @@ class TimePickerProvider {
   }
 
   void printPickerTime() {
-    debugPrint("[time_picker_provider.dart] #printPickerTime -> ${this.pickerTime.ampm}");
     debugPrint("[time_picker_provider.dart] #printPickerTime -> ${this.pickerTime.hour}");
   }
 
   void updateEndAt(PickerTime pickerTime) async {
     BasicService basicService = BasicService();
-    await basicService.updateEndAt(ampm: pickerTime.ampm,hour: pickerTime.hour);
+    await basicService.updateEndAt(pickerTime.hour);
     Basic resultBasic = await basicService.selectBasicData();
     print(resultBasic.toJson());
   }
