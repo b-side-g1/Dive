@@ -15,12 +15,17 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
   List emotions = [];
+
   Color get backgroundColor {
-    switch(step) {
-      default: return Color.fromRGBO(7, 26, 58, 1.0);
+    switch (step) {
+      case 2:
+        return Color.fromRGBO(19, 62, 133, 1.0);
+      case 3:
+        return Color.fromRGBO(7, 26, 58, 1.0);
+      default:
+        return Color.fromRGBO(43, 99, 194, 1.0);
     }
   }
-
 
   PageController _controller = PageController(
     initialPage: 0,
@@ -132,9 +137,11 @@ class _InputPageState extends State<InputPage> {
               children: [
                 InputPageStep1(
                   handlerPageView: handlerPageView,
+                  backgroundColor: backgroundColor,
                 ),
                 InputPageStep2(
                   emotions: emotions,
+                  backgroundColor: backgroundColor,
                 ),
                 MultiProvider(providers: [
                   StreamProvider<List<Tag>>.value(

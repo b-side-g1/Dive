@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/components/emotion_tag_box.dart';
-import 'package:flutterapp/models/emotion_model.dart';
 
 class InputPageStep2 extends StatefulWidget {
   Color backgroundColor;
