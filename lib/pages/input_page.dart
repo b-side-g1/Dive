@@ -65,8 +65,11 @@ class _InputPageState extends State<InputPage> {
               FloatingActionButton(
                 mini: true,
                 backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
-                child: Icon(Icons.keyboard_arrow_up),
-                tooltip: 'next step',
+                child: Image.asset(
+                  'lib/src/image/daily/icon_up.png',
+                  height: 16,
+                  width: 16,
+                ),
                 onPressed: () {
                   handlerPageView(step - 1);
                 },
