@@ -44,6 +44,13 @@ class _InputPageState extends State<InputPage> {
     super.dispose();
   }
 
+  renderBackground() {
+    return Container(
+      alignment: Alignment.bottomCenter,
+      child: Image.asset('lib/src/image/daily/bg_white_gradient.png'),
+    );
+  }
+
   renderClose() {
     void _showDialog() {
       showDialog(
@@ -143,14 +150,18 @@ class _InputPageState extends State<InputPage> {
                   emotions: emotions,
                   backgroundColor: backgroundColor,
                 ),
-                MultiProvider(providers: [
-                  StreamProvider<List<Tag>>.value(
-                    value: TagProvider().tags,
-                  ),
-                  Provider<TagProvider>(
-                    create: (_) => TagProvider(),
-                  )
-                ], child: InputPageStep3())
+                MultiProvider(
+                    providers: [
+                      StreamProvider<List<Tag>>.value(
+                        value: TagProvider().tags,
+                      ),
+                      Provider<TagProvider>(
+                        create: (_) => TagProvider(),
+                      )
+                    ],
+                    child: InputPageStep3(
+                      backgroundColor: backgroundColor,
+                    ))
               ],
               onPageChanged: (page) {
                 setState(() {
@@ -167,6 +178,7 @@ class _InputPageState extends State<InputPage> {
                     children: <Widget>[renderClose(), renderSteper(step)],
                   ),
                 )),
+            renderBackground(),
           ],
         ),
       ),

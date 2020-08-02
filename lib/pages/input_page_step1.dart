@@ -194,13 +194,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
     );
   }
 
-  renderBackground() {
-    return Container(
-      alignment: Alignment.bottomCenter,
-      child: Image.asset('lib/src/image/daily/bg_white_gradient.png'),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final container = StateContainer.of(context);
@@ -211,7 +204,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
           padding: EdgeInsets.only(top: 130),
           child: Stack(
             children: <Widget>[
-              renderBackground(),
               Column(
                 children: <Widget>[
                   renderTimeSelect(),
