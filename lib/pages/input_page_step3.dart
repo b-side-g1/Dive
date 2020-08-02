@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/components/input/step3/edit_tag_dialog.dart';
 import 'package:flutterapp/components/input/step3/reason_tag_widget.dart';
 import 'package:flutterapp/inherited/state_container.dart';
+import 'package:flutterapp/inherited/state_container.dart';
 import 'package:flutterapp/models/emotion_model.dart';
 import 'package:flutterapp/models/record_model.dart';
 import 'package:flutterapp/models/tag_model.dart';
@@ -118,6 +119,11 @@ class _InputPageStep3State extends State<InputPageStep3> {
             color: CommonService.hexToColor("#63c7ff"),
             textColor: Colors.white,
             padding: EdgeInsets.all(8.0),
+            onPressed: () {
+              print("점수 : ${container.score}");
+              print("감정태그 : ${container.emotions}");
+              print("이유태그 : ${container.tags}");
+            },
             onPressed: () {
               Record recordParam = Record(
                   id: CommonService.generateUUID(),

@@ -15,37 +15,22 @@ class EmotionTagBox extends StatefulWidget {
 }
 
 class _EmotionTagBoxState extends State<EmotionTagBox> {
-//  List _activatedEmotionTagIds = [];
-//
-//  get activatedEmotionTagIds => _activatedEmotionTagIds;
-
   @override
   Widget build(BuildContext context) {
-
     final container = StateContainer.of(context);
 
-    _onTap(int index, String name) {
+    _onTap(int id, String name) {
       return () => setState(() {
-            if (widget.emotions.singleWhere(
-                    (element) => element['index'] == index,
+            if (widget.emotions.singleWhere((element) => element['id'] == id,
                     orElse: () => null) !=
                 null)
-              widget.emotions
-                  .removeWhere((element) => element['index'] == index);
+              widget.emotions.removeWhere((element) => element['id'] == id);
             else if (widget.emotions.length == 5) {
-              //TODO: Toast 등으로 변경
               return CommonService.showToast("5개까지만 선택이 가능합니다.");
             } else
-              widget.emotions.add({'index': index, 'name': name});
+              widget.emotions.add({'id': id, 'name': name});
             container.updateEmotions(widget.emotions);
           });
-//      return () => setState(() {
-//            _activatedEmotionTagIds.contains()
-//                ? _activatedEmotionTagIds
-//                    .removeWhere((element) => element == tagId)
-//                : _activatedEmotionTagIds.add(tagId);
-//            print(activatedEmotionTagIds);
-//          });
     }
 
     List<EmotionTag> emotionTags = [];
@@ -55,25 +40,43 @@ class _EmotionTagBoxState extends State<EmotionTagBox> {
           emotionTags.add(EmotionTag(
             id: id,
             title: EmotionNames[id - 1],
-            activeColors: [Color.fromRGBO(255, 159, 222, 1), Color.fromRGBO(255, 177, 229, 1)],
+            activeColors: [
+              Color.fromRGBO(255, 159, 222, 1),
+              Color.fromRGBO(255, 177, 229, 1)
+            ],
             onTap: _onTap(id, EmotionNames[id - 1]),
-            isActivated: widget.emotions.where((element) => element['index'] == id).length == 1,
+            isActivated: widget.emotions
+                    .where((element) => element['id'] == id)
+                    .length ==
+                1,
           ));
         } else if (id <= 10) {
           emotionTags.add(EmotionTag(
             id: id,
             title: EmotionNames[id - 1],
-            activeColors: [Color.fromRGBO(60, 160, 217, 1), Color.fromRGBO(99, 177, 221, 1)],
+            activeColors: [
+              Color.fromRGBO(60, 160, 217, 1),
+              Color.fromRGBO(99, 177, 221, 1)
+            ],
             onTap: _onTap(id, EmotionNames[id - 1]),
-            isActivated: widget.emotions.where((element) => element['index'] == id).length == 1,
+            isActivated: widget.emotions
+                    .where((element) => element['id'] == id)
+                    .length ==
+                1,
           ));
         } else {
           emotionTags.add(EmotionTag(
             id: id,
             title: EmotionNames[id - 1],
-            activeColors: [Color.fromRGBO(86, 113, 210, 1), Color.fromRGBO(100, 119, 188, 1)],
+            activeColors: [
+              Color.fromRGBO(86, 113, 210, 1),
+              Color.fromRGBO(100, 119, 188, 1)
+            ],
             onTap: _onTap(id, EmotionNames[id - 1]),
-            isActivated: widget.emotions.where((element) => element['index'] == id).length == 1,
+            isActivated: widget.emotions
+                    .where((element) => element['id'] == id)
+                    .length ==
+                1,
           ));
         }
       }
