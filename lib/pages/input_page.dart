@@ -8,6 +8,8 @@ import 'package:flutterapp/pages/input_page_step3.dart';
 import 'package:flutterapp/provider/input/tag_provider.dart';
 import 'package:provider/provider.dart';
 
+import 'daily_page.dart';
+
 class InputPage extends StatefulWidget {
   @override
   _InputPageState createState() => _InputPageState();
@@ -119,7 +121,8 @@ class _InputPageState extends State<InputPage> {
               new FlatButton(
                 child: new Text("네"),
                 onPressed: () {
-                  Navigator.of(context).popUntil((route) => route.isFirst);
+                  Navigator.pushReplacement(
+                      context, MaterialPageRoute(builder: (context) => DailyPage()));
                 },
               ),
             ],

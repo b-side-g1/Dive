@@ -9,6 +9,7 @@ import 'package:flutterapp/models/record_has_emotion.dart';
 import 'package:flutterapp/models/record_has_tag.dart';
 import 'package:flutterapp/models/record_model.dart';
 import 'package:flutterapp/models/tag_model.dart';
+import 'package:flutterapp/pages/daily_page.dart';
 import 'package:flutterapp/provider/input/tag_provider.dart';
 import 'package:flutterapp/services/common/common_service.dart';
 import 'package:flutterapp/services/daily/daily_service.dart';
@@ -178,7 +179,8 @@ class _InputPageStep3State extends State<InputPageStep3> {
 
               CommonService.showToast("당신의 감정을 기록했습니다..");
 
-              Navigator.pop(context);
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => StateContainer(child: DailyPage())));
             },
             child: Text(
               "기록하기",
