@@ -7,6 +7,7 @@ import 'package:flutterapp/models/record_has_emotion.dart';
 import 'package:flutterapp/models/record_has_tag.dart';
 import 'package:flutterapp/models/record_model.dart';
 import 'package:flutterapp/models/tag_model.dart';
+import 'package:flutterapp/pages/daily_page.dart';
 import 'package:flutterapp/provider/input/tag_provider.dart';
 import 'package:flutterapp/services/common/common_service.dart';
 import 'package:flutterapp/services/daily/daily_service.dart';
@@ -50,7 +51,8 @@ class _InputPageStep3State extends State<InputPageStep3> {
         child: Center(
             child: Text(
           "그렇게 느끼는 이유는...",
-          style: TextStyle(fontSize: 21, fontWeight: FontWeight.w700),
+          style: TextStyle(
+              fontSize: 21, fontWeight: FontWeight.w700, color: Colors.white),
         )));
     Widget toolBarWidget = Container(
         padding: EdgeInsets.only(top: 20, left: 20, right: 20),
@@ -59,7 +61,10 @@ class _InputPageStep3State extends State<InputPageStep3> {
           children: <Widget>[
             Text(
               "이유태그",
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+              style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white),
             ),
             FlatButton(
               padding: EdgeInsets.all(0),
@@ -70,13 +75,16 @@ class _InputPageStep3State extends State<InputPageStep3> {
               },
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.edit),
+                  Icon(Icons.edit, color: Colors.white),
                   SizedBox(
                     width: 3,
                   ),
                   Text(
                     "태그편집",
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white),
                   ),
                 ],
               ),
@@ -99,7 +107,10 @@ class _InputPageStep3State extends State<InputPageStep3> {
           children: <Widget>[
             Text(
               "이유적기",
-              style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+              style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white),
             ),
           ],
         ));
@@ -109,6 +120,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
           controller: _textEditingController,
           cursorColor: CommonService.hexToColor("#34b7eb"),
           decoration: new InputDecoration(
+              hintStyle: TextStyle(color: Colors.white),
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,
@@ -165,7 +177,8 @@ class _InputPageStep3State extends State<InputPageStep3> {
 
               CommonService.showToast("당신의 감정을 기록했습니다..");
 
-              Navigator.pop(context);
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => StateContainer(child: DailyPage())));
             },
             child: Text(
               "기록하기",
