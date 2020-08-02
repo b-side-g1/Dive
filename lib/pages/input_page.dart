@@ -30,12 +30,13 @@ class _InputPageState extends State<InputPage> {
   PageController _controller = PageController(
     initialPage: 0,
   );
-  int step = 1;
+  int step = 0;
   int testScore;
 
   void handlerPageView(int index) {
+    step = index;
     _controller.animateToPage(index,
-        curve: Curves.easeIn, duration: Duration(microseconds: 400));
+        curve: Curves.easeIn, duration: Duration(microseconds: 2000000));
   }
 
   @override
@@ -48,6 +49,50 @@ class _InputPageState extends State<InputPage> {
     return Container(
       alignment: Alignment.bottomCenter,
       child: Image.asset('lib/src/image/daily/bg_white_gradient.png'),
+    );
+  }
+
+  renderStepButton() {
+    return Expanded(
+      child: Container(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              FloatingActionButton(
+                mini: true,
+                backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
+                child: Icon(Icons.keyboard_arrow_up),
+                tooltip: 'next step',
+                onPressed: () {
+                  handlerPageView(step - 1);
+                },
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              FloatingActionButton(
+                mini: true,
+                backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
+                child: Image.asset(
+                  'lib/src/image/daily/icon_down.png',
+                  height: 16,
+                  width: 16,
+                ),
+                tooltip: 'next step',
+                onPressed: () {
+                  handlerPageView(step + 1);
+                },
+              ),
+            ],
+          ),
+        ],
+      )),
     );
   }
 
@@ -143,7 +188,6 @@ class _InputPageState extends State<InputPage> {
               scrollDirection: Axis.vertical,
               children: [
                 InputPageStep1(
-                  handlerPageView: handlerPageView,
                   backgroundColor: backgroundColor,
                 ),
                 InputPageStep2(
@@ -179,6 +223,7 @@ class _InputPageState extends State<InputPage> {
                   ),
                 )),
             renderBackground(),
+            renderStepButton(),
           ],
         ),
       ),
