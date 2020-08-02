@@ -30,8 +30,8 @@ class _EmotionTagBoxState extends State<EmotionTagBox> {
               return CommonService.showToast("5개까지만 선택이 가능합니다.");
             } else
               widget.emotions.add({'id': id, 'name': name});
-            container.updateEmotions(
-                widget.emotions.map((e) => Emotion(id: e.id, name: e.name)));
+            List<Emotion> emotionsParam = widget.emotions.map((e) => Emotion(id: e['id'].toString(), name: e['name']) ).toList();
+            container.updateEmotions(emotionsParam);
           });
     }
 

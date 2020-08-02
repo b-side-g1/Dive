@@ -12,10 +12,8 @@ class RecordService {
   TagService _tagService = TagService();
   DailyService _dailyService = DailyService();
 
-  insertRecord(Record record, int timestamp) async {
+  insertRecord(Record record) async {
     final db = await DBHelper().database;
-
-    Daily daily = await _dailyService.getDailyByTimestamp(timestamp);
     var res = await db.insert(Record.tableName,record.toTableJson());
     return res;
   }
@@ -41,10 +39,10 @@ class RecordService {
     var res = await db.query(Record.tableName, where: 'dailyId = ?', whereArgs: [dailyId]);
 
     List<Record> records = res.isNotEmpty ? res.map((c) => Record.fromJson(c)).toList() : [];
-    records.forEach((_record) async {
+    for (var _record in records) {
       _record.emotions = await _emotionService.selectEmotionAllByRecordId(_record.id);
       _record.tags = await _tagService.selectTagAllByRecordId(_record.id);
-    });
+    }
 
     return records;
   }

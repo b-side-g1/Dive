@@ -133,9 +133,11 @@ class _InputPageState extends State<InputPage> {
               children: [
                 InputPageStep1(
                   handlerPageView: handlerPageView,
+                  backgroundColor: backgroundColor,
                 ),
                 InputPageStep2(
                   emotions: emotions,
+                  backgroundColor: backgroundColor,
                 ),
                 MultiProvider(providers: [
                   StreamProvider<List<Tag>>.value(

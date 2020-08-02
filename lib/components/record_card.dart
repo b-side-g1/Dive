@@ -39,7 +39,7 @@ class RecordCard extends StatelessWidget {
                         child: Column(
                           children: <Widget>[
                             Container( // TODO: ...
-                              height: this.record.emotions.isNotEmpty ? 130 : 0,
+                              height: this.record.emotions == null || this.record.emotions.isEmpty ? 0 : 130,
                               child: GridView.count(
                                 crossAxisCount: 3,
                                 shrinkWrap: true,

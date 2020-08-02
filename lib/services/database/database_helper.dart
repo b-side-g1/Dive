@@ -76,6 +76,13 @@ class DBHelper {
               [uuid,tag]
           );
         });
+
+        for(int i=0; i<EmotionNames.length; i++) {
+          await db.rawInsert(
+              'INSERT INTO emotion(id,name) VALUES(?,?)',
+              [(i+1).toString(),EmotionNames[i]]
+          );
+        }
       });
   }
 }

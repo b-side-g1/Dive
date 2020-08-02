@@ -44,10 +44,12 @@ class _DailyPageState extends State<DailyPage> {
   void _setDataByDate(DateTime date) async {
     var resDaily = await _dailyService.selectDailyByDate(date);
 
-    var resRecords = resDaily == null
-        ? List<Record>()
-        : await _recordService
-            .selectAllWithEmotionsAndTagsByDailyId(resDaily.id);
+
+    var resRecords = List<Record>();
+    if(resDaily != null){
+      resRecords =  await _recordService.selectAllWithEmotionsAndTagsByDailyId(resDaily.id);
+    }
+
 
     var resDailyScore = resRecords.isEmpty
         ? 0

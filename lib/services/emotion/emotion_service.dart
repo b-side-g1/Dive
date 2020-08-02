@@ -11,10 +11,20 @@ class EmotionService {
 //    var res = await db.query(RecordHasEmotion.tableName,
 //        where: 'recordId = ?', whereArgs: [recordId]);
 
-    var res = await db.rawQuery("SELECT e.id, e.name, e.createdAt, e.deletedAt FROM $recordHasEmotionTableName rhe inner join $emotionTableName e on rhe.emotionId = e.id where rhe.recordId=$recordId");
+    var res = await db.rawQuery("SELECT e.id, e.name, e.createdAt, e.deletedAt FROM $recordHasEmotionTableName rhe inner join $emotionTableName e on rhe.emotionId = e.id where rhe.recordId='$recordId'");
 
     List<Emotion> emotions =
         res.isNotEmpty ? res.map((c) => Emotion.fromJson(c)).toList() : [];
     return emotions;
   }
+
+  Future<RecordHasEmotion>insertRecordHasEmotion(RecordHasEmotion recordHasEmotion) async {
+    final db = await DBHelper().database;
+
+    await db.insert(RecordHasEmotion.tableName, recordHasEmotion.toJson());
+
+    return recordHasEmotion;
+  }
+
+
 }
