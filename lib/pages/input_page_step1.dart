@@ -8,9 +8,9 @@ class InputPageStep1 extends StatefulWidget {
   final int score;
   Color backgroundColor;
 
-  InputPageStep1({Key key, this.handlerPageView, this.score, this.backgroundColor})
+  InputPageStep1({Key key, this.score, this.backgroundColor})
       : super(key: key);
-  Function handlerPageView;
+//  Function handlerPageView;
 
   @override
   _InputPageStep1State createState() => _InputPageStep1State();
@@ -153,54 +153,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
         ]));
   }
 
-  renderNextStep() {
-    return Expanded(
-      child: Container(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Container(
-            margin: EdgeInsets.only(bottom: 70),
-            height: 35,
-            width: MediaQuery.of(context).size.width * 0.8,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('lib/src/image/daily/img_shadow.png'),
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.only(bottom: 20),
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-                color: Color.fromRGBO(0, 0, 0, 0.3), shape: BoxShape.circle),
-            child: IconButton(
-              icon: Image.asset(
-                'lib/src/image/daily/icon_down.png',
-                height: 16,
-                width: 16,
-              ),
-              tooltip: 'next step',
-              onPressed: () {
-                widget.handlerPageView(1);
-              },
-            ),
-          ),
-        ],
-      )),
-    );
-  }
-
-  renderBackground() {
-    return Container(
-      alignment: Alignment.bottomCenter,
-      child: Image.asset('lib/src/image/daily/bg_white_gradient.png'),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final container = StateContainer.of(context);
@@ -211,12 +163,20 @@ class _InputPageStep1State extends State<InputPageStep1> {
           padding: EdgeInsets.only(top: 130),
           child: Stack(
             children: <Widget>[
-              renderBackground(),
               Column(
                 children: <Widget>[
                   renderTimeSelect(),
                   renderScoreSelect(container),
-                  renderNextStep(),
+                  Container(
+                    margin: EdgeInsets.only(top: 45),
+                    height: 35,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('lib/src/image/daily/img_shadow.png'),
+                      ),
+                    ),
+                  ),
                 ],
               )
             ],

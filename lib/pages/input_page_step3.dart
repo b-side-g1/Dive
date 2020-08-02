@@ -18,6 +18,10 @@ import 'package:flutterapp/services/tag/tag_service.dart';
 import 'package:provider/provider.dart';
 
 class InputPageStep3 extends StatefulWidget {
+  Color backgroundColor;
+
+  InputPageStep3({Key key, this.backgroundColor}) : super(key: key);
+
   @override
   _InputPageStep3State createState() => _InputPageStep3State();
 }
@@ -175,6 +179,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
     );
 //    SingleChildScrollView
     return Scaffold(
+      backgroundColor: widget.backgroundColor,
       body: Container(
           child: SingleChildScrollView(
         child: Column(

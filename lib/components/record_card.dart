@@ -1,10 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/components/forms/pie_chart.dart';
-import 'package:flutterapp/models/emotion_model.dart';
 import 'package:flutterapp/models/record_model.dart';
-import 'package:flutterapp/models/tag_model.dart';
-import 'package:intl/intl.dart';
 
 class RecordCard extends StatelessWidget {
   RecordCard({this.record});
@@ -82,7 +79,8 @@ class RecordCard extends StatelessWidget {
       return Container();
     }
     return Padding(
-      padding: EdgeInsets.only(top: this.record.emotions.isNotEmpty ? 18 : 0, right: 40),
+      padding: EdgeInsets.only(
+          top: this.record.emotions.isNotEmpty ? 18 : 0, right: 40),
       child: Wrap(
         spacing: 8.0,
         runSpacing: 4.0,

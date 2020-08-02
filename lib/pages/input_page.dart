@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/inherited/state_container.dart';
-import 'package:flutterapp/models/emotion_model.dart';
 import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/pages/input_page_step1.dart';
 import 'package:flutterapp/pages/input_page_step2.dart';
@@ -16,28 +15,90 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
   List emotions = [];
+
   Color get backgroundColor {
-    switch(step) {
-      default: return Color.fromRGBO(7, 26, 58, 1.0);
+    switch (step) {
+      case 2:
+        return Color.fromRGBO(19, 62, 133, 1.0);
+      case 3:
+        return Color.fromRGBO(7, 26, 58, 1.0);
+      default:
+        return Color.fromRGBO(43, 99, 194, 1.0);
     }
   }
-
 
   PageController _controller = PageController(
     initialPage: 0,
   );
-  int step = 1;
+  int step = 0;
   int testScore;
 
   void handlerPageView(int index) {
+    step = index;
     _controller.animateToPage(index,
-        curve: Curves.easeIn, duration: Duration(microseconds: 400));
+        curve: Curves.easeIn, duration: Duration(microseconds: 2000000));
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  renderBackground() {
+    return Container(
+      alignment: Alignment.bottomCenter,
+      child: Image.asset('lib/src/image/daily/bg_white_gradient.png'),
+    );
+  }
+
+  renderStepButton() {
+    return Expanded(
+      child: Container(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              FloatingActionButton(
+                heroTag: 'up',
+                mini: true,
+                backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
+                child: Image.asset(
+                  'lib/src/image/daily/icon_up.png',
+                  height: 16,
+                  width: 16,
+                ),
+                onPressed: () {
+                  handlerPageView(step - 1);
+                },
+              ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              FloatingActionButton(
+                heroTag: 'down',
+                mini: true,
+                backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
+                child: Image.asset(
+                  'lib/src/image/daily/icon_down.png',
+                  height: 16,
+                  width: 16,
+                ),
+                tooltip: 'next step',
+                onPressed: () {
+                  handlerPageView(step + 1);
+                },
+              ),
+            ],
+          ),
+        ],
+      )),
+    );
   }
 
   renderClose() {
@@ -132,21 +193,24 @@ class _InputPageState extends State<InputPage> {
               scrollDirection: Axis.vertical,
               children: [
                 InputPageStep1(
-                  handlerPageView: handlerPageView,
                   backgroundColor: backgroundColor,
                 ),
                 InputPageStep2(
                   emotions: emotions,
                   backgroundColor: backgroundColor,
                 ),
-                MultiProvider(providers: [
-                  StreamProvider<List<Tag>>.value(
-                    value: TagProvider().tags,
-                  ),
-                  Provider<TagProvider>(
-                    create: (_) => TagProvider(),
-                  )
-                ], child: InputPageStep3())
+                MultiProvider(
+                    providers: [
+                      StreamProvider<List<Tag>>.value(
+                        value: TagProvider().tags,
+                      ),
+                      Provider<TagProvider>(
+                        create: (_) => TagProvider(),
+                      )
+                    ],
+                    child: InputPageStep3(
+                      backgroundColor: backgroundColor,
+                    ))
               ],
               onPageChanged: (page) {
                 setState(() {
@@ -163,6 +227,8 @@ class _InputPageState extends State<InputPage> {
                     children: <Widget>[renderClose(), renderSteper(step)],
                   ),
                 )),
+            renderBackground(),
+            renderStepButton(),
           ],
         ),
       ),
