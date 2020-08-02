@@ -165,6 +165,7 @@ class _RecordingFormState extends State<RecordingForm> {
   }
 
   void _createRecord(Record record) async {
+    int currentTimeStamp = DateTime.now().millisecondsSinceEpoch;
     final result = await _recordService.insertRecord(record);
     print('[recording_form.dart] #_insertRecord Result -> $result');
   }

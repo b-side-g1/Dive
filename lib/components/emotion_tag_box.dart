@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutterapp/commons/static.dart';
 import 'package:flutterapp/inherited/state_container.dart';
+import 'package:flutterapp/models/emotion_model.dart';
 import 'package:flutterapp/services/common/common_service.dart';
 
 import 'emotion_tag.dart';
@@ -29,7 +30,8 @@ class _EmotionTagBoxState extends State<EmotionTagBox> {
               return CommonService.showToast("5개까지만 선택이 가능합니다.");
             } else
               widget.emotions.add({'id': id, 'name': name});
-            container.updateEmotions(widget.emotions);
+            List<Emotion> emotionsParam = widget.emotions.map((e) => Emotion(id: e['id'].toString(), name: e['name']) ).toList();
+            container.updateEmotions(emotionsParam);
           });
     }
 

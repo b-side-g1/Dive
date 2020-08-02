@@ -2,9 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/components/input/step3/edit_tag_dialog.dart';
 import 'package:flutterapp/components/input/step3/reason_tag_widget.dart';
 import 'package:flutterapp/inherited/state_container.dart';
+import 'package:flutterapp/inherited/state_container.dart';
+import 'package:flutterapp/models/daily_model.dart';
+import 'package:flutterapp/models/emotion_model.dart';
+import 'package:flutterapp/models/record_has_emotion.dart';
+import 'package:flutterapp/models/record_has_tag.dart';
+import 'package:flutterapp/models/record_model.dart';
 import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/provider/input/tag_provider.dart';
 import 'package:flutterapp/services/common/common_service.dart';
+import 'package:flutterapp/services/daily/daily_service.dart';
+import 'package:flutterapp/services/emotion/emotion_service.dart';
+import 'package:flutterapp/services/record/record_service.dart';
+import 'package:flutterapp/services/tag/tag_service.dart';
 import 'package:provider/provider.dart';
 
 class InputPageStep3 extends StatefulWidget {
@@ -14,6 +24,7 @@ class InputPageStep3 extends StatefulWidget {
 
 class _InputPageStep3State extends State<InputPageStep3> {
   TagProvider tagProvider;
+  TextEditingController _textEditingController = TextEditingController();
 
   Future<List<Tag>> createEditTagDialog(BuildContext context) {
     return showDialog(
@@ -92,7 +103,8 @@ class _InputPageStep3State extends State<InputPageStep3> {
         ));
     Widget writeReasonField = Container(
         padding: EdgeInsets.only(top: 13, left: 20, right: 20),
-        child: TextFormField(
+        child: TextField(
+          controller: _textEditingController,
           cursorColor: CommonService.hexToColor("#34b7eb"),
           decoration: new InputDecoration(
               border: InputBorder.none,
@@ -114,10 +126,44 @@ class _InputPageStep3State extends State<InputPageStep3> {
             color: CommonService.hexToColor("#63c7ff"),
             textColor: Colors.white,
             padding: EdgeInsets.all(8.0),
-            onPressed: () {
-              print("점수 : ${container.score}");
-              print("감정태그 : ${container.emotions}");
-              print("이유태그 : ${container.tags}");
+            onPressed: () async {
+              int currentTimeStamp = DateTime.now().millisecondsSinceEpoch;
+              Daily daily =
+                  await DailyService().getDailyByTimestamp(currentTimeStamp);
+              String dailyId = daily.id;
+
+              Record recordParam = Record(
+                  id: CommonService.generateUUID(),
+                  score: container.score,
+                  dailyId: dailyId,
+                  emotions: container.emotions,
+                  tags: container.tags,
+                  createdAt: DateTime.now().toString(),
+                  updatedAt: DateTime.now().toString(),
+                  description: _textEditingController.text);
+
+              await RecordService().insertRecord(recordParam);
+
+              container.tags.forEach((tag) async {
+                RecordHasTag recordHasTagParam = RecordHasTag(
+                    recordId: recordParam.id,
+                    tagId: tag.id,
+                    createdAt: DateTime.now().toString());
+                print("recordHasTagParam -> ${recordHasTagParam.toJson()}");
+                await TagService().insertRecordHasTag(recordHasTagParam);
+              });
+
+              container.emotions.forEach((emotion) async {
+                RecordHasEmotion recordHasEmotion = RecordHasEmotion(
+                  recordId: recordParam.id,
+                  emotionId: emotion.id,
+                    createdAt: DateTime.now().toString());
+                await EmotionService().insertRecordHasEmotion(recordHasEmotion);
+              });
+
+              CommonService.showToast("당신의 감정을 기록했습니다..");
+
+              Navigator.pop(context);
             },
             child: Text(
               "기록하기",
@@ -127,7 +173,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
             ),
           )),
     );
-
+//    SingleChildScrollView
     return Scaffold(
       body: Container(
           child: SingleChildScrollView(

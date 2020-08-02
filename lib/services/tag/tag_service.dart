@@ -12,7 +12,7 @@ class TagService {
 //        where: 'recordId = ?', whereArgs: [recordId]);
 
     var res = await db.rawQuery(
-        "SELECT t.id, t.name, t.createdAt, t.deletedAt FROM $recordHasTagTableName rht inner join $tagTableName t on rht.tagId = t.id where rht.recordId=$recordId");
+        "SELECT t.id, t.name, t.createdAt, t.deletedAt FROM $recordHasTagTableName rht inner join $tagTableName t on rht.tagId = t.id where rht.recordId='$recordId'");
 
     List<Tag> tags =
         res.isNotEmpty ? res.map((c) => Tag.fromJson(c)).toList() : [];
@@ -36,6 +36,14 @@ class TagService {
     await db.insert(Tag.tableName, tag.toJson());
 
     return tag;
+  }
+
+   Future<RecordHasTag>insertRecordHasTag(RecordHasTag recordHasTag) async {
+    final db = await DBHelper().database;
+
+    await db.insert(RecordHasTag.tableName, recordHasTag.toJson());
+
+    return recordHasTag;
   }
 
   Future<Tag> deleteTag(Tag tag) async {

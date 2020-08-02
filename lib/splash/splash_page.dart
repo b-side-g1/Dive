@@ -25,7 +25,7 @@ class Splash extends State<SplashPage> {
         Duration(seconds: 2),
         () => Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (BuildContext context) =>
-                initScreen ? DiaryTabController() : OnBoardPage())));
+            initScreen ? DiaryTabController() : OnBoardPage())));
   }
 
   @override
