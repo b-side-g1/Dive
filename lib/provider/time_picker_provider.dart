@@ -29,7 +29,7 @@ class TimePickerProvider {
 
   void updateEndAt(PickerTime pickerTime) async {
     BasicService basicService = BasicService();
-    await basicService.updateEndAt(pickerTime.hour);
+    await basicService.updateTodayAt(pickerTime.hour);
     Basic resultBasic = await basicService.selectBasicData();
     print(resultBasic.toJson());
   }

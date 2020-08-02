@@ -26,18 +26,28 @@ class BasicService {
     return basic.today_endAt != null ? true : false;
   }
 
-  updateEndAt(String hour) async {
+  updateTodayAt(String hour) async {
     final db = await DBHelper().database;
     int updateCount = await db.rawUpdate('''
     UPDATE ${Basic.tableName} 
     SET today_endAt = ?, today_startAt = ?
     WHERE id = ?
-    ''', [hour, hour ,'1']);
+    ''', [hour, hour, '1']);
     return updateCount;
   }
 
   void printHello() {
     print("Hello");
+  }
+
+  Future<int> updatePush(int isPush) async {
+    final db = await DBHelper().database;
+    int updateCount = await db.rawUpdate('''
+    UPDATE ${Basic.tableName} 
+    SET is_push = ?
+    WHERE id = ?
+    ''', [isPush, '1']);
+    return updateCount;
   }
 
 //  Future<bool> isSetTodayEndAt() async {
