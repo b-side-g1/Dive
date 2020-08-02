@@ -55,8 +55,7 @@ class _InputPageState extends State<InputPage> {
   }
 
   renderStepButton() {
-    return Expanded(
-      child: Container(
+    return Container(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
@@ -99,7 +98,7 @@ class _InputPageState extends State<InputPage> {
             ],
           ),
         ],
-      )),
+      ),
     );
   }
 
