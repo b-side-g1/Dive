@@ -120,11 +120,6 @@ class _InputPageStep3State extends State<InputPageStep3> {
             textColor: Colors.white,
             padding: EdgeInsets.all(8.0),
             onPressed: () {
-              print("점수 : ${container.score}");
-              print("감정태그 : ${container.emotions}");
-              print("이유태그 : ${container.tags}");
-            },
-            onPressed: () {
               Record recordParam = Record(
                   id: CommonService.generateUUID(),
                   score: container.score,

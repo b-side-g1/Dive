@@ -5,7 +5,7 @@ import 'package:flutterapp/models/tag_model.dart';
 class StateContainer extends StatefulWidget {
   final Widget child;
   final int score;
-  final List emotions;
+  final List<Emotion> emotions;
   final List<Tag> tags;
 
   StateContainer({
@@ -27,7 +27,7 @@ class StateContainer extends StatefulWidget {
 
 class StateContainerState extends State<StateContainer> {
   int score;
-  List emotions;
+  List<Emotion> emotions;
   List<Tag> tags;
 
   void updateScore(score) {
@@ -36,7 +36,7 @@ class StateContainerState extends State<StateContainer> {
     });
   }
 
-  void updateEmotions(List emotions) {
+  void updateEmotions(List<Emotion> emotions) {
     setState(() {
       this.emotions = emotions;
     });
