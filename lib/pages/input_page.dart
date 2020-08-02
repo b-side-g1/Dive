@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/inherited/state_container.dart';
+import 'package:flutterapp/models/emotion_model.dart';
 import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/pages/input_page_step1.dart';
 import 'package:flutterapp/pages/input_page_step2.dart';
@@ -14,15 +15,7 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  int currentStep = 0;
-
   List _emotions = [];
-
-  set emotions(List value) {
-    _emotions = value;
-  }
-
-  get emotions => _emotions;
 
   PageController _controller = PageController(
     initialPage: 0,
@@ -132,9 +125,13 @@ class _InputPageState extends State<InputPage> {
               controller: _controller,
               scrollDirection: Axis.vertical,
               children: [
-                InputPageStep1(handlerPageView: handlerPageView),
+                InputPageStep1(
+                  handlerPageView: handlerPageView,
+                  backgroundColor: backgroundColor,
+                ),
                 InputPageStep2(
                   emotions: emotions,
+                  backgroundColor: backgroundColor,
                 ),
                 MultiProvider(providers: [
                   StreamProvider<List<Tag>>.value(
