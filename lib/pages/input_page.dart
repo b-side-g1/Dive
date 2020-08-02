@@ -63,6 +63,7 @@ class _InputPageState extends State<InputPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               FloatingActionButton(
+                heroTag: 'up',
                 mini: true,
                 backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
                 child: Image.asset(
@@ -80,6 +81,7 @@ class _InputPageState extends State<InputPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               FloatingActionButton(
+                heroTag: 'down',
                 mini: true,
                 backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
                 child: Image.asset(

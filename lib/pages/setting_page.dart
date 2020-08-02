@@ -1,12 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_picker/Picker.dart';
+import 'package:flutterapp/models/basic_model.dart';
+import 'package:flutterapp/models/onboard/picker_time_model.dart';
+import 'package:flutterapp/onboard/animate/picker/picker_data.dart';
+import 'package:flutterapp/services/basic/basic_service.dart';
 import 'package:package_info/package_info.dart';
+import 'dart:convert';
 
 class SettingPage extends StatefulWidget {
   _SettingPageState createState() => _SettingPageState();
 }
 
 class _SettingPageState extends State<SettingPage> {
+  BasicService _basicService = BasicService();
   bool _isPush = true;
   String _appVersion = "0.0.0";
   String _currentEndAt = "오전 12시";
@@ -14,6 +21,12 @@ class _SettingPageState extends State<SettingPage> {
   @override
   void initState() {
     super.initState();
+    _basicService.selectBasicData().then((basic) => {
+          setState(() {
+            _isPush = basic.is_push != 0;
+            _currentEndAt = basic.today_endAt;
+          })
+        });
     PackageInfo.fromPlatform() // pubspec.yaml에 있는 config 값 갖고 올 수 있다!
         .then((value) => {
               setState(() {
@@ -23,9 +36,14 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   _setPush(bool isPush) {
-    setState(() {
-      _isPush = isPush;
-    });
+    _basicService.updatePush(isPush ? 1 : 0).then((res) => {
+          if (res != 0)
+            {
+              setState(() {
+                _isPush = isPush;
+              })
+            }
+        });
   }
 
   Widget pushOnOffWidget() {
@@ -38,7 +56,29 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  Widget todayEndAtWidget() {
+  showPickerModal(BuildContext context) {
+    final pickerData = JsonDecoder().convert(PickerData);
+
+    Picker(
+        adapter:
+            PickerDataAdapter<String>(pickerdata: pickerData, isArray: true),
+        changeToFirst: true,
+        hideHeader: false,
+        selectedTextStyle: TextStyle(color: Colors.blue),
+        onConfirm: (Picker picker, List value) async {
+          updateEndAt(PickerTime(hour: pickerData[0][value[0]]));
+        }).showModal(context); //_scaffoldKey.currentState);
+  }
+
+  void updateEndAt(PickerTime pickerTime) async {
+    await _basicService.updateTodayAt(pickerTime.hour);
+    Basic resultBasic = await _basicService.selectBasicData();
+    setState(() {
+      _currentEndAt = resultBasic.today_endAt;
+    });
+  }
+
+  Widget todayEndAtWidget(BuildContext context) {
     return Row(
       children: <Widget>[
         Text(
@@ -55,7 +95,7 @@ class _SettingPageState extends State<SettingPage> {
             ),
           ),
           onTap: () {
-            print("시간 변경"); // change Date
+            showPickerModal(context);
           },
         ),
       ],
@@ -124,7 +164,7 @@ class _SettingPageState extends State<SettingPage> {
               child: ListView(
                 children: <Widget>[
                   settingWidget('푸시 설정', pushOnOffWidget()),
-                  settingWidget('하루 마감시간 설정', todayEndAtWidget()),
+                  settingWidget('하루 마감시간 설정', todayEndAtWidget(context)),
                   settingWidget('현재 버전', currentVersionWidget()),
                 ],
               ),
