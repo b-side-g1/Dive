@@ -1,4 +1,6 @@
+import 'package:flutterapp/models/daily_model.dart';
 import 'package:flutterapp/models/record_model.dart';
+import 'package:flutterapp/services/daily/daily_service.dart';
 import 'package:flutterapp/services/database/database_helper.dart';
 import 'package:flutterapp/services/emotion/emotion_service.dart';
 import 'package:flutterapp/services/tag/tag_service.dart';
@@ -8,6 +10,7 @@ class RecordService {
 
   EmotionService _emotionService = EmotionService();
   TagService _tagService = TagService();
+  DailyService _dailyService = DailyService();
 
   insertRecord(Record record) async {
     final db = await DBHelper().database;
@@ -36,10 +39,10 @@ class RecordService {
     var res = await db.query(Record.tableName, where: 'dailyId = ?', whereArgs: [dailyId]);
 
     List<Record> records = res.isNotEmpty ? res.map((c) => Record.fromJson(c)).toList() : [];
-    records.forEach((_record) async {
+    for (var _record in records) {
       _record.emotions = await _emotionService.selectEmotionAllByRecordId(_record.id);
       _record.tags = await _tagService.selectTagAllByRecordId(_record.id);
-    });
+    }
 
     return records;
   }

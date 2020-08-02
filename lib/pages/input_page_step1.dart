@@ -1,18 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutterapp/inherited/state_container.dart';
 import 'dart:async';
-import 'package:flutterapp/pages/input_page_step2.dart';
-import 'package:flutterapp/pages/daily_page.dart';
 
 class InputPageStep1 extends StatefulWidget {
-
   final int score;
+  Color backgroundColor;
 
-  InputPageStep1({Key key, this.handlerPageView, this.score}) : super(key: key);
+  InputPageStep1({Key key, this.handlerPageView, this.score, this.backgroundColor})
+      : super(key: key);
   Function handlerPageView;
+
   @override
   _InputPageStep1State createState() => _InputPageStep1State();
 }
@@ -21,6 +20,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
   int hour, min, score;
   String mid, curDate;
   Timer _timer;
+
   @protected
   @mustCallSuper
   void initState() {
@@ -203,27 +203,24 @@ class _InputPageStep1State extends State<InputPageStep1> {
 
   @override
   Widget build(BuildContext context) {
-
     final container = StateContainer.of(context);
 
     return new Scaffold(
+        backgroundColor: widget.backgroundColor,
         body: Container(
-      padding: EdgeInsets.only(top: 130),
-      decoration: new BoxDecoration(
-        color: Color.fromRGBO(43, 99, 194, 1.0),
-      ),
-      child: Stack(
-        children: <Widget>[
-          renderBackground(),
-          Column(
+          padding: EdgeInsets.only(top: 130),
+          child: Stack(
             children: <Widget>[
-              renderTimeSelect(),
-              renderScoreSelect(container),
-              renderNextStep(),
+              renderBackground(),
+              Column(
+                children: <Widget>[
+                  renderTimeSelect(),
+                  renderScoreSelect(container),
+                  renderNextStep(),
+                ],
+              )
             ],
-          )
-        ],
-      ),
-    ));
+          ),
+        ));
   }
 }

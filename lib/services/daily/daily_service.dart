@@ -1,6 +1,7 @@
 import 'package:flutterapp/models/basic_model.dart';
 import 'package:flutterapp/models/daily_model.dart';
 import 'package:flutterapp/services/basic/basic_service.dart';
+import 'package:flutterapp/services/common/common_service.dart';
 import 'package:flutterapp/services/database/database_helper.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
@@ -44,27 +45,29 @@ class DailyService {
         return Daily.fromJson(e);
       }).toList()[0];
     } else {
-      daily = await insertDailyByTimestamp(timestamp);
+      daily = await _insertDailyByTimestamp(timestamp);
     }
 
     return daily;
   }
 
-  insertDailyByTimestamp(int timestamp) async {
+  Future<Daily> _insertDailyByTimestamp(int timestamp) async {
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
 
     Basic basic = await _basicService.selectBasicData();
     int startHour = int.parse(basic.today_startAt);
     int endHour = int.parse(basic.today_endAt);
 
-    DateTime startDate = DateTime(dateTime.year, dateTime.month, dateTime.day , startHour).subtract(Duration(days: dateTime.hour > startHour ? 0 : 1));
+    DateTime startDate =
+        DateTime(dateTime.year, dateTime.month, dateTime.day, startHour)
+            .subtract(Duration(days: dateTime.hour > startHour ? 0 : 1));
 
-    DateTime endDate = DateTime(dateTime.year, dateTime.month, dateTime.day, endHour).add(Duration(days:  dateTime.hour > endHour ? 1 : 0));
+    DateTime endDate =
+        DateTime(dateTime.year, dateTime.month, dateTime.day, endHour)
+            .add(Duration(days: dateTime.hour > endHour ? 1 : 0));
 
-    print(startDate.toIso8601String());
-    print(endDate.toIso8601String());
-    await insertDaily(Daily(
-        id: Uuid().v1().replaceAll("-", ""),
+    Daily daily = Daily(
+        id: CommonService.generateUUID(),
         startTimestamp: startDate.millisecondsSinceEpoch,
         endTimestamp: endDate.millisecondsSinceEpoch,
         startAt: startDate.toIso8601String(),
@@ -73,12 +76,13 @@ class DailyService {
         day: startDate.day,
         week: weekNumber(startDate),
         month: startDate.month,
-        year: startDate.year));
+        year: startDate.year);
 
-    Daily daily = await getDailyByTimestamp(timestamp);
+    await insertDaily(daily);
 
     return daily;
   }
+
 
   int weekNumber(DateTime date) {
     int dayOfYear = int.parse(DateFormat("D").format(date));
