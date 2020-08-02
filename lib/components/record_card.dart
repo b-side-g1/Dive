@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/components/forms/pie_chart.dart';
-import 'package:flutterapp/models/emotion_model.dart';
 import 'package:flutterapp/models/record_model.dart';
-import 'package:flutterapp/models/tag_model.dart';
 import 'package:intl/intl.dart';
 
 class RecordCard extends StatelessWidget {
@@ -37,6 +35,7 @@ class RecordCard extends StatelessWidget {
                     child: Padding(
                         padding: EdgeInsets.only(left: 20, right: 10),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             emotionWidget(),
                             tagWidget(),
@@ -62,7 +61,7 @@ class RecordCard extends StatelessWidget {
                                     child: Text(
                                       record.createdAt == null
                                           ? ''
-                                          : record.createdAt,
+                                          : dateFormat(record.createdAt),
                                       //DateFormat('kk:mm').format(record.createdAt),
                                       style: TextStyle(
                                           color: Colors.white,
@@ -77,12 +76,18 @@ class RecordCard extends StatelessWidget {
         ));
   }
 
+  dateFormat(String dateStr) {
+    DateFormat dateFormat = DateFormat('h:mm');
+    DateTime datetime = DateTime.parse(dateStr);
+    return (datetime.hour >= 12 ? "오후 " : "오전 ") + dateFormat.format(datetime);
+  }
+
   tagWidget() {
     if (this.record.tags.isEmpty) {
       return Container();
     }
     return Padding(
-      padding: EdgeInsets.only(top: this.record.emotions.isNotEmpty ? 18 : 0, right: 40),
+      padding: EdgeInsets.only(top: this.record.emotions.isNotEmpty ? 18 : 0),
       child: Wrap(
         spacing: 8.0,
         runSpacing: 4.0,
