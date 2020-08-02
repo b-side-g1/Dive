@@ -33,7 +33,9 @@ class _DailyPageState extends State<DailyPage> {
   DailyService _dailyService = DailyService();
 
   @override
-  void dispose() {}
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -225,7 +227,7 @@ class _DailyPageState extends State<DailyPage> {
     }
     return InkWell(
       onTap: () {
-        Navigator.push(
+        Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => StateContainer(child: InputPage())));
       },
       child: Image.asset(
