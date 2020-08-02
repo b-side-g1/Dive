@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/components/input/step3/edit_tag_dialog.dart';
 import 'package:flutterapp/components/input/step3/reason_tag_widget.dart';
 import 'package:flutterapp/inherited/state_container.dart';
-import 'package:flutterapp/inherited/state_container.dart';
 import 'package:flutterapp/models/daily_model.dart';
-import 'package:flutterapp/models/emotion_model.dart';
 import 'package:flutterapp/models/record_has_emotion.dart';
 import 'package:flutterapp/models/record_has_tag.dart';
 import 'package:flutterapp/models/record_model.dart';
@@ -159,8 +157,8 @@ class _InputPageStep3State extends State<InputPageStep3> {
 
               container.emotions.forEach((emotion) async {
                 RecordHasEmotion recordHasEmotion = RecordHasEmotion(
-                  recordId: recordParam.id,
-                  emotionId: emotion.id,
+                    recordId: recordParam.id,
+                    emotionId: emotion.id,
                     createdAt: DateTime.now().toString());
                 await EmotionService().insertRecordHasEmotion(recordHasEmotion);
               });

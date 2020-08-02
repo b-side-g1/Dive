@@ -20,6 +20,7 @@ class _InputPageStep2State extends State<InputPageStep2> {
     return Scaffold(
       backgroundColor: widget.backgroundColor,
       body: Container(
+        margin: EdgeInsets.only(top: 80),
         child: Column(
           children: <Widget>[
             Padding(
