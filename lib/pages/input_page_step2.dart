@@ -5,11 +5,11 @@ import 'package:flutterapp/models/emotion_model.dart';
 import 'package:flutterapp/inherited/state_container.dart';
 
 class InputPageStep2 extends StatefulWidget {
-  Color background;
+  Color backgroundColor;
   List emotions;
 
-  InputPageStep2({Key key, this.background, List emotions})
-      : emotions = emotions,
+  InputPageStep2({Key key, List emotions, this.backgroundColor})
+      : emotions = emotions ?? [],
         super(key: key);
 
   @override
@@ -22,9 +22,7 @@ class _InputPageStep2State extends State<InputPageStep2> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-//      For Debug or develop
-      backgroundColor: Color.fromRGBO(19, 62, 133, 1.0),
-//    backgroundColor: widget.background,
+      backgroundColor: widget.backgroundColor,
       body: Container(
         child: Column(
           children: <Widget>[

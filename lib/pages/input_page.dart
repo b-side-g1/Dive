@@ -14,15 +14,13 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  int currentStep = 0;
-
-  List _emotions = [];
-
-  set emotions(List value) {
-    _emotions = value;
+  List emotions = [];
+  Color get backgroundColor {
+    switch(step) {
+      default: return Color.fromRGBO(7, 26, 58, 1.0);
+    }
   }
 
-  get emotions => _emotions;
 
   PageController _controller = PageController(
     initialPage: 0,
@@ -132,7 +130,9 @@ class _InputPageState extends State<InputPage> {
               controller: _controller,
               scrollDirection: Axis.vertical,
               children: [
-                InputPageStep1(handlerPageView: handlerPageView),
+                InputPageStep1(
+                  handlerPageView: handlerPageView,
+                ),
                 InputPageStep2(
                   emotions: emotions,
                 ),
