@@ -2,12 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
+import 'package:flutterapp/inherited/state_container.dart';
 import 'dart:async';
 import 'package:flutterapp/pages/input_page_step2.dart';
 import 'package:flutterapp/pages/daily_page.dart';
 
 class InputPageStep1 extends StatefulWidget {
-  InputPageStep1({Key key, this.handlerPageView}) : super(key: key);
+
+  final int score;
+
+  InputPageStep1({Key key, this.handlerPageView, this.score}) : super(key: key);
   Function handlerPageView;
   @override
   _InputPageStep1State createState() => _InputPageStep1State();
@@ -96,7 +100,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
         ]));
   }
 
-  renderScoreSelect() {
+  renderScoreSelect(StateContainerState container) {
     List<int> scoreList = [for (var i = 0; i <= 100; i += 10) i];
 
     return Padding(
@@ -123,6 +127,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
                         print('${scoreList[i]}___changed value');
                         setState(() {
                           score = scoreList[i];
+                          container.updateScore(score);
                         });
                       },
                       childDelegate: ListWheelChildLoopingListDelegate(
@@ -198,6 +203,9 @@ class _InputPageStep1State extends State<InputPageStep1> {
 
   @override
   Widget build(BuildContext context) {
+
+    final container = StateContainer.of(context);
+
     return new Scaffold(
         body: Container(
       padding: EdgeInsets.only(top: 130),
@@ -210,7 +218,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
           Column(
             children: <Widget>[
               renderTimeSelect(),
-              renderScoreSelect(),
+              renderScoreSelect(container),
               renderNextStep(),
             ],
           )

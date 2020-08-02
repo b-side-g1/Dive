@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/components/input/step3/edit_tag_dialog.dart';
 import 'package:flutterapp/components/input/step3/reason_tag_widget.dart';
+import 'package:flutterapp/inherited/state_container.dart';
 import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/provider/input/tag_provider.dart';
 import 'package:flutterapp/services/common/common_service.dart';
@@ -27,6 +28,8 @@ class _InputPageStep3State extends State<InputPageStep3> {
     print('build input_page_step3');
 
     tagProvider = Provider.of<TagProvider>(context);
+    final container = StateContainer.of(context);
+
 //    this._tags =  Provider.of<List<Tag>>(context);
 
     Widget titleWidget = Container(
@@ -111,7 +114,11 @@ class _InputPageStep3State extends State<InputPageStep3> {
             color: CommonService.hexToColor("#63c7ff"),
             textColor: Colors.white,
             padding: EdgeInsets.all(8.0),
-            onPressed: () {},
+            onPressed: () {
+              print("점수 : ${container.score}");
+              print("감정태그 : ${container.emotions}");
+              print("이유태그 : ${container.tags}");
+            },
             child: Text(
               "기록하기",
               style: TextStyle(
