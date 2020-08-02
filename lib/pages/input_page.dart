@@ -1,11 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/inherited/state_container.dart';
+import 'package:flutterapp/models/daily_model.dart';
+import 'package:flutterapp/models/record_has_emotion.dart';
+import 'package:flutterapp/models/record_has_tag.dart';
+import 'package:flutterapp/models/record_model.dart';
 import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/pages/input_page_step1.dart';
 import 'package:flutterapp/pages/input_page_step2.dart';
 import 'package:flutterapp/pages/input_page_step3.dart';
 import 'package:flutterapp/provider/input/tag_provider.dart';
+import 'package:flutterapp/services/common/common_service.dart';
+import 'package:flutterapp/services/daily/daily_service.dart';
+import 'package:flutterapp/services/emotion/emotion_service.dart';
+import 'package:flutterapp/services/record/record_service.dart';
+import 'package:flutterapp/services/tag/tag_service.dart';
 import 'package:provider/provider.dart';
 
 import 'daily_page.dart';
@@ -17,6 +26,9 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
   List emotions = [];
+
+  TextEditingController _textEditingController = TextEditingController();
+
 
   Color get backgroundColor {
     switch (step) {
@@ -51,6 +63,73 @@ class _InputPageState extends State<InputPage> {
     return Container(
       alignment: Alignment.bottomCenter,
       child: Image.asset('lib/src/image/daily/bg_white_gradient.png'),
+    );
+  }
+
+  Widget renderRecordButton() {
+    final container = StateContainer.of(context);
+
+    return Container(
+      padding: EdgeInsets.only(top: 50, left: 20, right: 20),
+      child: ButtonTheme(
+          minWidth: 316,
+          height: 60,
+          child: FlatButton(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100.0),
+            ),
+            color: CommonService.hexToColor("#63c7ff"),
+            textColor: Colors.white,
+            padding: EdgeInsets.all(8.0),
+            onPressed: () async {
+              int currentTimeStamp = DateTime.now().millisecondsSinceEpoch;
+              Daily daily =
+              await DailyService().getDailyByTimestamp(currentTimeStamp);
+              String dailyId = daily.id;
+
+              Record recordParam = Record(
+                  id: CommonService.generateUUID(),
+                  score: container.score,
+                  dailyId: dailyId,
+                  emotions: container.emotions,
+                  tags: container.tags,
+                  createdAt: DateTime.now().toString(),
+                  updatedAt: DateTime.now().toString(),
+                  description: _textEditingController.text);
+
+              return ;
+
+              await RecordService().insertRecord(recordParam);
+
+              container.tags.forEach((tag) async {
+                RecordHasTag recordHasTagParam = RecordHasTag(
+                    recordId: recordParam.id,
+                    tagId: tag.id,
+                    createdAt: DateTime.now().toString());
+                print("recordHasTagParam -> ${recordHasTagParam.toJson()}");
+                await TagService().insertRecordHasTag(recordHasTagParam);
+              });
+
+              container.emotions.forEach((emotion) async {
+                RecordHasEmotion recordHasEmotion = RecordHasEmotion(
+                    recordId: recordParam.id,
+                    emotionId: emotion.id,
+                    createdAt: DateTime.now().toString());
+                await EmotionService().insertRecordHasEmotion(recordHasEmotion);
+              });
+
+              CommonService.showToast("당신의 감정을 기록했습니다..");
+
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => StateContainer(child: DailyPage())));
+            },
+            child: Text(
+              "기록하기",
+              style: TextStyle(
+                fontSize: 18.0,
+              ),
+            ),
+          )),
     );
   }
 
@@ -190,6 +269,7 @@ class _InputPageState extends State<InputPage> {
       body: Container(
         child: Stack(
           children: <Widget>[
+            renderBackground(),
             PageView(
               controller: _controller,
               scrollDirection: Axis.vertical,
@@ -229,7 +309,6 @@ class _InputPageState extends State<InputPage> {
                     children: <Widget>[renderClose(), renderSteper(step)],
                   ),
                 )),
-            renderBackground(),
             renderStepButton(),
           ],
         ),
