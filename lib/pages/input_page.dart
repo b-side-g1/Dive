@@ -1,18 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/inherited/state_container.dart';
-import 'package:flutterapp/models/daily_model.dart';
-import 'package:flutterapp/models/record_has_emotion.dart';
-import 'package:flutterapp/models/record_has_tag.dart';
-import 'package:flutterapp/models/record_model.dart';
-import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/pages/input_page_step1.dart';
 import 'package:flutterapp/pages/input_page_step2.dart';
 import 'package:flutterapp/pages/input_page_step3.dart';
-import 'package:flutterapp/pages/test/test_step1.dart';
-import 'package:flutterapp/pages/test/test_step2.dart';
-import 'package:flutterapp/provider/input/tag_provider.dart';
-import 'package:provider/provider.dart';
 
 import 'daily_page.dart';
 
@@ -206,14 +197,7 @@ class _InputPageState extends State<InputPage> {
               children: <Widget>[
                 InputPageStep1(),
                 InputPageStep2(emotions: emotions,),
-                MultiProvider(providers: [
-                  StreamProvider<List<Tag>>.value(
-                    value: TagProvider().tags,
-                  ),
-                  Provider<TagProvider>(
-                    create: (_) => TagProvider(),
-                  )
-                ], child: InputPageStep3())
+                InputPageStep3()
               ],
               onPageChanged: (page) {
                 setState(() {

@@ -14,7 +14,7 @@ import 'package:flutterapp/services/daily/daily_service.dart';
 import 'package:flutterapp/services/emotion/emotion_service.dart';
 import 'package:flutterapp/services/record/record_service.dart';
 import 'package:flutterapp/services/tag/tag_service.dart';
-import 'package:provider/provider.dart';
+
 
 class InputPageStep3 extends StatefulWidget {
   InputPageStep3({Key key}) : super(key: key);
@@ -26,33 +26,39 @@ class InputPageStep3 extends StatefulWidget {
 class _InputPageStep3State extends State<InputPageStep3> {
   TagProvider tagProvider;
   TextEditingController _textEditingController = TextEditingController();
+  List<Tag> _tags;
+  TagService _tagService = TagService();
 
   Future<List<Tag>> createEditTagDialog(BuildContext context) {
     return showDialog(
         context: context,
         builder: (context) {
-          return Provider(create: (_) => TagProvider(), child: EditTagDialog());
+          return EditTagDialog();
         });
   }
 
   @override
-  Widget build(BuildContext context) {
-    print('build input_page_step3');
+  void initState() {
+    _tagService.selectAllTags().then((tags)  {
+      setState(() {
+        this._tags = tags;
+      });
+    });
+  }
 
-    tagProvider = Provider.of<TagProvider>(context);
-    final container = StateContainer.of(context);
-
-//    this._tags =  Provider.of<List<Tag>>(context);
-
-    Widget titleWidget = Container(
+  Widget titleWidget() {
+    return Container(
         padding: EdgeInsets.only(top: 110, left: 70, right: 70),
         child: Center(
             child: Text(
-          "그렇게 느끼는 이유는...",
-          style: TextStyle(
-              fontSize: 21, fontWeight: FontWeight.w700, color: Colors.white),
-        )));
-    Widget toolBarWidget = Container(
+              "그렇게 느끼는 이유는...",
+              style: TextStyle(
+                  fontSize: 21, fontWeight: FontWeight.w700, color: Colors.white),
+            )));
+  }
+
+  Widget toolBarWidget() {
+    return Container(
         padding: EdgeInsets.only(top: 20, left: 20, right: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -67,8 +73,14 @@ class _InputPageStep3State extends State<InputPageStep3> {
             FlatButton(
               padding: EdgeInsets.all(0),
               onPressed: () async {
-                createEditTagDialog(context).then((value) {
-                  this.tagProvider.getTags();
+                createEditTagDialog(context).then((_) {
+                  setState(() {
+                    _tagService.selectAllTags().then((tags)  {
+                      setState(() {
+                        this._tags = tags;
+                      });
+                    });
+                  });
                 });
               },
               child: Row(
@@ -89,16 +101,19 @@ class _InputPageStep3State extends State<InputPageStep3> {
             )
           ],
         ));
-    Widget reasonTagList = Container(
+  }
+
+  Widget reasonTagList() {
+    return Container(
       height: 120,
       padding: EdgeInsets.only(left: 20, right: 20),
       alignment: Alignment.centerLeft,
-      child: StreamProvider<List<Tag>>.value(
-          initialData: [Tag(name: 'asdf', id: 'asdf')],
-          value: tagProvider.tags,
-          child: ReasonTagWidget()),
+      child: ReasonTagWidget(tags: this._tags,),
     );
-    Widget writeReasonTitle = Container(
+  }
+
+  Widget writeReasonTitle() {
+    return Container(
         padding: EdgeInsets.only(top: 50, left: 20, right: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -112,7 +127,10 @@ class _InputPageStep3State extends State<InputPageStep3> {
             ),
           ],
         ));
-    Widget writeReasonField = Container(
+  }
+
+  Widget writeReasonField() {
+    return Container(
         padding: EdgeInsets.only(top: 13, left: 20, right: 20),
         child: TextField(
           controller: _textEditingController,
@@ -126,7 +144,12 @@ class _InputPageStep3State extends State<InputPageStep3> {
               disabledBorder: InputBorder.none,
               hintText: "더 자세히 떠올려보자"),
         ));
-    Widget recordButton = Container(
+  }
+
+  Widget recordButton() {
+    final container = StateContainer.of(context);
+
+    return Container(
       padding: EdgeInsets.only(top: 50, left: 20, right: 20),
       child: ButtonTheme(
           minWidth: 316,
@@ -139,9 +162,11 @@ class _InputPageStep3State extends State<InputPageStep3> {
             textColor: Colors.white,
             padding: EdgeInsets.all(8.0),
             onPressed: () async {
+
+              return ;
               int currentTimeStamp = DateTime.now().millisecondsSinceEpoch;
               Daily daily =
-                  await DailyService().getDailyByTimestamp(currentTimeStamp);
+              await DailyService().getDailyByTimestamp(currentTimeStamp);
               String dailyId = daily.id;
 
               Record recordParam = Record(
@@ -170,7 +195,8 @@ class _InputPageStep3State extends State<InputPageStep3> {
                     recordId: recordParam.id,
                     emotionId: emotion.id,
                     createdAt: DateTime.now().toString());
-                await EmotionService().insertRecordHasEmotion(recordHasEmotion);
+                await EmotionService()
+                    .insertRecordHasEmotion(recordHasEmotion);
               });
 
               CommonService.showToast("당신의 감정을 기록했습니다..");
@@ -189,6 +215,12 @@ class _InputPageStep3State extends State<InputPageStep3> {
             ),
           )),
     );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print('build input_page_step3');
+
 //    SingleChildScrollView
     return Container(
         child: SingleChildScrollView(
@@ -196,12 +228,12 @@ class _InputPageStep3State extends State<InputPageStep3> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          titleWidget,
-          toolBarWidget,
-          reasonTagList,
-          writeReasonTitle,
-          writeReasonField,
-          recordButton,
+          titleWidget(),
+          toolBarWidget(),
+          reasonTagList(),
+          writeReasonTitle(),
+          writeReasonField(),
+          recordButton(),
         ],
       ),
     ));

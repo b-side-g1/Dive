@@ -154,6 +154,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
 
   @override
   Widget build(BuildContext context) {
+
     final container = StateContainer.of(context);
 
     return Container(
