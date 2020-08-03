@@ -200,15 +200,6 @@ class _InputPageState extends State<InputPage> {
         child: Stack(
           children: <Widget>[
             renderBackground(),
-            Positioned(
-                right: 20.0,
-                top: 40.0,
-                child: Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[renderClose(), renderSteper(step)],
-                  ),
-                )),
             PageView(
               controller: _controller,
               scrollDirection: Axis.vertical,
@@ -230,6 +221,15 @@ class _InputPageState extends State<InputPage> {
                 });
               },
             ),
+            Positioned(
+                right: 20.0,
+                top: 40.0,
+                child: Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[renderClose(), renderSteper(step)],
+                  ),
+                )),
             renderStepButton(),
           ],
         ),
