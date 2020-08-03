@@ -6,9 +6,8 @@ import 'dart:async';
 
 class InputPageStep1 extends StatefulWidget {
   final int score;
-  Color backgroundColor;
 
-  InputPageStep1({Key key, this.score, this.backgroundColor})
+  InputPageStep1({Key key, this.score})
       : super(key: key);
 //  Function handlerPageView;
 
@@ -157,30 +156,28 @@ class _InputPageStep1State extends State<InputPageStep1> {
   Widget build(BuildContext context) {
     final container = StateContainer.of(context);
 
-    return new Scaffold(
-        backgroundColor: widget.backgroundColor,
-        body: Container(
-          padding: EdgeInsets.only(top: 130),
-          child: Stack(
+    return Container(
+      padding: EdgeInsets.only(top: 130),
+      child: Stack(
+        children: <Widget>[
+          Column(
             children: <Widget>[
-              Column(
-                children: <Widget>[
-                  renderTimeSelect(),
-                  renderScoreSelect(container),
-                  Container(
-                    margin: EdgeInsets.only(top: 45),
-                    height: 35,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('lib/src/image/daily/img_shadow.png'),
-                      ),
-                    ),
+              renderTimeSelect(),
+              renderScoreSelect(container),
+              Container(
+                margin: EdgeInsets.only(top: 45),
+                height: 35,
+                width: MediaQuery.of(context).size.width * 0.8,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('lib/src/image/daily/img_shadow.png'),
                   ),
-                ],
-              )
+                ),
+              ),
             ],
-          ),
-        ));
+          )
+        ],
+      ),
+    );
   }
 }

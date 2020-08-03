@@ -1,10 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/inherited/state_container.dart';
+import 'package:flutterapp/models/daily_model.dart';
+import 'package:flutterapp/models/record_has_emotion.dart';
+import 'package:flutterapp/models/record_has_tag.dart';
+import 'package:flutterapp/models/record_model.dart';
 import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/pages/input_page_step1.dart';
 import 'package:flutterapp/pages/input_page_step2.dart';
 import 'package:flutterapp/pages/input_page_step3.dart';
+import 'package:flutterapp/pages/test/test_step1.dart';
+import 'package:flutterapp/pages/test/test_step2.dart';
 import 'package:flutterapp/provider/input/tag_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +23,8 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
   List emotions = [];
+
+  TextEditingController _textEditingController = TextEditingController();
 
   Color get backgroundColor {
     switch (step) {
@@ -56,7 +64,7 @@ class _InputPageState extends State<InputPage> {
 
   renderStepButton() {
     return Container(
-          child: Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
@@ -120,8 +128,8 @@ class _InputPageState extends State<InputPage> {
               new FlatButton(
                 child: new Text("네"),
                 onPressed: () {
-                  Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (context) => DailyPage()));
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => DailyPage()));
                 },
               ),
             ],
@@ -188,31 +196,24 @@ class _InputPageState extends State<InputPage> {
 
     return Scaffold(
       body: Container(
+        color: backgroundColor,
         child: Stack(
           children: <Widget>[
+            renderBackground(),
             PageView(
               controller: _controller,
               scrollDirection: Axis.vertical,
-              children: [
-                InputPageStep1(
-                  backgroundColor: backgroundColor,
-                ),
-                InputPageStep2(
-                  emotions: emotions,
-                  backgroundColor: backgroundColor,
-                ),
-                MultiProvider(
-                    providers: [
-                      StreamProvider<List<Tag>>.value(
-                        value: TagProvider().tags,
-                      ),
-                      Provider<TagProvider>(
-                        create: (_) => TagProvider(),
-                      )
-                    ],
-                    child: InputPageStep3(
-                      backgroundColor: backgroundColor,
-                    ))
+              children: <Widget>[
+                InputPageStep1(),
+                InputPageStep2(emotions: emotions,),
+                MultiProvider(providers: [
+                  StreamProvider<List<Tag>>.value(
+                    value: TagProvider().tags,
+                  ),
+                  Provider<TagProvider>(
+                    create: (_) => TagProvider(),
+                  )
+                ], child: InputPageStep3())
               ],
               onPageChanged: (page) {
                 setState(() {
@@ -229,7 +230,6 @@ class _InputPageState extends State<InputPage> {
                     children: <Widget>[renderClose(), renderSteper(step)],
                   ),
                 )),
-            renderBackground(),
             renderStepButton(),
           ],
         ),
