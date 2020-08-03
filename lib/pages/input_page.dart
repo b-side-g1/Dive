@@ -56,7 +56,7 @@ class _InputPageState extends State<InputPage> {
 
   renderStepButton() {
     return Container(
-          child: Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
@@ -120,8 +120,8 @@ class _InputPageState extends State<InputPage> {
               new FlatButton(
                 child: new Text("네"),
                 onPressed: () {
-                  Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (context) => DailyPage()));
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => DailyPage()));
                 },
               ),
             ],
@@ -183,6 +183,7 @@ class _InputPageState extends State<InputPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("build inputpage!");
     final container = StateContainer.of(context);
     testScore = container.score;
 
@@ -201,18 +202,21 @@ class _InputPageState extends State<InputPage> {
                   emotions: emotions,
                   backgroundColor: backgroundColor,
                 ),
-                MultiProvider(
-                    providers: [
-                      StreamProvider<List<Tag>>.value(
-                        value: TagProvider().tags,
-                      ),
-                      Provider<TagProvider>(
-                        create: (_) => TagProvider(),
-                      )
-                    ],
-                    child: InputPageStep3(
-                      backgroundColor: backgroundColor,
-                    ))
+                InputPageStep3(
+                  backgroundColor: backgroundColor,
+                )
+//                MultiProvider(
+//                    providers: [
+//                      StreamProvider<List<Tag>>.value(
+//                        value: TagProvider().tags,
+//                      ),
+//                      Provider<TagProvider>(
+//                        create: (_) => TagProvider(),
+//                      )
+//                    ],
+//                    child: InputPageStep3(
+//                      backgroundColor: backgroundColor,
+//                    ))
               ],
               onPageChanged: (page) {
                 setState(() {

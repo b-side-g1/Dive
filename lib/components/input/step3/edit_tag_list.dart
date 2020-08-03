@@ -4,6 +4,7 @@ import 'package:flutterapp/components/input/step3/model/tag_dialog_entity_model.
 import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/provider/input/tag_provider.dart';
 import 'package:flutterapp/services/common/common_service.dart';
+import 'package:flutterapp/services/tag/tag_service.dart';
 import 'package:provider/provider.dart';
 
 class EditTagList extends StatefulWidget {
@@ -13,20 +14,22 @@ class EditTagList extends StatefulWidget {
 
 class _EditTagListState extends State<EditTagList> {
   List<Tag> _tags;
-  TagProvider _tagProvider;
-
-  List<Tag> _addedTags;
-  List<Tag> _removedTags;
+  TagService _tagService = TagService();
 
   @override
   void initState() {
     super.initState();
+
+    _tagService.selectAllTags().then((tags) {
+      setState(() {
+        this._tags = tags;
+      });
+    });
   }
 
   @override
   void dispose() {
     print("[edit_tag_list].dart #dispose!");
-    this._tagProvider.dispose();
     super.dispose();
   }
 
@@ -68,9 +71,17 @@ class _EditTagListState extends State<EditTagList> {
                                     "[edit_tag_list.dart] _showAddTagDialog then -> ${value.value}");
 
                                 if (value.isConfirm) {
-                                  this._tagProvider.inAddTag.add(Tag(
-                                      id: CommonService.generateUUID(),
-                                      name: value.value));
+                                  Tag tagParam = Tag(
+                                    id: CommonService.generateUUID(),
+                                    name: value.value
+                                  );
+                                  _tagService.insertTag(tagParam).then((_) {
+                                      _tagService.selectAllTags().then((tags) {
+                                        setState(() {
+                                          this._tags = tags;
+                                        });
+                                      } );
+                                  });
                                 }
                               });
                             },
@@ -92,12 +103,13 @@ class _EditTagListState extends State<EditTagList> {
                           ),
                           GestureDetector(
                               onTap: () {
-//                                this._tags.removeAt(index - 1);
-//                                List<Tag> copys = List.from(this._tags);
-                                this
-                                    ._tagProvider
-                                    .inDeleteTag
-                                    .add(this._tags[index - 1]);
+                                _tagService.deleteTag(this._tags[index - 1]).then((_) {
+                                  _tagService.selectAllTags().then((tags) {
+                                    setState(() {
+                                      this._tags = tags;
+                                    });
+                                  } );
+                                });
                               },
                               child: Text(
                                 "삭제",
@@ -118,11 +130,6 @@ class _EditTagListState extends State<EditTagList> {
   @override
   Widget build(BuildContext context) {
     print("[edit_tag_list.dart] #build!");
-
-    this._tags = Provider.of<List<Tag>>(context);
-    this._tagProvider = Provider.of<TagProvider>(context);
-
-    print("build Edit Tag List! ${this._tags}");
     return this._tags == null ? Text("로딩중") : this.buildEditTagListView();
   }
 }
