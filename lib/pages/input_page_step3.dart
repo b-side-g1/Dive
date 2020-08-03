@@ -163,7 +163,6 @@ class _InputPageStep3State extends State<InputPageStep3> {
             padding: EdgeInsets.all(8.0),
             onPressed: () async {
 
-              return ;
               int currentTimeStamp = DateTime.now().millisecondsSinceEpoch;
               Daily daily =
               await DailyService().getDailyByTimestamp(currentTimeStamp);
