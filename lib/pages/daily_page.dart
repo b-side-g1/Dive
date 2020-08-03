@@ -46,23 +46,24 @@ class _DailyPageState extends State<DailyPage> {
   void _setDataByDate(DateTime date) async {
     var resDaily = await _dailyService.selectDailyByDate(date);
 
-
-    var resRecords = List<Record>();
-    if(resDaily != null){
-      resRecords =  await _recordService.selectAllWithEmotionsAndTagsByDailyId(resDaily.id);
+    var records = List<Record>();
+    if (resDaily != null) {
+      records = await _recordService
+          .selectAllWithEmotionsAndTagsByDailyId(resDaily.id);
     }
+    setDataByRecord(records, date);
+  }
 
-
-    var resDailyScore = resRecords.isEmpty
+  void setDataByRecord(List<Record> records, DateTime date) {
+    var resDailyScore = records.isEmpty
         ? 0
-        : (resRecords.map((c) => c.score).reduce((a, b) => a + b) /
-                resRecords.length)
+        : (records.map((c) => c.score).reduce((a, b) => a + b) / records.length)
             .round();
 
     var resIsToday = _today.difference(date).inDays == 0;
-    var resIsEmpty = resRecords.length == 0;
+    var resIsEmpty = records.length == 0;
     setState(() {
-      _recordList = resRecords;
+      _recordList = records;
       _dailyScore = resDailyScore;
       isToday = resIsToday;
       isEmpty = resIsEmpty;
@@ -82,8 +83,7 @@ class _DailyPageState extends State<DailyPage> {
         lastDate: DateTime.now(),
         cancelText: "취소",
         confirmText: "확인",
-        helpText: ""
-    );
+        helpText: "");
     if (picked != null)
       setState(() {
         _date = picked;
@@ -111,7 +111,10 @@ class _DailyPageState extends State<DailyPage> {
         children: <Widget>[
           Text(
             _dailyScore.toString(),
-            style: TextStyle(fontSize: 34, fontFamily: "Montserrat", fontWeight: FontWeight.w700),
+            style: TextStyle(
+                fontSize: 34,
+                fontFamily: "Montserrat",
+                fontWeight: FontWeight.w700),
             textAlign: TextAlign.center,
           ),
           Text(
@@ -135,7 +138,10 @@ class _DailyPageState extends State<DailyPage> {
         children: <Widget>[
           Text(
             _dailyScore.toString(),
-            style: TextStyle(fontSize: 34, fontFamily: "Montserrat", fontWeight: FontWeight.w700),
+            style: TextStyle(
+                fontSize: 34,
+                fontFamily: "Montserrat",
+                fontWeight: FontWeight.w700),
             textAlign: TextAlign.center,
           ),
           Text(
@@ -228,7 +234,9 @@ class _DailyPageState extends State<DailyPage> {
     return InkWell(
       onTap: () {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => StateContainer(child: InputPage())));
+            context,
+            MaterialPageRoute(
+                builder: (context) => StateContainer(child: InputPage())));
       },
       child: Image.asset(
         'assets/images/btn_dive.png',
@@ -274,13 +282,25 @@ class _DailyPageState extends State<DailyPage> {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
-                  return Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.all(10),
-                    child: RecordCard(
-                      record: _recordList[index],
-                    ),
-                  );
+                  final record = _recordList[index];
+                  return Dismissible(
+                      key: Key(record.id),
+                      onDismissed: (direction) {
+                        setState(() {
+                          _recordList.removeAt(index);
+                        });
+                        _recordService.deleteRecord(record.id);
+                        setDataByRecord(_recordList, _date);
+                        Scaffold.of(context).showSnackBar(
+                            SnackBar(content: Text("기록이 삭제 됐습니다.")));
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(10),
+                        child: RecordCard(
+                          record: record,
+                        ),
+                      ));
                 },
                 childCount: _recordList == null ? 0 : _recordList.length,
               ),
