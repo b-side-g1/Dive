@@ -205,18 +205,6 @@ class _InputPageState extends State<InputPage> {
                 InputPageStep3(
                   backgroundColor: backgroundColor,
                 )
-//                MultiProvider(
-//                    providers: [
-//                      StreamProvider<List<Tag>>.value(
-//                        value: TagProvider().tags,
-//                      ),
-//                      Provider<TagProvider>(
-//                        create: (_) => TagProvider(),
-//                      )
-//                    ],
-//                    child: InputPageStep3(
-//                      backgroundColor: backgroundColor,
-//                    ))
               ],
               onPageChanged: (page) {
                 setState(() {
