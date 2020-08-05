@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/components/input/step3/edit_tag_dialog.dart';
 import 'package:flutterapp/components/input/step3/reason_tag_widget.dart';
 import 'package:flutterapp/inherited/state_container.dart';
+import 'package:flutterapp/models/basic_model.dart';
 import 'package:flutterapp/models/daily_model.dart';
 import 'package:flutterapp/models/record_has_emotion.dart';
 import 'package:flutterapp/models/record_has_tag.dart';
@@ -9,6 +10,7 @@ import 'package:flutterapp/models/record_model.dart';
 import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/pages/daily_page.dart';
 import 'package:flutterapp/provider/input/tag_provider.dart';
+import 'package:flutterapp/services/basic/basic_service.dart';
 import 'package:flutterapp/services/common/common_service.dart';
 import 'package:flutterapp/services/daily/daily_service.dart';
 import 'package:flutterapp/services/emotion/emotion_service.dart';
@@ -146,6 +148,12 @@ class _InputPageStep3State extends State<InputPageStep3> {
         ));
   }
 
+  void isValidRecordForm(StateContainerState container) {
+    if(container.score == null) {
+      return CommonService.showToast("첫번째 페이지에서 기분 점수를 입력해주세요.");
+    }
+  }
+
   Widget recordButton() {
     final container = StateContainer.of(context);
 
@@ -163,9 +171,12 @@ class _InputPageStep3State extends State<InputPageStep3> {
             padding: EdgeInsets.all(8.0),
             onPressed: () async {
 
+              this.isValidRecordForm(container);
+
               int currentTimeStamp = DateTime.now().millisecondsSinceEpoch;
               Daily daily =
               await DailyService().getDailyByTimestamp(currentTimeStamp);
+
               String dailyId = daily.id;
 
               Record recordParam = Record(
@@ -180,23 +191,26 @@ class _InputPageStep3State extends State<InputPageStep3> {
 
               await RecordService().insertRecord(recordParam);
 
-              container.tags.forEach((tag) async {
-                RecordHasTag recordHasTagParam = RecordHasTag(
-                    recordId: recordParam.id,
-                    tagId: tag.id,
-                    createdAt: DateTime.now().toString());
-                print("recordHasTagParam -> ${recordHasTagParam.toJson()}");
-                await TagService().insertRecordHasTag(recordHasTagParam);
-              });
-
-              container.emotions.forEach((emotion) async {
-                RecordHasEmotion recordHasEmotion = RecordHasEmotion(
-                    recordId: recordParam.id,
-                    emotionId: emotion.id,
-                    createdAt: DateTime.now().toString());
-                await EmotionService()
-                    .insertRecordHasEmotion(recordHasEmotion);
-              });
+              if(container.tags != null) {
+                container.tags.forEach((tag) async {
+                  RecordHasTag recordHasTagParam = RecordHasTag(
+                      recordId: recordParam.id,
+                      tagId: tag.id,
+                      createdAt: DateTime.now().toString());
+                  print("recordHasTagParam -> ${recordHasTagParam.toJson()}");
+                  await TagService().insertRecordHasTag(recordHasTagParam);
+                });
+              }
+              if(container.emotions != null) {
+                container.emotions.forEach((emotion) async {
+                  RecordHasEmotion recordHasEmotion = RecordHasEmotion(
+                      recordId: recordParam.id,
+                      emotionId: emotion.id,
+                      createdAt: DateTime.now().toString());
+                  await EmotionService()
+                      .insertRecordHasEmotion(recordHasEmotion);
+                });
+              }
 
               CommonService.showToast("당신의 감정을 기록했습니다..");
 
