@@ -189,11 +189,14 @@ class OnboardAnimateState extends State<OnboardAnimate>
   }
 
   Widget buildStep1() {
+
+    final width = MediaQuery.of(context).size.width;
+
     title_widget = Text(
       "Hello",
       textAlign: TextAlign.center,
       style: TextStyle(
-        fontSize: 50,
+        fontSize: width*0.2,
         color: Colors.white,
         fontWeight: FontWeight.w100,
       ),
@@ -202,7 +205,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
     message_widget = Text(
       "안녕하세요",
       style: TextStyle(
-        fontSize: 20,
+        fontSize: width*0.07,
         color: hexToColor("#e4faff"),
         fontWeight: FontWeight.bold,
       ),
@@ -233,13 +236,15 @@ class OnboardAnimateState extends State<OnboardAnimate>
   }
 
   Widget buildStep2() {
+    final width = MediaQuery.of(context).size.width;
+
     title_widget = Image.asset('lib/src/image/onboarding/contents_img_02.png');
     message_widget = Container(
       padding: EdgeInsets.only(left: 50, right: 50),
       child: Text(
         "당신은 당신이 무엇을 할때\n기쁨을 느끼고, 슬픔을 느끼는지\n잘 알고 있나요?",
         style: TextStyle(
-          fontSize: 20,
+          fontSize: width * 0.055,
           color: hexToColor("#e4faff"),
           fontWeight: FontWeight.bold,
         ),
@@ -254,14 +259,14 @@ class OnboardAnimateState extends State<OnboardAnimate>
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(top: 77),
+            padding: const EdgeInsets.only(top: 30),
             child: FadeTransition(
               opacity: titleAnimation,
               child: title_widget,
             ),
           ),
           SizedBox(
-            height: 20.0,
+            height: 30.0,
           ),
           FadeTransition(
             opacity: messageAnimation,
@@ -479,7 +484,6 @@ class OnboardAnimateState extends State<OnboardAnimate>
         messageController.forward();
       });
     }
-
     this._timePickerProvider = Provider.of<TimePickerProvider>(context);
 
     return buildAnimate(animateStep);
