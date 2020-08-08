@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
-import 'package:flutterapp/models/basic_model.dart';
 import 'package:flutterapp/models/onboard/picker_time_model.dart';
 import 'package:flutterapp/onboard/animate/picker/time_picker_widget.dart';
 import 'package:flutterapp/onboard/animate/start_dive_widget.dart';
 import 'package:flutterapp/provider/time_picker_provider.dart';
-import 'package:flutterapp/services/basic/basic_service.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/rendering.dart';
+import 'dart:ui';
 
 class OnboardAnimate extends StatefulWidget {
   @override
@@ -241,9 +242,10 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Widget buildStep2() {
     final width = MediaQuery.of(context).size.width;
 
-    title_widget = Image.asset('lib/src/image/onboarding/contents_img_02.png');
+//    title_widget = Image.asset('assets/images/contents_img_02.png');
+    title_widget = SvgPicture.asset('assets/images/svg/contents_img_02.svg');
+
     message_widget = Container(
-      padding: EdgeInsets.only(left: 50, right: 50),
       child: Text(
         "당신은 당신이 무엇을 할때\n기쁨을 느끼고, 슬픔을 느끼는지\n잘 알고 있나요?",
         style: TextStyle(
@@ -262,7 +264,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(top: 30),
+            padding: const EdgeInsets.only(top: 0),
             child: this.isFocusStep
                 ? title_widget
                 : FadeTransition(
@@ -288,7 +290,9 @@ class OnboardAnimateState extends State<OnboardAnimate>
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
-    title_widget = Image.asset('lib/src/image/onboarding/contents_img_03.png');
+//    title_widget = Image.asset('lib/src/image/onboarding/contents_img_03.png');
+    title_widget = SvgPicture.asset('assets/images/svg/contents_img_03.svg');
+
     message_widget = Container(
       child: Text(
         "다이브에서 매일매일,\n매 순간의 감정을 기록하며\n당신을 알아가보세요",
@@ -333,8 +337,6 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Widget buildStep4() {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-
-    title_widget = Image.asset('lib/src/image/onboarding/contents_img_03.png');
 
     Widget step4_text_endAt = Container(
       padding: EdgeInsets.only(left: 60, right: 60),
