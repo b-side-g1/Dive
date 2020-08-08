@@ -47,6 +47,8 @@ class _EditTagListState extends State<EditTagList> {
   }
 
   Widget buildEditTagListView() {
+    final width = MediaQuery.of(context).size.width;
+
     return Container(
       width: 280,
       height: 324,
@@ -88,7 +90,7 @@ class _EditTagListState extends State<EditTagList> {
                             child: Text(
                               "새 태그 추가",
                               style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w400),
+                                  fontSize: width * 0.045, fontWeight: FontWeight.w400),
                             ),
                           ),
                         ],
@@ -99,7 +101,7 @@ class _EditTagListState extends State<EditTagList> {
                           Text(
                             "${this._tags[index - 1].name}",
                             style: TextStyle(
-                                fontSize: 14.0, fontWeight: FontWeight.w400),
+                                fontSize: width * 0.045, fontWeight: FontWeight.w400),
                           ),
                           GestureDetector(
                               onTap: () {
@@ -114,7 +116,7 @@ class _EditTagListState extends State<EditTagList> {
                               child: Text(
                                 "삭제",
                                 style: TextStyle(
-                                    fontSize: 14.0,
+                                    fontSize: width * 0.045,
                                     color: CommonService.hexToColor("#63c7ff")),
                               ))
                         ],

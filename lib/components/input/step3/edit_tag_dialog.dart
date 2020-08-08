@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/components/input/step3/edit_tag_list.dart';
-import 'package:flutterapp/components/input/step3/save_tag_button.dart';
-import 'package:flutterapp/models/tag_model.dart';
-import 'package:flutterapp/provider/input/tag_provider.dart';
-import 'package:flutterapp/services/common/common_service.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/rendering.dart';
+import 'dart:ui';
 
 class EditTagDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 //    final provider = Provider.of<TagProvider>(context);
+    final width = MediaQuery.of(context).size.width;
 
     return AlertDialog(
-      title: Center(
-        child: Text(
-          "태그편집",
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w700),
-        ),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "태그편집",
+            style: TextStyle(fontSize: width * 0.05, fontWeight: FontWeight.w700,fontFamily: "NotoSans"),
+          ),
+          SvgPicture.asset('assets/images/svg/btn_x.svg')
+        ],
       ),
       content: EditTagList(),
 //      content: StreamProvider.value(
