@@ -137,6 +137,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
         child: TextField(
           controller: _textEditingController,
           cursorColor: CommonService.hexToColor("#34b7eb"),
+          style: TextStyle(color: Colors.white),
           decoration: new InputDecoration(
               hintStyle: TextStyle(color: Colors.white),
               border: InputBorder.none,
