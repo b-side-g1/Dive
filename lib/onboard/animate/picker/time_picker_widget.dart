@@ -10,7 +10,6 @@ import 'package:flutterapp/services/basic/basic_service.dart';
 import 'package:provider/provider.dart';
 
 class TimePickerWidget extends StatefulWidget {
-
   @override
   TimePickerWidgetState createState() => TimePickerWidgetState();
 }
@@ -20,7 +19,6 @@ class TimePickerWidgetState extends State<TimePickerWidget> {
 
   PickerTime pickerTime = PickerTime(hour: '00');
   BasicService basicService = BasicService();
-
 
   PickerTime parsePickerTime(pickerData, value) {
     String hour = pickerData[0][value[0]];
@@ -47,6 +45,8 @@ class TimePickerWidgetState extends State<TimePickerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     this._timePickerProvider = Provider.of<TimePickerProvider>(context);
 
     return OutlineButton(
@@ -56,9 +56,10 @@ class TimePickerWidgetState extends State<TimePickerWidget> {
             Text(
               "${Provider.of<PickerTime>(context).hour}시",
               style: TextStyle(
-                  fontSize: 18,
+                  fontSize: width * 0.07,
                   fontWeight: FontWeight.w300,
-                  color: Colors.white),
+                  color: Colors.white,
+                  fontFamily: "NotoSans"),
             ),
             Icon(
               Icons.arrow_drop_down,
