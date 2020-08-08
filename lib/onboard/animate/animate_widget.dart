@@ -205,10 +205,9 @@ class OnboardAnimateState extends State<OnboardAnimate>
     message_widget = Text(
       "안녕하세요",
       style: TextStyle(
-        fontSize: width * 0.07,
-        color: hexToColor("#e4faff"),
-        fontWeight: FontWeight.bold,
-      ),
+          fontSize: width * 0.07,
+          color: hexToColor("#e4faff"),
+          fontFamily: "NotoSans"),
     );
     return Center(
       child: Column(
@@ -248,10 +247,10 @@ class OnboardAnimateState extends State<OnboardAnimate>
       child: Text(
         "당신은 당신이 무엇을 할때\n기쁨을 느끼고, 슬픔을 느끼는지\n잘 알고 있나요?",
         style: TextStyle(
-          fontSize: width * 0.07,
-          color: hexToColor("#e4faff"),
-          fontWeight: FontWeight.bold,
-        ),
+            fontSize: width * 0.07,
+            color: hexToColor("#e4faff"),
+            fontWeight: FontWeight.bold,
+            fontFamily: "NotoSans"),
         textAlign: TextAlign.center,
       ),
     );
@@ -294,10 +293,10 @@ class OnboardAnimateState extends State<OnboardAnimate>
       child: Text(
         "다이브에서 매일매일,\n매 순간의 감정을 기록하며\n당신을 알아가보세요",
         style: TextStyle(
-          fontSize: width * 0.07,
-          color: hexToColor("#e4faff"),
-          fontWeight: FontWeight.bold,
-        ),
+            fontSize: width * 0.07,
+            color: hexToColor("#e4faff"),
+            fontWeight: FontWeight.bold,
+            fontFamily: "NotoSans"),
         textAlign: TextAlign.center,
       ),
     );
@@ -342,10 +341,10 @@ class OnboardAnimateState extends State<OnboardAnimate>
       child: Text(
         "그 전에 한 가지 알려주세요.\n당신의 하루가 끝나는 시간을\n언제로 설정하면 좋을까요?",
         style: TextStyle(
-          fontSize: width * 0.07,
-          color: hexToColor("#e4faff"),
-          fontWeight: FontWeight.bold,
-        ),
+            fontSize: width * 0.07,
+            color: hexToColor("#e4faff"),
+            fontWeight: FontWeight.bold,
+            fontFamily: "NotoSans"),
         textAlign: TextAlign.center,
       ),
     );
@@ -369,7 +368,8 @@ class OnboardAnimateState extends State<OnboardAnimate>
               style: TextStyle(
                   fontSize: width * 0.08,
                   fontWeight: FontWeight.bold,
-                  color: hexToColor("#92d8ff")),
+                  color: hexToColor("#92d8ff"),
+                  fontFamily: "NotoSans"),
             ),
             Icon(Icons.forward, color: hexToColor("#92d8ff")),
           ],
@@ -380,7 +380,9 @@ class OnboardAnimateState extends State<OnboardAnimate>
     Widget step4_text_after_setting = Text(
       "* 추후에 설정탭에서 변경 가능합니다.",
       style: TextStyle(
-          fontSize: width * 0.05, color: Colors.white.withOpacity(0.5)),
+          fontSize: width * 0.05,
+          color: Colors.white.withOpacity(0.5),
+          fontFamily: "NotoSans"),
     );
 
     return Center(
@@ -407,7 +409,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
                       minWidth: 200, height: 56, child: TimePickerWidget()),
                 ),
           SizedBox(
-            height: height * 0.27,
+            height: height * 0.24,
           ),
           this.isFocusStep
               ? step4_btn_next
@@ -423,7 +425,9 @@ class OnboardAnimateState extends State<OnboardAnimate>
                   child: Text(
                     "* 추후에 설정탭에서 변경 가능합니다.",
                     style: TextStyle(
-                        fontSize: 13, color: Colors.white.withOpacity(0.5)),
+                        fontSize: width * 0.05,
+                        color: Colors.white.withOpacity(0.5),
+                        fontFamily: "NotoSans"),
                   ))
         ],
       ),
@@ -443,6 +447,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
           fontSize: width * 0.07,
           color: Colors.white,
           fontWeight: FontWeight.bold,
+            fontFamily: "NotoSans",
         ),
         textAlign: TextAlign.center,
       ),
@@ -527,7 +532,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Widget build(BuildContext context) {
     this._timePickerProvider = Provider.of<TimePickerProvider>(context);
 
-    //debug_enable_focusStep();
+//    debug_enable_focusStep();
 
     if (this.isFocusStep == false) {
       /* step을 setState. -> 애니메이션 실행 */

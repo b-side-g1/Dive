@@ -9,13 +9,13 @@ import 'package:flutterapp/services/common/common_service.dart';
 import 'package:provider/provider.dart';
 
 class StartDiveWidget extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
     PickerTime pickerTime = Provider.of<PickerTime>(context);
-    TimePickerProvider timePickerProvider = Provider.of<TimePickerProvider>(context);
+    TimePickerProvider timePickerProvider =
+        Provider.of<TimePickerProvider>(context);
     return ButtonTheme(
         minWidth: 316,
         height: 60,
@@ -27,7 +27,6 @@ class StartDiveWidget extends StatelessWidget {
           textColor: Colors.white,
           padding: EdgeInsets.all(8.0),
           onPressed: () async {
-
             await timePickerProvider.updateEndAt(pickerTime);
 
             Navigator.of(context).pushReplacement(MaterialPageRoute(
@@ -35,9 +34,7 @@ class StartDiveWidget extends StatelessWidget {
           },
           child: Text(
             "시작하기",
-            style: TextStyle(
-              fontSize: width * 0.06,
-            ),
+            style: TextStyle(fontSize: width * 0.06, fontFamily: "NotoSans"),
           ),
         ));
   }
