@@ -38,8 +38,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Animation<double> startBtnAnimation;
   Animation<double> circleAnimation;
 
-  int animateStep = 5;
-  double contentMargin = 0;
+  int animateStep = 1;
 
   TimePickerProvider _timePickerProvider;
 
@@ -249,7 +248,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
       child: Text(
         "당신은 당신이 무엇을 할때\n기쁨을 느끼고, 슬픔을 느끼는지\n잘 알고 있나요?",
         style: TextStyle(
-          fontSize: width * 0.055,
+          fontSize: width * 0.07,
           color: hexToColor("#e4faff"),
           fontWeight: FontWeight.bold,
         ),
@@ -287,14 +286,15 @@ class OnboardAnimateState extends State<OnboardAnimate>
   }
 
   Widget buildStep3() {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
     title_widget = Image.asset('lib/src/image/onboarding/contents_img_03.png');
     message_widget = Container(
-      width: 230,
-      height: 96,
       child: Text(
         "다이브에서 매일매일,\n매 순간의 감정을 기록하며\n당신을 알아가보세요",
         style: TextStyle(
-          fontSize: 20,
+          fontSize: width * 0.07,
           color: hexToColor("#e4faff"),
           fontWeight: FontWeight.bold,
         ),
@@ -308,17 +308,17 @@ class OnboardAnimateState extends State<OnboardAnimate>
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 186),
-            child: this.isFocusStep
-                ? title_widget
-                : FadeTransition(
-                    opacity: titleAnimation,
-                    child: title_widget,
-                  ),
-          ),
           SizedBox(
-            height: 20.0,
+            height: height * 0.3,
+          ),
+          this.isFocusStep
+              ? title_widget
+              : FadeTransition(
+                  opacity: titleAnimation,
+                  child: title_widget,
+                ),
+          SizedBox(
+            height: height * 0.04,
           ),
           this.isFocusStep
               ? message_widget
@@ -332,7 +332,9 @@ class OnboardAnimateState extends State<OnboardAnimate>
   }
 
   Widget buildStep4() {
-    contentMargin = 20.0;
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
     title_widget = Image.asset('lib/src/image/onboarding/contents_img_03.png');
 
     Widget step4_text_endAt = Container(
@@ -340,7 +342,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
       child: Text(
         "그 전에 한 가지 알려주세요.\n당신의 하루가 끝나는 시간을\n언제로 설정하면 좋을까요?",
         style: TextStyle(
-          fontSize: 20,
+          fontSize: width * 0.07,
           color: hexToColor("#e4faff"),
           fontWeight: FontWeight.bold,
         ),
@@ -365,7 +367,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
             Text(
               "다음으로",
               style: TextStyle(
-                  fontSize: 20,
+                  fontSize: width * 0.08,
                   fontWeight: FontWeight.bold,
                   color: hexToColor("#92d8ff")),
             ),
@@ -377,7 +379,8 @@ class OnboardAnimateState extends State<OnboardAnimate>
 
     Widget step4_text_after_setting = Text(
       "* 추후에 설정탭에서 변경 가능합니다.",
-      style: TextStyle(fontSize: 13, color: Colors.white.withOpacity(0.5)),
+      style: TextStyle(
+          fontSize: width * 0.05, color: Colors.white.withOpacity(0.5)),
     );
 
     return Center(
@@ -394,7 +397,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
               : FadeTransition(
                   opacity: step4MessageAnimation, child: step4_text_endAt),
           SizedBox(
-            height: 50.0,
+            height: height * 0.15,
           ),
           this.isFocusStep
               ? step4_btn_picker
@@ -404,14 +407,14 @@ class OnboardAnimateState extends State<OnboardAnimate>
                       minWidth: 200, height: 56, child: TimePickerWidget()),
                 ),
           SizedBox(
-            height: 90.0,
+            height: height * 0.27,
           ),
           this.isFocusStep
               ? step4_btn_next
               : FadeTransition(
                   opacity: nextBtnAnimation, child: step4_btn_next),
           SizedBox(
-            height: 35.0,
+            height: height * 0.08,
           ),
           this.isFocusStep
               ? step4_text_after_setting
@@ -428,15 +431,16 @@ class OnboardAnimateState extends State<OnboardAnimate>
   }
 
   Widget buildStep5() {
-    contentMargin = 20.0;
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
     print("buildStep5!");
 
     Widget step5_text1 = Container(
-      padding: EdgeInsets.only(left: 60, right: 60),
       child: Text(
         "좋았어요.\n그럼 이제부터 다이브와 함께\n당신의 감정에 집중해보세요.",
         style: TextStyle(
-          fontSize: 20,
+          fontSize: width * 0.07,
           color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
@@ -444,45 +448,44 @@ class OnboardAnimateState extends State<OnboardAnimate>
       ),
     );
 
-    return Center(
-        child: Stack(
+    return Column(
       children: <Widget>[
-        this.isFocusStep
-            ? Container(
-                padding: EdgeInsets.only(top: 80),
-                child:
-                    Image.asset('lib/src/image/onboarding/contents_img_04.png'))
-            : Container(
-                padding: EdgeInsets.only(top: 80),
-                child: ScaleTransition(
-                  scale: circleAnimation,
-                  alignment: Alignment.center,
-                  child: Image.asset(
-                      'lib/src/image/onboarding/contents_img_04.png'),
-                )),
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        Stack(
           children: <Widget>[
-            SizedBox(
-              height: 219.0,
-            ),
             this.isFocusStep
-                ? step5_text1
-                : FadeTransition(
-                    opacity: step5MessageAnimation, child: step5_text1),
-            SizedBox(
-              height: 160.0,
+                ? Container(
+                    padding: EdgeInsets.only(top: height * 0.15),
+                    child: Image.asset(
+                        'lib/src/image/onboarding/contents_img_04.png'))
+                : Container(
+                    padding: EdgeInsets.only(top: height * 0.15),
+                    child: ScaleTransition(
+                      scale: circleAnimation,
+                      alignment: Alignment.center,
+                      child: Image.asset(
+                          'lib/src/image/onboarding/contents_img_04.png'),
+                    )),
+            Padding(
+              padding: EdgeInsets.only(top: height * 0.35),
+              child: Align(
+                alignment: Alignment.center,
+                child: this.isFocusStep
+                    ? step5_text1
+                    : FadeTransition(
+                        opacity: step5MessageAnimation, child: step5_text1),
+              ),
             ),
-            this.isFocusStep
-                ? StartDiveWidget()
-                : FadeTransition(
-                    opacity: startBtnAnimation, child: StartDiveWidget())
           ],
         ),
+        SizedBox(
+          height: height * 0.05,
+        ),
+        this.isFocusStep
+            ? StartDiveWidget()
+            : FadeTransition(
+                opacity: startBtnAnimation, child: StartDiveWidget())
       ],
-    ));
+    );
   }
 
   Color hexToColor(String code) {
@@ -524,7 +527,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Widget build(BuildContext context) {
     this._timePickerProvider = Provider.of<TimePickerProvider>(context);
 
-    debug_enable_focusStep();
+    //debug_enable_focusStep();
 
     if (this.isFocusStep == false) {
       /* step을 setState. -> 애니메이션 실행 */

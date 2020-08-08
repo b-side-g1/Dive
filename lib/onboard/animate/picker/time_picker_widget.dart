@@ -47,6 +47,8 @@ class TimePickerWidgetState extends State<TimePickerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     this._timePickerProvider = Provider.of<TimePickerProvider>(context);
 
     return OutlineButton(
@@ -56,7 +58,7 @@ class TimePickerWidgetState extends State<TimePickerWidget> {
             Text(
               "${Provider.of<PickerTime>(context).hour}시",
               style: TextStyle(
-                  fontSize: 18,
+                  fontSize: width * 0.07,
                   fontWeight: FontWeight.w300,
                   color: Colors.white),
             ),

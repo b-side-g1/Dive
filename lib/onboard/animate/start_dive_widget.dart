@@ -12,6 +12,8 @@ class StartDiveWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
     PickerTime pickerTime = Provider.of<PickerTime>(context);
     TimePickerProvider timePickerProvider = Provider.of<TimePickerProvider>(context);
     return ButtonTheme(
@@ -34,7 +36,7 @@ class StartDiveWidget extends StatelessWidget {
           child: Text(
             "시작하기",
             style: TextStyle(
-              fontSize: 18.0,
+              fontSize: width * 0.06,
             ),
           ),
         ));
