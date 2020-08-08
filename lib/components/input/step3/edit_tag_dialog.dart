@@ -18,7 +18,11 @@ class EditTagDialog extends StatelessWidget {
             "태그편집",
             style: TextStyle(fontSize: width * 0.05, fontWeight: FontWeight.w700,fontFamily: "NotoSans"),
           ),
-          SvgPicture.asset('assets/images/svg/btn_x.svg')
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+              child: SvgPicture.asset('assets/images/svg/btn_x.svg'))
         ],
       ),
       content: EditTagList(),
