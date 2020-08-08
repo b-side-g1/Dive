@@ -7,8 +7,8 @@ import 'dart:async';
 class InputPageStep1 extends StatefulWidget {
   final int score;
 
-  InputPageStep1({Key key, this.score})
-      : super(key: key);
+  InputPageStep1({Key key, this.score}) : super(key: key);
+
 //  Function handlerPageView;
 
   @override
@@ -59,6 +59,8 @@ class _InputPageStep1State extends State<InputPageStep1> {
   }
 
   renderTimeSelect() {
+    final width = MediaQuery.of(context).size.width;
+
     String title = "당신의 기분을 알려주세요.";
     return Padding(
         padding: const EdgeInsets.only(top: 0),
@@ -68,10 +70,11 @@ class _InputPageStep1State extends State<InputPageStep1> {
             children: <Widget>[
               Text(curDate == null ? '' : curDate,
                   style: TextStyle(
-                      fontSize: 21,
-                      color: const Color(0xffffffff),
-                      fontWeight: FontWeight.w700,
-                      fontStyle: FontStyle.normal)),
+                    fontSize: width * 0.07,
+                    color: const Color(0xffffffff),
+                    fontWeight: FontWeight.w700,
+                    fontFamily: "NotoSans",
+                  )),
               Container(
                 padding: const EdgeInsets.all(0.0),
                 height: 30,
@@ -92,14 +95,18 @@ class _InputPageStep1State extends State<InputPageStep1> {
           ),
           Text(title,
               style: TextStyle(
-                  fontSize: 21,
+                  fontSize: width * 0.07,
                   color: const Color(0xffffffff),
                   fontWeight: FontWeight.w700,
-                  fontStyle: FontStyle.normal))
+                  fontFamily: "NotoSans"))
         ]));
   }
 
   renderScoreSelect(StateContainerState container) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
+
     List<int> scoreList = [for (var i = 0; i <= 100; i += 10) i];
 
     return Padding(
@@ -107,8 +114,8 @@ class _InputPageStep1State extends State<InputPageStep1> {
         child:
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
           Container(
-            width: 200,
-            height: 200,
+            width: width * 0.73,
+            height: width * 0.73,
             decoration: BoxDecoration(
                 image: DecorationImage(
               image: AssetImage('lib/src/image/daily/img_bubble.png'),
@@ -137,7 +144,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
                               style: TextStyle(
                                 fontFamily: 'Roboto',
                                 color: Color(0xffffffff),
-                                fontSize: 28,
+                                fontSize: width * 0.11,
                                 fontWeight: FontWeight.w300,
                                 fontStyle: FontStyle.normal,
                                 letterSpacing: 0.28,
@@ -154,11 +161,12 @@ class _InputPageStep1State extends State<InputPageStep1> {
 
   @override
   Widget build(BuildContext context) {
-
     final container = StateContainer.of(context);
 
+    final height = MediaQuery.of(context).size.height;
+
     return Container(
-      padding: EdgeInsets.only(top: 130),
+      padding: EdgeInsets.only(top: height * 0.23),
       child: Stack(
         children: <Widget>[
           Column(
