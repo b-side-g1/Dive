@@ -17,7 +17,6 @@ import 'package:flutterapp/services/emotion/emotion_service.dart';
 import 'package:flutterapp/services/record/record_service.dart';
 import 'package:flutterapp/services/tag/tag_service.dart';
 
-
 class InputPageStep3 extends StatefulWidget {
   InputPageStep3({Key key}) : super(key: key);
 
@@ -41,7 +40,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
 
   @override
   void initState() {
-    _tagService.selectAllTags().then((tags)  {
+    _tagService.selectAllTags().then((tags) {
       setState(() {
         this._tags = tags;
       });
@@ -53,10 +52,10 @@ class _InputPageStep3State extends State<InputPageStep3> {
         padding: EdgeInsets.only(top: 110, left: 70, right: 70),
         child: Center(
             child: Text(
-              "그렇게 느끼는 이유는...",
-              style: TextStyle(
-                  fontSize: 21, fontWeight: FontWeight.w700, color: Colors.white),
-            )));
+          "그렇게 느끼는 이유는...",
+          style: TextStyle(
+              fontSize: 21, fontWeight: FontWeight.w700, color: Colors.white),
+        )));
   }
 
   Widget toolBarWidget() {
@@ -77,7 +76,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
               onPressed: () async {
                 createEditTagDialog(context).then((_) {
                   setState(() {
-                    _tagService.selectAllTags().then((tags)  {
+                    _tagService.selectAllTags().then((tags) {
                       setState(() {
                         this._tags = tags;
                       });
@@ -110,7 +109,9 @@ class _InputPageStep3State extends State<InputPageStep3> {
       height: 120,
       padding: EdgeInsets.only(left: 20, right: 20),
       alignment: Alignment.centerLeft,
-      child: ReasonTagWidget(tags: this._tags,),
+      child: ReasonTagWidget(
+        tags: this._tags,
+      ),
     );
   }
 
@@ -134,7 +135,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
   Widget writeReasonField() {
     return Container(
         padding: EdgeInsets.only(top: 13, left: 20, right: 20),
-        child: TextField(
+        child: TextFormField(
           controller: _textEditingController,
           cursorColor: CommonService.hexToColor("#34b7eb"),
           style: TextStyle(color: Colors.white),
@@ -147,12 +148,6 @@ class _InputPageStep3State extends State<InputPageStep3> {
               disabledBorder: InputBorder.none,
               hintText: "더 자세히 떠올려보자"),
         ));
-  }
-
-  void isValidRecordForm(StateContainerState container) {
-    if(container.score == null) {
-      return CommonService.showToast("첫번째 페이지에서 기분 점수를 입력해주세요.");
-    }
   }
 
   Widget recordButton() {
@@ -171,12 +166,14 @@ class _InputPageStep3State extends State<InputPageStep3> {
             textColor: Colors.white,
             padding: EdgeInsets.all(8.0),
             onPressed: () async {
-
-              this.isValidRecordForm(container);
+              if (container.score == null) {
+                CommonService.showToast("당신의 기분 점수를 입력해주세요.");
+                return;
+              }
 
               int currentTimeStamp = DateTime.now().millisecondsSinceEpoch;
               Daily daily =
-              await DailyService().getDailyByTimestamp(currentTimeStamp);
+                  await DailyService().getDailyByTimestamp(currentTimeStamp);
 
               String dailyId = daily.id;
 
@@ -192,7 +189,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
 
               await RecordService().insertRecord(recordParam);
 
-              if(container.tags != null) {
+              if (container.tags != null) {
                 container.tags.forEach((tag) async {
                   RecordHasTag recordHasTagParam = RecordHasTag(
                       recordId: recordParam.id,
@@ -202,7 +199,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                   await TagService().insertRecordHasTag(recordHasTagParam);
                 });
               }
-              if(container.emotions != null) {
+              if (container.emotions != null) {
                 container.emotions.forEach((emotion) async {
                   RecordHasEmotion recordHasEmotion = RecordHasEmotion(
                       recordId: recordParam.id,
