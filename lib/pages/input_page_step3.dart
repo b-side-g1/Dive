@@ -167,8 +167,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
             padding: EdgeInsets.all(8.0),
             onPressed: () async {
               if (container.score == null) {
-                CommonService.showToast("당신의 기분 점수를 입력해주세요.");
-                return;
+                container.score = 50;
               }
 
               int currentTimeStamp = DateTime.now().millisecondsSinceEpoch;
