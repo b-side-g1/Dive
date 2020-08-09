@@ -109,7 +109,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
 
   renderScoreSelect(StateContainerState container) {
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
 
     List<int> scoreList = [for (var i = 0; i <= 100; i += 10) i];
 

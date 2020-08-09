@@ -76,6 +76,9 @@ class _InputPageState extends State<InputPage> {
   }
 
   renderStepButton(step) {
+
+    final height = MediaQuery.of(context).size.height;
+
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -86,14 +89,20 @@ class _InputPageState extends State<InputPage> {
             child: Align(
                 alignment: Alignment.topCenter,
 
-                child: stepActionButton(ArrowAction.up, step)),
+                child: Padding(
+                  padding:  EdgeInsets.only(top: height * 0.05 ),
+                  child: stepActionButton(ArrowAction.up, step),
+                )),
           ),
           Visibility(
             visible: (step == 3 ) ? false : true,
             child: Expanded(
               child: Align(
                   alignment: Alignment.bottomCenter,
-                  child: stepActionButton(ArrowAction.down, step)),
+                  child: Padding(
+                    padding:  EdgeInsets.only(bottom: height * 0.05 ),
+                    child: stepActionButton(ArrowAction.down, step),
+                  )),
             ),
           )
         ],
