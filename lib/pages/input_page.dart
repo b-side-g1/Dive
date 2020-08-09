@@ -36,11 +36,6 @@ class _InputPageState extends State<InputPage> {
   int step = 1;
   int testScore;
 
-  void handlerPageView(int index) {
-    step = index;
-    _controller.animateToPage(index,
-        curve: Curves.easeIn, duration: Duration(microseconds: 2000000));
-  }
 
   @override
   void dispose() {
@@ -55,8 +50,15 @@ class _InputPageState extends State<InputPage> {
     );
   }
 
+  void handlerPageView(int index) {
+    debugPrint("[input_page.dart] #handlerPageView index -> ${index}");
+    step = index;
+    _controller.animateToPage(index,
+        curve: Curves.easeIn, duration: Duration(milliseconds: 700));
+  }
+
   Widget stepActionButton(ArrowAction action, int step) {
-    final handleStep = (action == ArrowAction.up) ? (step - 1) : (step + 1);
+    final handleStep = (action == ArrowAction.up) ? (step-2) : (step);
     String rowAction = (action == ArrowAction.up) ? "up" : "down";
     return FloatingActionButton(
       heroTag: rowAction,
