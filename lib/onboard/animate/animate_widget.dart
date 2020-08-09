@@ -343,7 +343,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
       child: Text(
         "그 전에 한 가지 알려주세요.\n당신의 하루가 끝나는 시간을\n언제로 설정하면 좋을까요?",
         style: TextStyle(
-            fontSize: width * 0.07,
+            fontSize: width * 0.058,
             color: hexToColor("#e4faff"),
             fontWeight: FontWeight.bold,
             fontFamily: "NotoSans"),
@@ -368,7 +368,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
             Text(
               "다음으로",
               style: TextStyle(
-                  fontSize: width * 0.08,
+                  fontSize: width * 0.06,
                   fontWeight: FontWeight.bold,
                   color: hexToColor("#92d8ff"),
                   fontFamily: "NotoSans"),
@@ -394,7 +394,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           SizedBox(
-            height: 165.0,
+            height: height * 0.2,
           ),
           this.isFocusStep
               ? step4_text_endAt
