@@ -39,7 +39,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Animation<double> startBtnAnimation;
   Animation<double> circleAnimation;
 
-  int animateStep = 5;
+  int animateStep = 1;
 
   TimePickerProvider _timePickerProvider;
 
@@ -534,7 +534,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Widget build(BuildContext context) {
     this._timePickerProvider = Provider.of<TimePickerProvider>(context);
 
-    debug_enable_focusStep();
+//    debug_enable_focusStep();
 
     if (this.isFocusStep == false) {
       /* step을 setState. -> 애니메이션 실행 */
