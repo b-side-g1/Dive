@@ -39,7 +39,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Animation<double> startBtnAnimation;
   Animation<double> circleAnimation;
 
-  int animateStep = 1;
+  int animateStep = 5;
 
   TimePickerProvider _timePickerProvider;
 
@@ -191,13 +191,13 @@ class OnboardAnimateState extends State<OnboardAnimate>
   }
 
   Widget buildStep1() {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context).size.width / 100;
 
     title_widget = Text(
       "Hello",
       textAlign: TextAlign.center,
       style: TextStyle(
-        fontSize: width * 0.2,
+        fontSize: width * 20,
         color: Colors.white,
         fontWeight: FontWeight.w100,
       ),
@@ -206,7 +206,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
     message_widget = Text(
       "안녕하세요",
       style: TextStyle(
-          fontSize: width * 0.07,
+          fontSize: width * 7,
           color: hexToColor("#e4faff"),
           fontFamily: "NotoSans"),
     );
@@ -240,7 +240,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   }
 
   Widget buildStep2() {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context).size.width / 100;
 
 //    title_widget = Image.asset('assets/images/contents_img_02.png');
     title_widget = SvgPicture.asset('assets/images/svg/contents_img_02.svg');
@@ -249,7 +249,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
       child: Text(
         "당신은 당신이 무엇을 할때\n기쁨을 느끼고, 슬픔을 느끼는지\n잘 알고 있나요?",
         style: TextStyle(
-            fontSize: width * 0.07,
+            fontSize: width * 6.5,
             color: hexToColor("#e4faff"),
             fontWeight: FontWeight.bold,
             fontFamily: "NotoSans"),
@@ -287,8 +287,8 @@ class OnboardAnimateState extends State<OnboardAnimate>
   }
 
   Widget buildStep3() {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width / 100;
+    final height = MediaQuery.of(context).size.height / 100;
 
 //    title_widget = Image.asset('lib/src/image/onboarding/contents_img_03.png');
     title_widget = SvgPicture.asset('assets/images/svg/contents_img_03.svg');
@@ -297,7 +297,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
       child: Text(
         "다이브에서 매일매일,\n매 순간의 감정을 기록하며\n당신을 알아가보세요",
         style: TextStyle(
-            fontSize: width * 0.07,
+            fontSize: width * 6.8,
             color: hexToColor("#e4faff"),
             fontWeight: FontWeight.bold,
             fontFamily: "NotoSans"),
@@ -312,7 +312,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           SizedBox(
-            height: height * 0.3,
+            height: height * 30,
           ),
           this.isFocusStep
               ? title_widget
@@ -321,7 +321,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
                   child: title_widget,
                 ),
           SizedBox(
-            height: height * 0.04,
+            height: height * 4,
           ),
           this.isFocusStep
               ? message_widget
@@ -335,15 +335,15 @@ class OnboardAnimateState extends State<OnboardAnimate>
   }
 
   Widget buildStep4() {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width /  100;
+    final height = MediaQuery.of(context).size.height / 100;
 
     Widget step4_text_endAt = Container(
       padding: EdgeInsets.only(left: 60, right: 60),
       child: Text(
         "그 전에 한 가지 알려주세요.\n당신의 하루가 끝나는 시간을\n언제로 설정하면 좋을까요?",
         style: TextStyle(
-            fontSize: width * 0.058,
+            fontSize: width * 5.5,
             color: hexToColor("#e4faff"),
             fontWeight: FontWeight.bold,
             fontFamily: "NotoSans"),
@@ -368,7 +368,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
             Text(
               "다음으로",
               style: TextStyle(
-                  fontSize: width * 0.06,
+                  fontSize: width * 6,
                   fontWeight: FontWeight.bold,
                   color: hexToColor("#92d8ff"),
                   fontFamily: "NotoSans"),
@@ -382,7 +382,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
     Widget step4_text_after_setting = Text(
       "* 추후에 설정탭에서 변경 가능합니다.",
       style: TextStyle(
-          fontSize: width * 0.05,
+          fontSize: width * 5,
           color: Colors.white.withOpacity(0.5),
           fontFamily: "NotoSans"),
     );
@@ -394,14 +394,14 @@ class OnboardAnimateState extends State<OnboardAnimate>
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           SizedBox(
-            height: height * 0.2,
+            height: height * 20,
           ),
           this.isFocusStep
               ? step4_text_endAt
               : FadeTransition(
                   opacity: step4MessageAnimation, child: step4_text_endAt),
           SizedBox(
-            height: height * 0.15,
+            height: height * 13,
           ),
           this.isFocusStep
               ? step4_btn_picker
@@ -411,14 +411,14 @@ class OnboardAnimateState extends State<OnboardAnimate>
                       minWidth: 200, height: 56, child: TimePickerWidget()),
                 ),
           SizedBox(
-            height: height * 0.24,
+            height: height * 23,
           ),
           this.isFocusStep
               ? step4_btn_next
               : FadeTransition(
                   opacity: nextBtnAnimation, child: step4_btn_next),
           SizedBox(
-            height: height * 0.08,
+            height: height * 8,
           ),
           this.isFocusStep
               ? step4_text_after_setting
@@ -427,7 +427,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
                   child: Text(
                     "* 추후에 설정탭에서 변경 가능합니다.",
                     style: TextStyle(
-                        fontSize: width * 0.05,
+                        fontSize: width * 5,
                         color: Colors.white.withOpacity(0.5),
                         fontFamily: "NotoSans"),
                   ))
@@ -437,8 +437,8 @@ class OnboardAnimateState extends State<OnboardAnimate>
   }
 
   Widget buildStep5() {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width / 100;
+    final height = MediaQuery.of(context).size.height / 100;
 
     print("buildStep5!");
 
@@ -446,7 +446,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
       child: Text(
         "좋았어요.\n그럼 이제부터 다이브와 함께\n당신의 감정에 집중해보세요.",
         style: TextStyle(
-          fontSize: width * 0.07,
+          fontSize: width * 6,
           color: Colors.white,
           fontWeight: FontWeight.bold,
             fontFamily: "NotoSans",
@@ -461,11 +461,11 @@ class OnboardAnimateState extends State<OnboardAnimate>
           children: <Widget>[
             this.isFocusStep
                 ? Container(
-                    padding: EdgeInsets.only(top: height * 0.15),
+                    padding: EdgeInsets.only(top: height * 15),
                     child: Image.asset(
                         'lib/src/image/onboarding/contents_img_04.png'))
                 : Container(
-                    padding: EdgeInsets.only(top: height * 0.15),
+                    padding: EdgeInsets.only(top: height * 15),
                     child: ScaleTransition(
                       scale: circleAnimation,
                       alignment: Alignment.center,
@@ -473,7 +473,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
                           'lib/src/image/onboarding/contents_img_04.png'),
                     )),
             Padding(
-              padding: EdgeInsets.only(top: height * 0.35),
+              padding: EdgeInsets.only(top: height * 35),
               child: Align(
                 alignment: Alignment.center,
                 child: this.isFocusStep
@@ -485,7 +485,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
           ],
         ),
         SizedBox(
-          height: height * 0.05,
+          height: height * 5,
         ),
         this.isFocusStep
             ? StartDiveWidget()
@@ -534,7 +534,7 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Widget build(BuildContext context) {
     this._timePickerProvider = Provider.of<TimePickerProvider>(context);
 
-//    debug_enable_focusStep();
+    debug_enable_focusStep();
 
     if (this.isFocusStep == false) {
       /* step을 setState. -> 애니메이션 실행 */
