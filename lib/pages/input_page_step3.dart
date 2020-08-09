@@ -115,7 +115,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
     final height = MediaQuery.of(context).size.height;
 
     return Container(
-      height: height * 0.25,
+      height: height * 0.18,
       padding: EdgeInsets.only(left: 20, right: 20),
       alignment: Alignment.centerLeft,
       child: ReasonTagWidget(
