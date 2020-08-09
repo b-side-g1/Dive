@@ -9,8 +9,6 @@ class InputPageStep1 extends StatefulWidget {
 
   InputPageStep1({Key key, this.score}) : super(key: key);
 
-//  Function handlerPageView;
-
   @override
   _InputPageStep1State createState() => _InputPageStep1State();
 }
@@ -18,7 +16,8 @@ class InputPageStep1 extends StatefulWidget {
 class _InputPageStep1State extends State<InputPageStep1> {
   int hour, min, score;
   String mid, curDate;
-  Timer _timer;
+
+  final _scrollController = FixedExtentScrollController(initialItem: 5);
 
   @protected
   @mustCallSuper
@@ -31,8 +30,14 @@ class _InputPageStep1State extends State<InputPageStep1> {
       min = now.minute;
       mid = now.hour >= 12 ? "오후" : "오전";
       curDate = "${mid} ${hour}시 ${min}분 ";
-      score = 50;
     });
+  }
+
+  @override
+  void dispose() {
+    this._scrollController.dispose();
+
+    super.dispose();
   }
 
   showTimePicker(BuildContext context) {
@@ -106,7 +111,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
-
     List<int> scoreList = [for (var i = 0; i <= 100; i += 10) i];
 
     return Padding(
@@ -126,6 +130,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
                 child: Container(
                     height: 170,
                     child: new ListWheelScrollView.useDelegate(
+                      controller: _scrollController,
                       itemExtent: 60,
                       diameterRatio: 1.5,
                       physics: FixedExtentScrollPhysics(),
