@@ -48,7 +48,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
   }
 
   Widget titleWidget() {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context).size.width / 100;
 
     return Container(
         padding: EdgeInsets.only(top: 110, left: 70, right: 70),
@@ -56,12 +56,12 @@ class _InputPageStep3State extends State<InputPageStep3> {
             child: Text(
           "그렇게 느끼는 이유는...",
           style: TextStyle(
-              fontSize: width * 0.08, fontWeight: FontWeight.w700, color: Colors.white),
+              fontSize: width * 6.3, fontWeight: FontWeight.w700, color: Colors.white),
         )));
   }
 
   Widget toolBarWidget() {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context).size.width / 100;
 
     return Container(
         padding: EdgeInsets.only(top: 20, left: 20, right: 20),
@@ -71,7 +71,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
             Text(
               "이유태그",
               style: TextStyle(
-                  fontSize: width * 0.07,
+                  fontSize: width * 5.5,
                   fontWeight: FontWeight.w700,
                   color: Colors.white),
             ),
@@ -90,7 +90,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
               },
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.edit, color: Colors.grey,size: width * 0.05,),
+                  Icon(Icons.edit, color: Colors.grey,size: width * 5,),
                   SizedBox(
                     width: 3,
                   ),
@@ -99,7 +99,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                     child: Text(
                       "태그편집",
                       style: TextStyle(
-                          fontSize: width * 0.05,
+                          fontSize: width * 4.5,
                           fontWeight: FontWeight.w400,
                           color: Colors.grey),
                     ),
@@ -126,7 +126,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
 
   Widget writeReasonTitle() {
 
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context).size.width / 100;
 
     return Container(
         padding: EdgeInsets.only(top: 50, left: 20, right: 20),
@@ -136,7 +136,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
             Text(
               "이유적기",
               style: TextStyle(
-                  fontSize: width * 0.07,
+                  fontSize: width * 5.5,
                   fontWeight: FontWeight.w700,
                   color: Colors.white),
             ),
