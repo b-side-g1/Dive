@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
-import 'package:flutterapp/models/basic_model.dart';
 import 'package:flutterapp/models/onboard/picker_time_model.dart';
 import 'package:flutterapp/onboard/animate/picker/time_picker_widget.dart';
 import 'package:flutterapp/onboard/animate/start_dive_widget.dart';
 import 'package:flutterapp/provider/time_picker_provider.dart';
-import 'package:flutterapp/services/basic/basic_service.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter/rendering.dart';
+import 'dart:ui';
 
 class OnboardAnimate extends StatefulWidget {
   @override
@@ -39,9 +40,10 @@ class OnboardAnimateState extends State<OnboardAnimate>
   Animation<double> circleAnimation;
 
   int animateStep = 1;
-  double contentMargin = 0;
 
   TimePickerProvider _timePickerProvider;
+
+  bool isFocusStep = false;
 
   void initState() {
     super.initState();
@@ -189,11 +191,13 @@ class OnboardAnimateState extends State<OnboardAnimate>
   }
 
   Widget buildStep1() {
+    final width = MediaQuery.of(context).size.width / 100;
+
     title_widget = Text(
       "Hello",
       textAlign: TextAlign.center,
       style: TextStyle(
-        fontSize: 50,
+        fontSize: width * 20,
         color: Colors.white,
         fontWeight: FontWeight.w100,
       ),
@@ -202,10 +206,9 @@ class OnboardAnimateState extends State<OnboardAnimate>
     message_widget = Text(
       "안녕하세요",
       style: TextStyle(
-        fontSize: 20,
-        color: hexToColor("#e4faff"),
-        fontWeight: FontWeight.bold,
-      ),
+          fontSize: width * 7,
+          color: hexToColor("#e4faff"),
+          fontFamily: "NotoSans"),
     );
     return Center(
       child: Column(
@@ -215,34 +218,41 @@ class OnboardAnimateState extends State<OnboardAnimate>
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(top: 77),
-            child: FadeTransition(
-              opacity: titleAnimation,
-              child: title_widget,
-            ),
+            child: this.isFocusStep
+                ? title_widget
+                : FadeTransition(
+                    opacity: titleAnimation,
+                    child: title_widget,
+                  ),
           ),
           SizedBox(
             height: 77,
           ),
-          FadeTransition(
-            opacity: messageAnimation,
-            child: message_widget,
-          )
+          this.isFocusStep
+              ? message_widget
+              : FadeTransition(
+                  opacity: messageAnimation,
+                  child: message_widget,
+                )
         ],
       ),
     );
   }
 
   Widget buildStep2() {
-    title_widget = Image.asset('lib/src/image/onboarding/contents_img_02.png');
+    final width = MediaQuery.of(context).size.width / 100;
+
+//    title_widget = Image.asset('assets/images/contents_img_02.png');
+    title_widget = SvgPicture.asset('assets/images/svg/contents_img_02.svg');
+
     message_widget = Container(
-      padding: EdgeInsets.only(left: 50, right: 50),
       child: Text(
         "당신은 당신이 무엇을 할때\n기쁨을 느끼고, 슬픔을 느끼는지\n잘 알고 있나요?",
         style: TextStyle(
-          fontSize: 20,
-          color: hexToColor("#e4faff"),
-          fontWeight: FontWeight.bold,
-        ),
+            fontSize: width * 6.5,
+            color: hexToColor("#e4faff"),
+            fontWeight: FontWeight.bold,
+            fontFamily: "NotoSans"),
         textAlign: TextAlign.center,
       ),
     );
@@ -254,36 +264,43 @@ class OnboardAnimateState extends State<OnboardAnimate>
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(top: 77),
-            child: FadeTransition(
-              opacity: titleAnimation,
-              child: title_widget,
-            ),
+            padding: const EdgeInsets.only(top: 0),
+            child: this.isFocusStep
+                ? title_widget
+                : FadeTransition(
+                    opacity: titleAnimation,
+                    child: title_widget,
+                  ),
           ),
           SizedBox(
-            height: 20.0,
+            height: 30.0,
           ),
-          FadeTransition(
-            opacity: messageAnimation,
-            child: message_widget,
-          )
+          this.isFocusStep
+              ? message_widget
+              : FadeTransition(
+                  opacity: messageAnimation,
+                  child: message_widget,
+                )
         ],
       ),
     );
   }
 
   Widget buildStep3() {
-    title_widget = Image.asset('lib/src/image/onboarding/contents_img_03.png');
+    final width = MediaQuery.of(context).size.width / 100;
+    final height = MediaQuery.of(context).size.height / 100;
+
+//    title_widget = Image.asset('lib/src/image/onboarding/contents_img_03.png');
+    title_widget = SvgPicture.asset('assets/images/svg/contents_img_03.svg');
+
     message_widget = Container(
-      width: 230,
-      height: 96,
       child: Text(
         "다이브에서 매일매일,\n매 순간의 감정을 기록하며\n당신을 알아가보세요",
         style: TextStyle(
-          fontSize: 20,
-          color: hexToColor("#e4faff"),
-          fontWeight: FontWeight.bold,
-        ),
+            fontSize: width * 6.8,
+            color: hexToColor("#e4faff"),
+            fontWeight: FontWeight.bold,
+            fontFamily: "NotoSans"),
         textAlign: TextAlign.center,
       ),
     );
@@ -294,28 +311,81 @@ class OnboardAnimateState extends State<OnboardAnimate>
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 186),
-            child: FadeTransition(
-              opacity: titleAnimation,
-              child: title_widget,
-            ),
-          ),
           SizedBox(
-            height: 20.0,
+            height: height * 30,
           ),
-          FadeTransition(
-            opacity: messageAnimation,
-            child: message_widget,
-          )
+          this.isFocusStep
+              ? title_widget
+              : FadeTransition(
+                  opacity: titleAnimation,
+                  child: title_widget,
+                ),
+          SizedBox(
+            height: height * 4,
+          ),
+          this.isFocusStep
+              ? message_widget
+              : FadeTransition(
+                  opacity: messageAnimation,
+                  child: message_widget,
+                )
         ],
       ),
     );
   }
 
   Widget buildStep4() {
-    contentMargin = 20.0;
-    title_widget = Image.asset('lib/src/image/onboarding/contents_img_03.png');
+    final width = MediaQuery.of(context).size.width /  100;
+    final height = MediaQuery.of(context).size.height / 100;
+
+    Widget step4_text_endAt = Container(
+      padding: EdgeInsets.only(left: 60, right: 60),
+      child: Text(
+        "그 전에 한 가지 알려주세요.\n당신의 하루가 끝나는 시간을\n언제로 설정하면 좋을까요?",
+        style: TextStyle(
+            fontSize: width * 5.5,
+            color: hexToColor("#e4faff"),
+            fontWeight: FontWeight.bold,
+            fontFamily: "NotoSans"),
+        textAlign: TextAlign.center,
+      ),
+    );
+
+    Widget step4_btn_picker =
+        ButtonTheme(minWidth: 200, height: 56, child: TimePickerWidget());
+
+    Widget step4_btn_next = ButtonTheme(
+      minWidth: 280,
+      height: 50,
+      child: FlatButton(
+        color: Colors.transparent,
+        onPressed: () {
+          reverseStep4();
+        },
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text(
+              "다음으로",
+              style: TextStyle(
+                  fontSize: width * 6,
+                  fontWeight: FontWeight.bold,
+                  color: hexToColor("#92d8ff"),
+                  fontFamily: "NotoSans"),
+            ),
+            Icon(Icons.forward, color: hexToColor("#92d8ff")),
+          ],
+        ),
+      ),
+    );
+
+    Widget step4_text_after_setting = Text(
+      "* 추후에 설정탭에서 변경 가능합니다.",
+      style: TextStyle(
+          fontSize: width * 5,
+          color: Colors.white.withOpacity(0.5),
+          fontFamily: "NotoSans"),
+    );
 
     return Center(
       child: Column(
@@ -324,120 +394,105 @@ class OnboardAnimateState extends State<OnboardAnimate>
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           SizedBox(
-            height: 165.0,
+            height: height * 20,
           ),
-          FadeTransition(
-            opacity: step4MessageAnimation,
-            child: Container(
-              padding: EdgeInsets.only(left: 60, right: 60),
-              child: Text(
-                "그 전에 한 가지 알려주세요.\n당신의 하루가 끝나는 시간을\n언제로 설정하면 좋을까요?",
-                style: TextStyle(
-                  fontSize: 20,
-                  color: hexToColor("#e4faff"),
-                  fontWeight: FontWeight.bold,
+          this.isFocusStep
+              ? step4_text_endAt
+              : FadeTransition(
+                  opacity: step4MessageAnimation, child: step4_text_endAt),
+          SizedBox(
+            height: height * 13,
+          ),
+          this.isFocusStep
+              ? step4_btn_picker
+              : FadeTransition(
+                  opacity: pickerAnimation,
+                  child: ButtonTheme(
+                      minWidth: 200, height: 56, child: TimePickerWidget()),
                 ),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ),
           SizedBox(
-            height: 50.0,
+            height: height * 23,
           ),
-          FadeTransition(
-            opacity: pickerAnimation,
-            child: ButtonTheme(
-                minWidth: 200, height: 56, child: TimePickerWidget()),
-          ),
+          this.isFocusStep
+              ? step4_btn_next
+              : FadeTransition(
+                  opacity: nextBtnAnimation, child: step4_btn_next),
           SizedBox(
-            height: 90.0,
+            height: height * 8,
           ),
-          FadeTransition(
-            opacity: nextBtnAnimation,
-            child: ButtonTheme(
-              minWidth: 280,
-              height: 50,
-              child: FlatButton(
-                color: Colors.transparent,
-                onPressed: () {
-                  reverseStep4();
-                },
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text(
-                      "다음으로",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: hexToColor("#92d8ff")),
-                    ),
-                    Icon(Icons.forward, color: hexToColor("#92d8ff")),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          SizedBox(
-            height: 35.0,
-          ),
-          FadeTransition(
-              opacity: supportMessageAnimation,
-              child: Text(
-                "* 추후에 설정탭에서 변경 가능합니다.",
-                style: TextStyle(
-                    fontSize: 13, color: Colors.white.withOpacity(0.5)),
-              ))
+          this.isFocusStep
+              ? step4_text_after_setting
+              : FadeTransition(
+                  opacity: supportMessageAnimation,
+                  child: Text(
+                    "* 추후에 설정탭에서 변경 가능합니다.",
+                    style: TextStyle(
+                        fontSize: width * 5,
+                        color: Colors.white.withOpacity(0.5),
+                        fontFamily: "NotoSans"),
+                  ))
         ],
       ),
     );
   }
 
   Widget buildStep5() {
-    contentMargin = 20.0;
+    final width = MediaQuery.of(context).size.width / 100;
+    final height = MediaQuery.of(context).size.height / 100;
+
     print("buildStep5!");
-    return Center(
-        child: Stack(
+
+    Widget step5_text1 = Container(
+      child: Text(
+        "좋았어요.\n그럼 이제부터 다이브와 함께\n당신의 감정에 집중해보세요.",
+        style: TextStyle(
+          fontSize: width * 6,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
+            fontFamily: "NotoSans",
+        ),
+        textAlign: TextAlign.center,
+      ),
+    );
+
+    return Column(
       children: <Widget>[
-        Container(
-            padding: EdgeInsets.only(top: 80),
-            child: ScaleTransition(
-              scale: circleAnimation,
-              alignment: Alignment.center,
-              child:
-                  Image.asset('lib/src/image/onboarding/contents_img_04.png'),
-            )),
-        Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        Stack(
           children: <Widget>[
-            SizedBox(
-              height: 219.0,
-            ),
-            FadeTransition(
-              opacity: step5MessageAnimation,
-              child: Container(
-                padding: EdgeInsets.only(left: 60, right: 60),
-                child: Text(
-                  "좋았어요.\n그럼 이제부터 다이브와 함께\n당신의 감정에 집중해보세요.",
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
+            this.isFocusStep
+                ? Container(
+                    padding: EdgeInsets.only(top: height * 15),
+                    child: Image.asset(
+                        'lib/src/image/onboarding/contents_img_04.png'))
+                : Container(
+                    padding: EdgeInsets.only(top: height * 15),
+                    child: ScaleTransition(
+                      scale: circleAnimation,
+                      alignment: Alignment.center,
+                      child: Image.asset(
+                          'lib/src/image/onboarding/contents_img_04.png'),
+                    )),
+            Padding(
+              padding: EdgeInsets.only(top: height * 35),
+              child: Align(
+                alignment: Alignment.center,
+                child: this.isFocusStep
+                    ? step5_text1
+                    : FadeTransition(
+                        opacity: step5MessageAnimation, child: step5_text1),
               ),
             ),
-            SizedBox(
-              height: 160.0,
-            ),
-            FadeTransition(opacity: startBtnAnimation, child: StartDiveWidget())
           ],
         ),
+        SizedBox(
+          height: height * 5,
+        ),
+        this.isFocusStep
+            ? StartDiveWidget()
+            : FadeTransition(
+                opacity: startBtnAnimation, child: StartDiveWidget())
       ],
-    ));
+    );
   }
 
   Color hexToColor(String code) {
@@ -471,16 +526,24 @@ class OnboardAnimateState extends State<OnboardAnimate>
     }
   }
 
+  void debug_enable_focusStep() {
+    this.isFocusStep = true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    /* step을 setState. -> 애니메이션 실행 */
-    if (animateStep < 4) {
-      Future.delayed(const Duration(milliseconds: 1000), () {
-        messageController.forward();
-      });
-    }
-
     this._timePickerProvider = Provider.of<TimePickerProvider>(context);
+
+//    debug_enable_focusStep();
+
+    if (this.isFocusStep == false) {
+      /* step을 setState. -> 애니메이션 실행 */
+      if (animateStep < 4) {
+        Future.delayed(const Duration(milliseconds: 1000), () {
+          messageController.forward();
+        });
+      }
+    }
 
     return buildAnimate(animateStep);
   }

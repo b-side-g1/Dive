@@ -17,7 +17,6 @@ import 'package:flutterapp/services/emotion/emotion_service.dart';
 import 'package:flutterapp/services/record/record_service.dart';
 import 'package:flutterapp/services/tag/tag_service.dart';
 
-
 class InputPageStep3 extends StatefulWidget {
   InputPageStep3({Key key}) : super(key: key);
 
@@ -41,7 +40,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
 
   @override
   void initState() {
-    _tagService.selectAllTags().then((tags)  {
+    _tagService.selectAllTags().then((tags) {
       setState(() {
         this._tags = tags;
       });
@@ -49,17 +48,21 @@ class _InputPageStep3State extends State<InputPageStep3> {
   }
 
   Widget titleWidget() {
+    final width = MediaQuery.of(context).size.width / 100;
+
     return Container(
         padding: EdgeInsets.only(top: 110, left: 70, right: 70),
         child: Center(
             child: Text(
-              "그렇게 느끼는 이유는...",
-              style: TextStyle(
-                  fontSize: 21, fontWeight: FontWeight.w700, color: Colors.white),
-            )));
+          "그렇게 느끼는 이유는...",
+          style: TextStyle(
+              fontSize: width * 6.3, fontWeight: FontWeight.w700, color: Colors.white),
+        )));
   }
 
   Widget toolBarWidget() {
+    final width = MediaQuery.of(context).size.width / 100;
+
     return Container(
         padding: EdgeInsets.only(top: 20, left: 20, right: 20),
         child: Row(
@@ -68,7 +71,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
             Text(
               "이유태그",
               style: TextStyle(
-                  fontSize: 17,
+                  fontSize: width * 5.5,
                   fontWeight: FontWeight.w700,
                   color: Colors.white),
             ),
@@ -77,7 +80,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
               onPressed: () async {
                 createEditTagDialog(context).then((_) {
                   setState(() {
-                    _tagService.selectAllTags().then((tags)  {
+                    _tagService.selectAllTags().then((tags) {
                       setState(() {
                         this._tags = tags;
                       });
@@ -87,16 +90,19 @@ class _InputPageStep3State extends State<InputPageStep3> {
               },
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.edit, color: Colors.white),
+                  Icon(Icons.edit, color: Colors.grey,size: width * 5,),
                   SizedBox(
                     width: 3,
                   ),
-                  Text(
-                    "태그편집",
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.white),
+                  Padding(
+                    padding: EdgeInsets.only(right: 15),
+                    child: Text(
+                      "태그편집",
+                      style: TextStyle(
+                          fontSize: width * 4.5,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey),
+                    ),
                   ),
                 ],
               ),
@@ -106,15 +112,22 @@ class _InputPageStep3State extends State<InputPageStep3> {
   }
 
   Widget reasonTagList() {
+    final height = MediaQuery.of(context).size.height;
+
     return Container(
-      height: 120,
+      height: height * 0.18,
       padding: EdgeInsets.only(left: 20, right: 20),
       alignment: Alignment.centerLeft,
-      child: ReasonTagWidget(tags: this._tags,),
+      child: ReasonTagWidget(
+        tags: this._tags,
+      ),
     );
   }
 
   Widget writeReasonTitle() {
+
+    final width = MediaQuery.of(context).size.width / 100;
+
     return Container(
         padding: EdgeInsets.only(top: 50, left: 20, right: 20),
         child: Row(
@@ -123,7 +136,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
             Text(
               "이유적기",
               style: TextStyle(
-                  fontSize: 17,
+                  fontSize: width * 5.5,
                   fontWeight: FontWeight.w700,
                   color: Colors.white),
             ),
@@ -132,13 +145,17 @@ class _InputPageStep3State extends State<InputPageStep3> {
   }
 
   Widget writeReasonField() {
+
+    final width = MediaQuery.of(context).size.width;
+
     return Container(
         padding: EdgeInsets.only(top: 13, left: 20, right: 20),
-        child: TextField(
+        child: TextFormField(
           controller: _textEditingController,
           cursorColor: CommonService.hexToColor("#34b7eb"),
+          style: TextStyle(color: Colors.white,fontSize: width * 0.04),
           decoration: new InputDecoration(
-              hintStyle: TextStyle(color: Colors.white),
+              hintStyle: TextStyle(color: Colors.grey),
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
               enabledBorder: InputBorder.none,
@@ -148,17 +165,11 @@ class _InputPageStep3State extends State<InputPageStep3> {
         ));
   }
 
-  void isValidRecordForm(StateContainerState container) {
-    if(container.score == null) {
-      return CommonService.showToast("첫번째 페이지에서 기분 점수를 입력해주세요.");
-    }
-  }
-
   Widget recordButton() {
     final container = StateContainer.of(context);
 
     return Container(
-      padding: EdgeInsets.only(top: 50, left: 20, right: 20),
+      padding: EdgeInsets.only(left: 20, right: 20),
       child: ButtonTheme(
           minWidth: 316,
           height: 60,
@@ -170,12 +181,13 @@ class _InputPageStep3State extends State<InputPageStep3> {
             textColor: Colors.white,
             padding: EdgeInsets.all(8.0),
             onPressed: () async {
-
-              this.isValidRecordForm(container);
+              if (container.score == null) {
+                container.score = 50;
+              }
 
               int currentTimeStamp = DateTime.now().millisecondsSinceEpoch;
               Daily daily =
-              await DailyService().getDailyByTimestamp(currentTimeStamp);
+                  await DailyService().getDailyByTimestamp(currentTimeStamp);
 
               String dailyId = daily.id;
 
@@ -191,7 +203,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
 
               await RecordService().insertRecord(recordParam);
 
-              if(container.tags != null) {
+              if (container.tags != null) {
                 container.tags.forEach((tag) async {
                   RecordHasTag recordHasTagParam = RecordHasTag(
                       recordId: recordParam.id,
@@ -201,7 +213,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                   await TagService().insertRecordHasTag(recordHasTagParam);
                 });
               }
-              if(container.emotions != null) {
+              if (container.emotions != null) {
                 container.emotions.forEach((emotion) async {
                   RecordHasEmotion recordHasEmotion = RecordHasEmotion(
                       recordId: recordParam.id,
@@ -234,6 +246,8 @@ class _InputPageStep3State extends State<InputPageStep3> {
   Widget build(BuildContext context) {
     print('build input_page_step3');
 
+    final height = MediaQuery.of(context).size.height;
+
 //    SingleChildScrollView
     return Container(
         child: SingleChildScrollView(
@@ -246,6 +260,9 @@ class _InputPageStep3State extends State<InputPageStep3> {
           reasonTagList(),
           writeReasonTitle(),
           writeReasonField(),
+          SizedBox(
+            height: height * 0.1,
+          ),
           recordButton(),
         ],
       ),

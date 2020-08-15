@@ -35,56 +35,55 @@ class _BuildReasonTagState extends State<ReasonTagWidget> {
 
   @override
   Widget build(BuildContext context) {
-//        this.tags = Provider.of<List<Tag>>(context);
     print("[reason_tag_widget.dart] #build! ");
+
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
 
     final container = StateContainer.of(context);
     return widget.tags == null
         ? Text("")
-        : GridView.count(
-            padding: EdgeInsets.all(0),
-            crossAxisCount: 4,
-            shrinkWrap: true,
-            childAspectRatio: MediaQuery.of(context).size.width /
-                (MediaQuery.of(context).size.height / 4),
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 10,
-            children: List.generate(widget.tags.length, (index) {
-              return ButtonTheme(
-                  minWidth: 49,
-                  height: 30,
-                  child: FlatButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(100.0),
-                    ),
-                    color: selecteds[index]
-                        ? CommonService.hexToColor("#63c7ff")
-                        : CommonService.hexToColor("#2f4262"),
-                    textColor: Colors.white,
-                    onPressed: () {
-                      setState(() {
-                        if (selecteds[index]) {
-                          selectedCount--;
-                          selecteds[index] = false;
-                        } else {
-                          if (selectedCount >= 5) {
-                            return CommonService.showToast("5개까지만 선택이 가능합니다.");
-                          }
-                          selectedTags.add(widget.tags[index]);
-                          selectedCount++;
-                          selecteds[index] = true;
-
-                          container.updateTags(selectedTags);
-                        }
-                      });
-                    },
-                    child: Text(
-                      "${widget.tags[index].name}",
-                      style: TextStyle(
-                        fontSize: 14.0,
+        : SingleChildScrollView(
+          child: Wrap(
+              spacing: 8.0,
+              runSpacing: 4.0,
+              children: List.generate(widget.tags.length, (index) {
+                return ButtonTheme(
+                    minWidth: width * 0.2,
+                    height: 30,
+                    child: FlatButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(100.0),
                       ),
-                    ),
-                  ));
-            }));
+                      color: selecteds[index]
+                          ? CommonService.hexToColor("#63c7ff")
+                          : CommonService.hexToColor("#2f4262"),
+                      textColor: Colors.white,
+                      onPressed: () {
+                        setState(() {
+                          if (selecteds[index]) {
+                            selectedCount--;
+                            selecteds[index] = false;
+                          } else {
+                            if (selectedCount >= 5) {
+                              return CommonService.showToast("5개까지만 선택이 가능합니다.");
+                            }
+                            selectedTags.add(widget.tags[index]);
+                            selectedCount++;
+                            selecteds[index] = true;
+
+                            container.updateTags(selectedTags);
+                          }
+                        });
+                      },
+                      child: Text(
+                        "${widget.tags[index].name}",
+                        style: TextStyle(
+                          fontSize: width * 0.04,
+                        ),
+                      ),
+                    ));
+              })),
+        );
   }
 }

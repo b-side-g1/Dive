@@ -16,23 +16,26 @@ class InputPageStep2 extends StatefulWidget {
 class _InputPageStep2State extends State<InputPageStep2> {
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
+
     return Container(
-      margin: EdgeInsets.only(top: 80),
       child: Column(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(top: 30),
+            padding: EdgeInsets.only(top: height * 0.2),
             child: Text(
               '지금 떠오르는 감정들',
               style: TextStyle(
                 color: Color.fromRGBO(255, 255, 255, 1),
-                fontSize: 21,
+                fontSize: width * 0.08,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
+
           Padding(
-            padding: EdgeInsets.only(left: 20.1, top: 20.1, bottom: 20.1),
+            padding: EdgeInsets.only(left: 20.1, top: height * 0.04, bottom: 20.1),
             child: EmotionTagBox(
               emotions: widget.emotions,
             ),

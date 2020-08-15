@@ -42,6 +42,7 @@ dependencies:
   numberpicker: ^1.2.0
   #  flutter_rounded_date_picker: 1.0.0
   fluttertoast: ^7.0.1
+  flutter_svg: ^0.18.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -84,6 +85,8 @@ flutter:
     - lib/src/image/tags/2.0x/
     - lib/src/image/tags/3.0x/
     - assets/images/
+    - assets/images/svg/
+
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
