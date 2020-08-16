@@ -47,11 +47,21 @@ class _InputPageStep1State extends State<InputPageStep1> {
     List<int> minArr = [for (var i = 0; i < 60; i += 1) i];
     var timePicker = [midArr, timeArr, minArr];
 
+    var now = new DateTime.now();
+    var hour = now.hour > 12 ? now.hour - 12 : now.hour;
+    var min = now.minute;
+    var mid = now.hour >= 12 ? "오후" : "오전";
+
     new Picker(
         adapter:
             PickerDataAdapter<String>(pickerdata: timePicker, isArray: true),
         changeToFirst: true,
         hideHeader: false,
+        selecteds: [
+          midArr.indexOf(mid),
+          timeArr.indexOf(hour),
+          timeArr.indexOf(min)
+        ],
         onConfirm: (Picker picker, List value) {
           setState(() {
             mid = value[0] == 0 ? "오전" : "오후";
