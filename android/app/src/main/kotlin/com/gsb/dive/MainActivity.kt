@@ -1,4 +1,4 @@
-package com.gsg.flutterapp
+package com.gsb.dive
 
 import io.flutter.embedding.android.FlutterActivity
 
