@@ -26,9 +26,9 @@ class StateContainer extends StatefulWidget {
 }
 
 class StateContainerState extends State<StateContainer> {
-  int score;
-  List<Emotion> emotions;
-  List<Tag> tags;
+  int score = 50;
+  List<Emotion> emotions = [];
+  List<Tag> tags = [];
 
   void updateScore(score) {
     setState(() {
