@@ -67,44 +67,43 @@ class _InputPageStep1State extends State<InputPageStep1> {
     final width = MediaQuery.of(context).size.width;
 
     String title = "당신의 기분을 알려주세요.";
-    return Padding(
-        padding: const EdgeInsets.only(top: 0),
-        child: Column(children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(curDate == null ? '' : curDate,
-                  style: TextStyle(
-                    fontSize: width * 0.07,
-                    color: const Color(0xffffffff),
-                    fontWeight: FontWeight.w700,
-                    fontFamily: "NotoSans",
-                  )),
-              Container(
-                padding: const EdgeInsets.all(0.0),
-                height: 30,
-                width: 30,
-                child: IconButton(
-                  icon: Image.asset(
+    return GestureDetector(
+      onTap: () {
+        showTimePicker(context);
+      },
+      child: Padding(
+          padding: const EdgeInsets.only(top: 0),
+          child: Column(children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(curDate == null ? '' : curDate,
+                    style: TextStyle(
+                      fontSize: width * 0.07,
+                      color: const Color(0xffffffff),
+                      fontWeight: FontWeight.w700,
+                      fontFamily: "NotoSans",
+                    )),
+                Container(
+                  padding: const EdgeInsets.all(0.0),
+                  height: 30,
+                  width: 30,
+                  child: Image.asset(
                     'lib/src/image/daily/icon_arrow.png',
                     height: 60,
                     width: 60,
                   ),
-                  tooltip: 'change date',
-                  onPressed: () {
-                    showTimePicker(context);
-                  },
                 ),
-              ),
-            ],
-          ),
-          Text(title,
-              style: TextStyle(
-                  fontSize: width * 0.07,
-                  color: const Color(0xffffffff),
-                  fontWeight: FontWeight.w700,
-                  fontFamily: "NotoSans"))
-        ]));
+              ],
+            ),
+            Text(title,
+                style: TextStyle(
+                    fontSize: width * 0.07,
+                    color: const Color(0xffffffff),
+                    fontWeight: FontWeight.w700,
+                    fontFamily: "NotoSans"))
+          ])),
+    );
   }
 
   renderScoreSelect(StateContainerState container) {
