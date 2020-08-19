@@ -252,6 +252,7 @@ class _DailyPageState extends State<DailyPage> {
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
+              automaticallyImplyLeading: false,
               pinned: true, // 스크롤 내릴때 남아 있음
               backgroundColor: Colors.white,
               expandedHeight: 56.0,
