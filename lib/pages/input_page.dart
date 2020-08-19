@@ -16,9 +16,6 @@ class InputPage extends StatefulWidget {
 
 class _InputPageState extends State<InputPage> {
   List emotions = [];
-
-  TextEditingController _textEditingController = TextEditingController();
-
   Color get backgroundColor {
     switch (step) {
       case 2:
@@ -195,6 +192,7 @@ class _InputPageState extends State<InputPage> {
     testScore = container.score;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         color: backgroundColor,
         child: Stack(
