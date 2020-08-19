@@ -154,6 +154,7 @@ class _SettingPageState extends State<SettingPage> {
             style: TextStyle(color: Colors.black),
           ),
           backgroundColor: Colors.white,
+          brightness: Brightness.light,
           iconTheme: IconThemeData(color: Colors.black),
           elevation: 0.0, // appBar shadow 처리 없애는 설정
         ),
