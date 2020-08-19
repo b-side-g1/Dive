@@ -56,7 +56,9 @@ class _InputPageStep3State extends State<InputPageStep3> {
             child: Text(
           "그렇게 느끼는 이유는...",
           style: TextStyle(
-              fontSize: width * 6.3, fontWeight: FontWeight.w700, color: Colors.white),
+              fontSize: width * 6.3,
+              fontWeight: FontWeight.w700,
+              color: Colors.white),
         )));
   }
 
@@ -90,7 +92,11 @@ class _InputPageStep3State extends State<InputPageStep3> {
               },
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.edit, color: Colors.grey,size: width * 5,),
+                  Icon(
+                    Icons.edit,
+                    color: Colors.grey,
+                    size: width * 5,
+                  ),
                   SizedBox(
                     width: 3,
                   ),
@@ -125,7 +131,6 @@ class _InputPageStep3State extends State<InputPageStep3> {
   }
 
   Widget writeReasonTitle() {
-
     final width = MediaQuery.of(context).size.width / 100;
 
     return Container(
@@ -145,7 +150,6 @@ class _InputPageStep3State extends State<InputPageStep3> {
   }
 
   Widget writeReasonField() {
-
     final width = MediaQuery.of(context).size.width;
 
     return Container(
@@ -153,7 +157,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
         child: TextFormField(
           controller: _textEditingController,
           cursorColor: CommonService.hexToColor("#34b7eb"),
-          style: TextStyle(color: Colors.white,fontSize: width * 0.04),
+          style: TextStyle(color: Colors.white, fontSize: width * 0.04),
           decoration: new InputDecoration(
               hintStyle: TextStyle(color: Colors.grey),
               border: InputBorder.none,
@@ -181,20 +185,21 @@ class _InputPageStep3State extends State<InputPageStep3> {
             textColor: Colors.white,
             padding: EdgeInsets.all(8.0),
             onPressed: () async {
-              if (container.score == null) {
-                container.score = 50;
+              if (container.emotions.length == 0) {
+                CommonService.showToast('감정을 하나 이상 선택해 주세요');
+                return;
               }
-
+              if (container.tags.length == 0) {
+                CommonService.showToast('태그를 하나 이상 선택해 주세요');
+                return;
+              }
               int currentTimeStamp = DateTime.now().millisecondsSinceEpoch;
-              Daily daily =
-                  await DailyService().getDailyByTimestamp(currentTimeStamp);
-
-              String dailyId = daily.id;
-
               Record recordParam = Record(
                   id: CommonService.generateUUID(),
                   score: container.score,
-                  dailyId: dailyId,
+                  dailyId: await DailyService()
+                      .getDailyByTimestamp(currentTimeStamp)
+                      .then((value) => value.id),
                   emotions: container.emotions,
                   tags: container.tags,
                   createdAt: DateTime.now().toString(),
@@ -203,26 +208,21 @@ class _InputPageStep3State extends State<InputPageStep3> {
 
               await RecordService().insertRecord(recordParam);
 
-              if (container.tags != null) {
-                container.tags.forEach((tag) async {
-                  RecordHasTag recordHasTagParam = RecordHasTag(
-                      recordId: recordParam.id,
-                      tagId: tag.id,
-                      createdAt: DateTime.now().toString());
-                  print("recordHasTagParam -> ${recordHasTagParam.toJson()}");
-                  await TagService().insertRecordHasTag(recordHasTagParam);
-                });
-              }
-              if (container.emotions != null) {
-                container.emotions.forEach((emotion) async {
-                  RecordHasEmotion recordHasEmotion = RecordHasEmotion(
-                      recordId: recordParam.id,
-                      emotionId: emotion.id,
-                      createdAt: DateTime.now().toString());
-                  await EmotionService()
-                      .insertRecordHasEmotion(recordHasEmotion);
-                });
-              }
+              container.tags.forEach((tag) async {
+                RecordHasTag recordHasTagParam = RecordHasTag(
+                    recordId: recordParam.id,
+                    tagId: tag.id,
+                    createdAt: DateTime.now().toString());
+                print("recordHasTagParam -> ${recordHasTagParam.toJson()}");
+                await TagService().insertRecordHasTag(recordHasTagParam);
+              });
+              container.emotions.forEach((emotion) async {
+                RecordHasEmotion recordHasEmotion = RecordHasEmotion(
+                    recordId: recordParam.id,
+                    emotionId: emotion.id,
+                    createdAt: DateTime.now().toString());
+                await EmotionService().insertRecordHasEmotion(recordHasEmotion);
+              });
 
               CommonService.showToast("당신의 감정을 기록했습니다..");
 
