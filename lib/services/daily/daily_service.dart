@@ -60,11 +60,11 @@ class DailyService {
 
     DateTime startDate =
         DateTime(dateTime.year, dateTime.month, dateTime.day, startHour)
-            .subtract(Duration(days: dateTime.hour > startHour ? 0 : 1));
+            .subtract(Duration(days: dateTime.hour >= startHour ? 0 : 1));
 
     DateTime endDate =
         DateTime(dateTime.year, dateTime.month, dateTime.day, endHour)
-            .add(Duration(days: dateTime.hour > endHour ? 1 : 0));
+            .add(Duration(days: dateTime.hour >= endHour ? 1 : 0));
 
     Daily daily = Daily(
         id: CommonService.generateUUID(),
