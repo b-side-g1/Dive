@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutterapp/inherited/state_container.dart';
 import 'dart:async';
+import 'dart:convert';
 
 class InputPageStep1 extends StatefulWidget {
   final int score;
@@ -41,27 +42,40 @@ class _InputPageStep1State extends State<InputPageStep1> {
   }
 
   showTimePicker(BuildContext context) {
-    print("showTimePicker");
-    List<String> midArr = ["오전", "오후"];
-    List<int> timeArr = [for (var i = 0; i <= 12; i += 1) i];
-    List<int> minArr = [for (var i = 0; i < 60; i += 1) i];
-    var timePicker = [midArr, timeArr, minArr];
-
     var now = new DateTime.now();
     var hour = now.hour > 12 ? now.hour - 12 : now.hour;
     var min = now.minute;
     var mid = now.hour >= 12 ? "오후" : "오전";
 
+    List timeArr = [];
+    List minArr = [for (var i = 1; i < 60; i += 1) i];
+
+    var morning = [];
+    var night = [];
+
+    var isAm = mid == "오전";
+
+    for (var i = 1; i <= 12; i += 1) {
+      timeArr.add(jsonDecode(
+          '{"${i}": ${i == hour ? minArr.sublist(0, min) : minArr}}'));
+    }
+
+    if (isAm) {
+      morning = timeArr.sublist(0, hour);
+      night = timeArr;
+    } else {
+      morning = timeArr;
+      night = timeArr.sublist(0, hour);
+    }
+    var timePicker = [
+      {'오전': morning, '오후': night}
+    ];
+
     new Picker(
-        adapter:
-            PickerDataAdapter<String>(pickerdata: timePicker, isArray: true),
+        adapter: PickerDataAdapter<String>(pickerdata: timePicker),
         changeToFirst: true,
         hideHeader: false,
-        selecteds: [
-          midArr.indexOf(mid),
-          timeArr.indexOf(hour),
-          timeArr.indexOf(min)
-        ],
+        selecteds: [isAm ? 0 : 1, hour - 1, min - 1],
         onConfirm: (Picker picker, List value) {
           setState(() {
             mid = value[0] == 0 ? "오전" : "오후";
