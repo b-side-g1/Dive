@@ -5,6 +5,7 @@ import 'package:flutterapp/models/basic_model.dart';
 import 'package:flutterapp/models/onboard/picker_time_model.dart';
 import 'package:flutterapp/onboard/animate/picker/picker_data.dart';
 import 'package:flutterapp/services/basic/basic_service.dart';
+import 'package:flutterapp/services/common/common_service.dart';
 import 'package:package_info/package_info.dart';
 import 'dart:convert';
 
@@ -56,6 +57,49 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
+  Future<void> _showEndAtAlert(context) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(top: 15),
+                child: Text(
+                  "수정하신 마감 시간은\n다음 날부터 적용됩니다.",
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 30),
+                child: Divider(
+                    color: Colors.black87,
+                    height: 10.0,
+                    ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                padding: EdgeInsets.all(0),
+                child: FlatButton(
+                  child: Text(
+                    '확인',
+                    style: TextStyle(color: CommonService.hexToColor("#63c7ff")),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   showPickerModal(BuildContext context) {
     final pickerData = JsonDecoder().convert(PickerData);
 
@@ -66,7 +110,8 @@ class _SettingPageState extends State<SettingPage> {
         hideHeader: false,
         selectedTextStyle: TextStyle(color: Colors.blue),
         onConfirm: (Picker picker, List value) async {
-          updateEndAt(PickerTime(hour: pickerData[0][value[0]]));
+          await updateEndAt(PickerTime(hour: pickerData[0][value[0]]));
+          _showEndAtAlert(context);
         }).showModal(context); //_scaffoldKey.currentState);
   }
 
@@ -75,6 +120,7 @@ class _SettingPageState extends State<SettingPage> {
     Basic resultBasic = await _basicService.selectBasicData();
     setState(() {
       _currentEndAt = resultBasic.today_endAt;
+      print("시작");
     });
   }
 
