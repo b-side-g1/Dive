@@ -62,6 +62,7 @@ class _BuildReasonTagState extends State<ReasonTagWidget> {
                       onPressed: () {
                         setState(() {
                           if (selecteds[index]) {
+                            selectedTags.remove(widget.tags[index]);
                             selectedCount--;
                             selecteds[index] = false;
                           } else {
