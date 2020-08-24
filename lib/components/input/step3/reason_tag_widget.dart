@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tags/flutter_tags.dart';
 import 'package:flutterapp/inherited/state_container.dart';
 import 'package:flutterapp/models/tag_model.dart';
-import 'package:flutterapp/provider/input/tag_provider.dart';
 import 'package:flutterapp/services/common/common_service.dart';
-import 'package:flutterapp/services/tag/tag_service.dart';
-import 'package:provider/provider.dart';
 
 class ReasonTagWidget extends StatefulWidget {
   List<Tag> tags;
@@ -62,6 +58,7 @@ class _BuildReasonTagState extends State<ReasonTagWidget> {
                       onPressed: () {
                         setState(() {
                           if (selecteds[index]) {
+                            selectedTags.remove(widget.tags[index]);
                             selectedCount--;
                             selecteds[index] = false;
                           } else {
