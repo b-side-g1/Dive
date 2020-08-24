@@ -77,13 +77,16 @@ class _EditTagListState extends State<EditTagList> {
                                     id: CommonService.generateUUID(),
                                     name: value.value
                                   );
-                                  _tagService.insertTag(tagParam).then((_) {
+                                  final exist = this._tags.firstWhere((tag) => tag.name == tagParam.name, orElse: () => null);
+                                  if(exist == null) {
+                                    _tagService.insertTag(tagParam).then((_) {
                                       _tagService.selectAllTags().then((tags) {
                                         setState(() {
                                           this._tags = tags;
                                         });
                                       } );
-                                  });
+                                    });
+                                  }
                                 }
                               });
                             },
