@@ -76,9 +76,9 @@ class _SettingPageState extends State<SettingPage> {
               Padding(
                 padding: EdgeInsets.only(top: 30),
                 child: Divider(
-                    color: Colors.black87,
-                    height: 10.0,
-                    ),
+                  color: Colors.black87,
+                  height: 10.0,
+                ),
               ),
               Container(
                 alignment: Alignment.center,
@@ -86,7 +86,8 @@ class _SettingPageState extends State<SettingPage> {
                 child: FlatButton(
                   child: Text(
                     '확인',
-                    style: TextStyle(color: CommonService.hexToColor("#63c7ff")),
+                    style:
+                        TextStyle(color: CommonService.hexToColor("#63c7ff")),
                   ),
                   onPressed: () {
                     Navigator.of(context).pop();
@@ -125,26 +126,24 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   Widget todayEndAtWidget(BuildContext context) {
-    return Row(
-      children: <Widget>[
+    return InkWell(
+      child: Row(children: <Widget>[
         Text(
           _currentEndAt,
           style: TextStyle(fontSize: 15, color: Colors.black),
         ),
-        InkWell(
-          child: Padding(
-            padding: EdgeInsets.only(left: 6),
-            child: Image.asset(
-              'lib/src/image/setting/icon_arrow.png',
-              width: 15,
-              height: 14,
-            ),
+        Padding(
+          padding: EdgeInsets.only(left: 6),
+          child: Image.asset(
+            'lib/src/image/setting/icon_arrow.png',
+            width: 15,
+            height: 14,
           ),
-          onTap: () {
-            showPickerModal(context);
-          },
         ),
-      ],
+      ]),
+      onTap: () {
+        showPickerModal(context);
+      },
     );
   }
 
@@ -211,7 +210,51 @@ class _SettingPageState extends State<SettingPage> {
               child: ListView(
                 children: <Widget>[
                   settingWidget('푸시 설정', pushOnOffWidget()),
-                  settingWidget('하루 마감시간 설정', todayEndAtWidget(context)),
+//                  settingWidget('하루 마감시간 설정', todayEndAtWidget(context)),
+                  InkWell(
+                    child: Container(
+                      height: 60,
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom:
+                                  BorderSide(color: Colors.grey, width: 0.25))),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(left: 13),
+                            child: Text(
+                              '하루 마감시간 설정',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.left,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(right: 15),
+                            child: Row(children: <Widget>[
+                              Text(
+                                _currentEndAt,
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.black),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: 6),
+                                child: Image.asset(
+                                  'lib/src/image/setting/icon_arrow.png',
+                                  width: 15,
+                                  height: 14,
+                                ),
+                              ),
+                            ]),
+                          ),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      showPickerModal(context);
+                    },
+                  ),
                   settingWidget('현재 버전', currentVersionWidget()),
                 ],
               ),
