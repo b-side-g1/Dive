@@ -73,17 +73,21 @@ class _EditTagListState extends State<EditTagList> {
                                     "[edit_tag_list.dart] _showAddTagDialog then -> ${value.value}");
 
                                 if (value.isConfirm) {
+                                  final nameParam = value.value.split(" ").join("");
                                   Tag tagParam = Tag(
                                     id: CommonService.generateUUID(),
-                                    name: value.value
+                                    name: nameParam
                                   );
-                                  _tagService.insertTag(tagParam).then((_) {
+                                  final exist = this._tags.firstWhere((tag) => tag.name == tagParam.name, orElse: () => null);
+                                  if(exist == null) {
+                                    _tagService.insertTag(tagParam).then((_) {
                                       _tagService.selectAllTags().then((tags) {
                                         setState(() {
                                           this._tags = tags;
                                         });
                                       } );
-                                  });
+                                    });
+                                  }
                                 }
                               });
                             },
