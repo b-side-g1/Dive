@@ -37,6 +37,21 @@ class _BuildReasonTagState extends State<ReasonTagWidget> {
     final height = MediaQuery.of(context).size.height;
 
     final container = StateContainer.of(context);
+    setState(() {
+      this.selectedCount = container.tags.length;
+      this.selectedTags = container.tags;
+
+      if(widget.tags != null){
+        widget.tags.asMap().forEach((index, tag) => {
+            this.selectedTags.forEach((element) {
+                if(tag.id == element.id) {
+                  this.selecteds[index] = true;
+                }
+            })
+        });
+      }
+    });
+
     return widget.tags == null
         ? Text("")
         : SingleChildScrollView(
@@ -61,6 +76,8 @@ class _BuildReasonTagState extends State<ReasonTagWidget> {
                             selectedTags.remove(widget.tags[index]);
                             selectedCount--;
                             selecteds[index] = false;
+                            selectedTags.removeWhere((tag) => tag.id == widget.tags[index].id);
+
                           } else {
                             if (selectedCount >= 5) {
                               return CommonService.showToast("5개까지만 선택이 가능합니다.");
@@ -69,8 +86,8 @@ class _BuildReasonTagState extends State<ReasonTagWidget> {
                             selectedCount++;
                             selecteds[index] = true;
 
-                            container.updateTags(selectedTags);
                           }
+                          container.updateTags(selectedTags);
                         });
                       },
                       child: Text(
