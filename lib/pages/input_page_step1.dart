@@ -4,10 +4,13 @@ import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutterapp/inherited/state_container.dart';
 import 'dart:async';
 
-class InputPageStep1 extends StatefulWidget {
-  final int score;
+import 'package:flutterapp/models/daily_model.dart';
 
-  InputPageStep1({Key key, this.score}) : super(key: key);
+class InputPageStep1 extends StatefulWidget {
+  int score;
+  Daily daily;
+
+  InputPageStep1({Key key, this.score, this.daily}) : super(key: key);
 
   @override
   _InputPageStep1State createState() => _InputPageStep1State();
