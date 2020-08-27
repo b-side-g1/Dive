@@ -192,6 +192,9 @@ class _InputPageState extends State<InputPage> {
     final container = StateContainer.of(context);
     testScore = container.score;
 
+    setState(() {
+      emotions = container.emotions;
+    });
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(

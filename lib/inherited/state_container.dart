@@ -7,6 +7,7 @@ class StateContainer extends StatefulWidget {
   final int score;
   final List<Emotion> emotions;
   final List<Tag> tags;
+  final String description;
   final String recordId;
 
   StateContainer({
@@ -14,6 +15,7 @@ class StateContainer extends StatefulWidget {
     this.score,
     this.emotions,
     this.tags,
+    this.description,
     this.recordId
   });
 
@@ -31,6 +33,7 @@ class StateContainerState extends State<StateContainer> {
   int score = 50;
   List<Emotion> emotions = [];
   List<Tag> tags = [];
+  String description;
 
   @override
   void initState() {
@@ -40,6 +43,7 @@ class StateContainerState extends State<StateContainer> {
       score = widget.score ?? 50;
       emotions = widget.emotions ?? [];
       tags = widget.tags ?? [];
+      description = widget.description ?? "";
     });
   }
   void updateScore(score) {

@@ -17,7 +17,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
   int hour, min, score;
   String mid, curDate;
 
-  final _scrollController = FixedExtentScrollController(initialItem: 5);
+  var _scrollController;
 
   @protected
   @mustCallSuper
@@ -30,6 +30,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
       min = now.minute;
       mid = now.hour >= 12 ? "오후" : "오전";
       curDate = "${mid} ${hour}시 ${min}분 ";
+
     });
   }
 
@@ -168,6 +169,10 @@ class _InputPageStep1State extends State<InputPageStep1> {
     final container = StateContainer.of(context);
 
     final height = MediaQuery.of(context).size.height;
+    
+    setState(() {
+      _scrollController = FixedExtentScrollController(initialItem: container.score != null ? container.score ~/ 10 : 5);
+    });
 
     return Container(
       padding: EdgeInsets.only(top: height * 0.23),

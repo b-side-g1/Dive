@@ -26,7 +26,7 @@ class InputPageStep3 extends StatefulWidget {
 
 class _InputPageStep3State extends State<InputPageStep3> {
   TagProvider tagProvider;
-  TextEditingController _textEditingController = TextEditingController();
+  TextEditingController _textEditingController;
   List<Tag> _tags;
   TagService _tagService = TagService();
 
@@ -248,6 +248,10 @@ class _InputPageStep3State extends State<InputPageStep3> {
 
     final height = MediaQuery.of(context).size.height;
 
+    final container = StateContainer.of(context);
+    setState(() {
+      _textEditingController = TextEditingController(text: container.description);
+    });
 //    SingleChildScrollView
     return Container(
         child: SingleChildScrollView(
