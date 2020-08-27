@@ -214,88 +214,49 @@ class _InputPageStep3State extends State<InputPageStep3> {
             textColor: Colors.white,
             padding: EdgeInsets.all(8.0),
             onPressed: () async {
-              String id = CommonService.generateUUID();
-              Iterable<Future<dynamic>> futures = [
-                RecordService().insertRecord(Record(
-                    id: id,
-                    score: container.score,
-                    dailyId: await DailyService()
-                        .getDailyByTimestamp(
-                            DateTime.now().millisecondsSinceEpoch)
-                        .then((value) => value.id),
-                    emotions: container.emotions,
-                    tags: container.tags,
-                    createdAt: DateTime.now().toString(),
-                    updatedAt: DateTime.now().toString(),
-                    description: _textEditingController.text)),
-                this._saveEmotions(container.emotions, id),
-                this._saveTags(container.tags, id)
-              ];
-              await Future.wait(futures).then(
-                  (value) => {CommonService.showToast("당신의 감정을 기록했습니다..")});
-              if (container.emotions.length == 0) {
-                CommonService.showToast('감정을 하나 이상 선택해 주세요');
-                return;
-              }
-              if (container.tags.length == 0) {
-                CommonService.showToast('태그를 하나 이상 선택해 주세요');
-                return;
-              }
-              int currentTimeStamp = DateTime.now().millisecondsSinceEpoch;
-
-              Record recordParam;
               if(container.record == null) {
-                recordParam = Record(
-                    id: CommonService.generateUUID(),
+                String id = CommonService.generateUUID();
+                Iterable<Future<dynamic>> futures = [
+                  RecordService().insertRecord(Record(
+                      id: id,
+                      score: container.score,
+                      dailyId: await DailyService()
+                          .getDailyByTimestamp(
+                              DateTime.now().millisecondsSinceEpoch)
+                          .then((value) => value.id),
+                      emotions: container.emotions,
+                      tags: container.tags,
+                      createdAt: DateTime.now().toString(),
+                      updatedAt: DateTime.now().toString(),
+                      description: _textEditingController.text)),
+                  this._saveEmotions(container.emotions, id),
+                  this._saveTags(container.tags, id)
+                ];
+                await Future.wait(futures).then(
+                    (value) => {CommonService.showToast("당신의 감정을 기록했습니다..")});
+              } else {
+                Record record = container.record;
+                Record recordParam = Record(
+                    id: record.id,
                     score: container.score,
-                    dailyId: await DailyService()
-                        .getDailyByTimestamp(currentTimeStamp)
-                        .then((value) => value.id),
+                    dailyId: record.dailyId,
                     emotions: container.emotions,
                     tags: container.tags,
-                    createdAt: DateTime.now().toString(),
+                    createdAt: record.createdAt,
                     updatedAt: DateTime.now().toString(),
                     description: _textEditingController.text);
 
-                await RecordService().insertRecord(recordParam);
-              } else {
-                Record record = container.record;
-                recordParam = Record(
-                  id: record.id,
-                  score: container.score,
-                  dailyId: record.dailyId,
-                  emotions: container.emotions,
-                  tags: container.tags,
-                  createdAt: record.createdAt,
-                  updatedAt: DateTime.now().toString(),
-                  description: _textEditingController.text);
-
-                await RecordService().deleteRecord(recordParam.id);
-                await RecordService().insertRecord(recordParam);
-
-                await TagService().deleteRecordHasTagByRecordId(recordParam.id);
-                await EmotionService().deleteRecordHasEmotionByRecordId(recordParam.id);
+                Iterable<Future<dynamic>> futures = [
+                  RecordService().deleteRecord(recordParam.id),
+                  RecordService().insertRecord(recordParam),
+                  TagService().deleteRecordHasTagByRecordId(recordParam.id),
+                  EmotionService().deleteRecordHasEmotionByRecordId(recordParam.id),
+                  this._saveEmotions(container.emotions, recordParam.id),
+                  this._saveTags(container.tags, recordParam.id)
+                ];
+                await Future.wait(futures).then(
+                        (value) => {CommonService.showToast("당신의 감정을 바꿨습니다..")});
               }
-
-              container.tags.forEach((tag) async {
-                RecordHasTag recordHasTagParam = RecordHasTag(
-                    recordId: recordParam.id,
-                    tagId: tag.id,
-                    createdAt: DateTime.now().toString());
-                print("recordHasTagParam -> ${recordHasTagParam.toJson()}");
-                await TagService().insertRecordHasTag(recordHasTagParam);
-              });
-              container.emotions.forEach((emotion) async {
-                RecordHasEmotion recordHasEmotion = RecordHasEmotion(
-                    recordId: recordParam.id,
-                    emotionId: emotion.id,
-                    createdAt: DateTime.now().toString());
-                await EmotionService().insertRecordHasEmotion(recordHasEmotion);
-              });
-
-
-
-              CommonService.showToast("당신의 감정을 기록했습니다..");
 
               Navigator.pushReplacement(
                   context,
