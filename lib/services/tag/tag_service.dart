@@ -53,4 +53,9 @@ class TagService {
 
     return tag;
   }
+
+  deleteRecordHasTagByRecordId(String recordId) async {
+    final db = await DBHelper().database;
+    await db.delete(RecordHasTag.tableName, where: 'recordId = ?', whereArgs: [recordId]);
+  }
 }

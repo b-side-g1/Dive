@@ -15,7 +15,9 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
+
   List emotions = [];
+
   Color get backgroundColor {
     switch (step) {
       case 2:
@@ -190,6 +192,9 @@ class _InputPageState extends State<InputPage> {
     final container = StateContainer.of(context);
     testScore = container.score;
 
+    setState(() {
+      emotions = container.emotions;
+    });
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -205,7 +210,7 @@ class _InputPageState extends State<InputPage> {
                 InputPageStep2(
                   emotions: emotions,
                 ),
-                InputPageStep3()
+                InputPageStep3(description: container.description,)
               ],
               onPageChanged: (page) {
                 setState(() {

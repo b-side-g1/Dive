@@ -4,10 +4,10 @@ import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutterapp/inherited/state_container.dart';
 import 'dart:async';
 
-class InputPageStep1 extends StatefulWidget {
-  final int score;
+import 'package:intl/intl.dart';
 
-  InputPageStep1({Key key, this.score}) : super(key: key);
+class InputPageStep1 extends StatefulWidget {
+  InputPageStep1({Key key}) : super(key: key);
 
   @override
   _InputPageStep1State createState() => _InputPageStep1State();
@@ -17,7 +17,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
   int hour, min, score;
   String mid, curDate;
 
-  final _scrollController = FixedExtentScrollController(initialItem: 5);
+  var _scrollController;
 
   @protected
   @mustCallSuper
@@ -30,6 +30,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
       min = now.minute;
       mid = now.hour >= 12 ? "오후" : "오전";
       curDate = "${mid} ${hour}시 ${min}분 ";
+
     });
   }
 
@@ -66,7 +67,9 @@ class _InputPageStep1State extends State<InputPageStep1> {
   renderTimeSelect() {
     final width = MediaQuery.of(context).size.width;
 
-    String title = "당신의 기분을 알려주세요.";
+    final container = StateContainer.of(context);
+    String title = container.record != null ? "당신의 기분을 바꿔주세요" : "당신의 기분을 알려주세요.";
+
     return Padding(
         padding: const EdgeInsets.only(top: 0),
         child: Column(children: <Widget>[
@@ -80,6 +83,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
                     fontWeight: FontWeight.w700,
                     fontFamily: "NotoSans",
                   )),
+              container.record != null ? Container() :
               Container(
                 padding: const EdgeInsets.all(0.0),
                 height: 30,
@@ -167,7 +171,19 @@ class _InputPageStep1State extends State<InputPageStep1> {
   Widget build(BuildContext context) {
     final container = StateContainer.of(context);
 
+    if(container.record != null) {
+      DateFormat dateFormat = DateFormat('h:mm');
+      DateTime createDate = DateTime.parse(container.record.createdAt);
+      setState(() {
+
+        this.curDate = "${createDate.month}월 ${createDate.day}일 ${(createDate.hour >= 12 ? "오후 " : "오전 ") + dateFormat.format(createDate)}";
+      });
+    }
     final height = MediaQuery.of(context).size.height;
+
+    setState(() {
+      _scrollController = FixedExtentScrollController(initialItem: container.score != null ? container.score ~/ 10 : 5);
+    });
 
     return Container(
       padding: EdgeInsets.only(top: height * 0.23),

@@ -22,15 +22,15 @@ class _EmotionTagBoxState extends State<EmotionTagBox> {
 
     _onTap(int id, String name) {
       return () => setState(() {
-            if (widget.emotions.singleWhere((element) => element['id'] == id,
+            if (widget.emotions.singleWhere((element) => element.id == id.toString(),
                     orElse: () => null) !=
                 null)
-              widget.emotions.removeWhere((element) => element['id'] == id);
+              widget.emotions.removeWhere((element) => element.id == id.toString());
             else if (widget.emotions.length == 5) {
               return CommonService.showToast("5개까지만 선택이 가능합니다.");
             } else
-              widget.emotions.add({'id': id, 'name': name});
-            List<Emotion> emotionsParam = widget.emotions.map((e) => Emotion(id: e['id'].toString(), name: e['name']) ).toList();
+              widget.emotions.add(Emotion(id: id.toString(), name: name));
+            List<Emotion> emotionsParam = widget.emotions.map((e) => Emotion(id: e.id.toString(), name: e.name) ).toList();
             container.updateEmotions(emotionsParam);
           });
     }
@@ -48,7 +48,7 @@ class _EmotionTagBoxState extends State<EmotionTagBox> {
             ],
             onTap: _onTap(id, EmotionNames[id - 1]),
             isActivated: widget.emotions
-                    .where((element) => element['id'] == id)
+                    .where((element) => element.id == id.toString())
                     .length ==
                 1,
           ));
@@ -62,7 +62,7 @@ class _EmotionTagBoxState extends State<EmotionTagBox> {
             ],
             onTap: _onTap(id, EmotionNames[id - 1]),
             isActivated: widget.emotions
-                    .where((element) => element['id'] == id)
+                    .where((element) => element.id == id.toString())
                     .length ==
                 1,
           ));
@@ -76,7 +76,7 @@ class _EmotionTagBoxState extends State<EmotionTagBox> {
             ],
             onTap: _onTap(id, EmotionNames[id - 1]),
             isActivated: widget.emotions
-                    .where((element) => element['id'] == id)
+                    .where((element) => element.id == id.toString())
                     .length ==
                 1,
           ));
