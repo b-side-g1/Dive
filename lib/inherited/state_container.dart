@@ -7,12 +7,14 @@ class StateContainer extends StatefulWidget {
   final int score;
   final List<Emotion> emotions;
   final List<Tag> tags;
+  final String recordId;
 
   StateContainer({
     @required this.child,
     this.score,
     this.emotions,
-    this.tags
+    this.tags,
+    this.recordId
   });
 
   static StateContainerState of(BuildContext context) {
@@ -30,6 +32,16 @@ class StateContainerState extends State<StateContainer> {
   List<Emotion> emotions = [];
   List<Tag> tags = [];
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      score = widget.score ?? 50;
+      emotions = widget.emotions ?? [];
+      tags = widget.tags ?? [];
+    });
+  }
   void updateScore(score) {
     setState(() {
       this.score = score;

@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/inherited/state_container.dart';
-import 'package:flutterapp/models/daily_model.dart';
-import 'package:flutterapp/models/record_model.dart';
 import 'package:flutterapp/pages/input_page_step1.dart';
 import 'package:flutterapp/pages/input_page_step2.dart';
 import 'package:flutterapp/pages/input_page_step3.dart';
@@ -12,13 +10,6 @@ import 'daily_page.dart';
 enum ArrowAction { up, down }
 
 class InputPage extends StatefulWidget {
-  Record record;
-  Daily daily;
-  InputPage({Key key, Record record, Daily daily})
-  : record = record ?? null,
-  daily = daily ?? null,
-  super(key: key);
-
   @override
   _InputPageState createState() => _InputPageState();
 }
@@ -26,17 +17,7 @@ class InputPage extends StatefulWidget {
 class _InputPageState extends State<InputPage> {
 
   List emotions = [];
-  bool isUpdate = false;
 
-  @mustCallSuper
-  void initState() {
-    if(widget.record != null && widget.daily != null ) {
-      setState(() {
-        isUpdate = true;
-      });
-    }
-    super.initState();
-  }
   Color get backgroundColor {
     switch (step) {
       case 2:
@@ -222,10 +203,7 @@ class _InputPageState extends State<InputPage> {
               controller: _controller,
               scrollDirection: Axis.vertical,
               children: <Widget>[
-                InputPageStep1(
-                  score: isUpdate ? widget.record.score : null,
-                  daily: isUpdate ? widget.daily : null
-                ),
+                InputPageStep1(),
                 InputPageStep2(
                   emotions: emotions,
                 ),

@@ -7,10 +7,7 @@ import 'dart:async';
 import 'package:flutterapp/models/daily_model.dart';
 
 class InputPageStep1 extends StatefulWidget {
-  int score;
-  Daily daily;
-
-  InputPageStep1({Key key, this.score, this.daily}) : super(key: key);
+  InputPageStep1({Key key}) : super(key: key);
 
   @override
   _InputPageStep1State createState() => _InputPageStep1State();
