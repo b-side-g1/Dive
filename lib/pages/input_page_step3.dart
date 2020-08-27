@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/components/input/step3/edit_tag_dialog.dart';
 import 'package:flutterapp/components/input/step3/reason_tag_widget.dart';
 import 'package:flutterapp/inherited/state_container.dart';
+import 'package:flutterapp/models/emotion_model.dart';
 import 'package:flutterapp/models/record_has_emotion.dart';
 import 'package:flutterapp/models/record_has_tag.dart';
 import 'package:flutterapp/models/record_model.dart';
@@ -166,7 +167,6 @@ class _InputPageStep3State extends State<InputPageStep3> {
           controller: _textEditingController,
           cursorColor: CommonService.hexToColor("#34b7eb"),
           style: TextStyle(color: Colors.white, fontSize: width * 0.04),
-
           decoration: new InputDecoration(
               hintStyle: TextStyle(color: Colors.grey),
               border: InputBorder.none,
@@ -176,6 +176,26 @@ class _InputPageStep3State extends State<InputPageStep3> {
               disabledBorder: InputBorder.none,
               hintText: "더 자세히 떠올려보자"),
         ));
+  }
+
+  _saveEmotions(List<Emotion> emotions, String recordId) async {
+    print('====Called save emotions====');
+    return Future.wait(emotions.map((emotion) async {
+      return EmotionService().insertRecordHasEmotion(RecordHasEmotion(
+          recordId: recordId,
+          emotionId: emotion.id,
+          createdAt: DateTime.now().toString()));
+    }));
+  }
+
+  _saveTags(List<Tag> tags, String recordId) async {
+    print('====Called save tags====');
+    return Future.wait(tags.map((tag) async {
+      return TagService().insertRecordHasTag(RecordHasTag(
+          recordId: recordId,
+          tagId: tag.id,
+          createdAt: DateTime.now().toString()));
+    }));
   }
 
   Widget recordButton() {
@@ -194,6 +214,25 @@ class _InputPageStep3State extends State<InputPageStep3> {
             textColor: Colors.white,
             padding: EdgeInsets.all(8.0),
             onPressed: () async {
+              String id = CommonService.generateUUID();
+              Iterable<Future<dynamic>> futures = [
+                RecordService().insertRecord(Record(
+                    id: id,
+                    score: container.score,
+                    dailyId: await DailyService()
+                        .getDailyByTimestamp(
+                            DateTime.now().millisecondsSinceEpoch)
+                        .then((value) => value.id),
+                    emotions: container.emotions,
+                    tags: container.tags,
+                    createdAt: DateTime.now().toString(),
+                    updatedAt: DateTime.now().toString(),
+                    description: _textEditingController.text)),
+                this._saveEmotions(container.emotions, id),
+                this._saveTags(container.tags, id)
+              ];
+              await Future.wait(futures).then(
+                  (value) => {CommonService.showToast("당신의 감정을 기록했습니다..")});
               if (container.emotions.length == 0) {
                 CommonService.showToast('감정을 하나 이상 선택해 주세요');
                 return;
