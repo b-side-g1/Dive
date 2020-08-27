@@ -4,7 +4,7 @@ import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutterapp/inherited/state_container.dart';
 import 'dart:async';
 
-import 'package:flutterapp/models/daily_model.dart';
+import 'package:intl/intl.dart';
 
 class InputPageStep1 extends StatefulWidget {
   InputPageStep1({Key key}) : super(key: key);
@@ -67,7 +67,9 @@ class _InputPageStep1State extends State<InputPageStep1> {
   renderTimeSelect() {
     final width = MediaQuery.of(context).size.width;
 
-    String title = "당신의 기분을 알려주세요.";
+    final container = StateContainer.of(context);
+    String title = container.record != null ? "당신의 기분을 바꿔주세요" : "당신의 기분을 알려주세요.";
+
     return Padding(
         padding: const EdgeInsets.only(top: 0),
         child: Column(children: <Widget>[
@@ -81,6 +83,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
                     fontWeight: FontWeight.w700,
                     fontFamily: "NotoSans",
                   )),
+              container.record != null ? Container() :
               Container(
                 padding: const EdgeInsets.all(0.0),
                 height: 30,
@@ -168,8 +171,16 @@ class _InputPageStep1State extends State<InputPageStep1> {
   Widget build(BuildContext context) {
     final container = StateContainer.of(context);
 
+    if(container.record != null) {
+      DateFormat dateFormat = DateFormat('h:mm');
+      DateTime createDate = DateTime.parse(container.record.createdAt);
+      setState(() {
+
+        this.curDate = "${createDate.month}월 ${createDate.day}일 ${(createDate.hour >= 12 ? "오후 " : "오전 ") + dateFormat.format(createDate)}";
+      });
+    }
     final height = MediaQuery.of(context).size.height;
-    
+
     setState(() {
       _scrollController = FixedExtentScrollController(initialItem: container.score != null ? container.score ~/ 10 : 5);
     });

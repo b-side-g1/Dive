@@ -314,7 +314,7 @@ class _DailyPageState extends State<DailyPage> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    StateContainer(child: InputPage(), score: record.score, emotions: record.emotions, tags: record.tags, recordId: record.id, description: record.description,)));
+                                    StateContainer(child: InputPage(), score: record.score, emotions: record.emotions, tags: record.tags, description: record.description, record: record)));
                       },
                     ),
                     // swipe 시 옆으로 삭제 되는 기능

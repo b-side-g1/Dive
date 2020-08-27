@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/models/emotion_model.dart';
+import 'package:flutterapp/models/record_model.dart';
 import 'package:flutterapp/models/tag_model.dart';
 
 class StateContainer extends StatefulWidget {
@@ -8,7 +9,7 @@ class StateContainer extends StatefulWidget {
   final List<Emotion> emotions;
   final List<Tag> tags;
   final String description;
-  final String recordId;
+  final Record record;
 
   StateContainer({
     @required this.child,
@@ -16,7 +17,7 @@ class StateContainer extends StatefulWidget {
     this.emotions,
     this.tags,
     this.description,
-    this.recordId
+    this.record
   });
 
   static StateContainerState of(BuildContext context) {
@@ -34,6 +35,7 @@ class StateContainerState extends State<StateContainer> {
   List<Emotion> emotions = [];
   List<Tag> tags = [];
   String description;
+  Record record;
 
   @override
   void initState() {
@@ -44,6 +46,7 @@ class StateContainerState extends State<StateContainer> {
       emotions = widget.emotions ?? [];
       tags = widget.tags ?? [];
       description = widget.description ?? "";
+      record = widget.record ?? null;
     });
   }
   void updateScore(score) {

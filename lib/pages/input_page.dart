@@ -210,7 +210,7 @@ class _InputPageState extends State<InputPage> {
                 InputPageStep2(
                   emotions: emotions,
                 ),
-                InputPageStep3()
+                InputPageStep3(description: container.description,)
               ],
               onPageChanged: (page) {
                 setState(() {

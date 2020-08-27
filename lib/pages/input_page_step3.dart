@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/components/input/step3/edit_tag_dialog.dart';
 import 'package:flutterapp/components/input/step3/reason_tag_widget.dart';
 import 'package:flutterapp/inherited/state_container.dart';
-import 'package:flutterapp/models/basic_model.dart';
-import 'package:flutterapp/models/daily_model.dart';
 import 'package:flutterapp/models/record_has_emotion.dart';
 import 'package:flutterapp/models/record_has_tag.dart';
 import 'package:flutterapp/models/record_model.dart';
 import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/pages/daily_page.dart';
 import 'package:flutterapp/provider/input/tag_provider.dart';
-import 'package:flutterapp/services/basic/basic_service.dart';
 import 'package:flutterapp/services/common/common_service.dart';
 import 'package:flutterapp/services/daily/daily_service.dart';
 import 'package:flutterapp/services/emotion/emotion_service.dart';
@@ -18,7 +15,8 @@ import 'package:flutterapp/services/record/record_service.dart';
 import 'package:flutterapp/services/tag/tag_service.dart';
 
 class InputPageStep3 extends StatefulWidget {
-  InputPageStep3({Key key}) : super(key: key);
+  String description;
+  InputPageStep3({Key key, String description}) : description = description ?? "", super(key: key);
 
   @override
   _InputPageStep3State createState() => _InputPageStep3State();
@@ -26,9 +24,10 @@ class InputPageStep3 extends StatefulWidget {
 
 class _InputPageStep3State extends State<InputPageStep3> {
   TagProvider tagProvider;
-  TextEditingController _textEditingController;
+  TextEditingController _textEditingController = TextEditingController();
   List<Tag> _tags;
   TagService _tagService = TagService();
+  String description;
 
   Future<List<Tag>> createEditTagDialog(BuildContext context) {
     return showDialog(
@@ -45,6 +44,14 @@ class _InputPageStep3State extends State<InputPageStep3> {
         this._tags = tags;
       });
     });
+    _textEditingController.text = widget.description;
+
+  }
+
+  @override
+  void dispose() {
+    _textEditingController.dispose();
+    super.dispose();
   }
 
   Widget titleWidget() {
@@ -120,6 +127,8 @@ class _InputPageStep3State extends State<InputPageStep3> {
   Widget reasonTagList() {
     final height = MediaQuery.of(context).size.height;
 
+    final container = StateContainer.of(context);
+
     return Container(
       height: height * 0.18,
       padding: EdgeInsets.only(left: 20, right: 20),
@@ -151,13 +160,13 @@ class _InputPageStep3State extends State<InputPageStep3> {
 
   Widget writeReasonField() {
     final width = MediaQuery.of(context).size.width;
-
     return Container(
         padding: EdgeInsets.only(top: 13, left: 20, right: 20),
         child: TextFormField(
           controller: _textEditingController,
           cursorColor: CommonService.hexToColor("#34b7eb"),
           style: TextStyle(color: Colors.white, fontSize: width * 0.04),
+
           decoration: new InputDecoration(
               hintStyle: TextStyle(color: Colors.grey),
               border: InputBorder.none,
@@ -194,19 +203,40 @@ class _InputPageStep3State extends State<InputPageStep3> {
                 return;
               }
               int currentTimeStamp = DateTime.now().millisecondsSinceEpoch;
-              Record recordParam = Record(
-                  id: CommonService.generateUUID(),
+
+              Record recordParam;
+              if(container.record == null) {
+                recordParam = Record(
+                    id: CommonService.generateUUID(),
+                    score: container.score,
+                    dailyId: await DailyService()
+                        .getDailyByTimestamp(currentTimeStamp)
+                        .then((value) => value.id),
+                    emotions: container.emotions,
+                    tags: container.tags,
+                    createdAt: DateTime.now().toString(),
+                    updatedAt: DateTime.now().toString(),
+                    description: _textEditingController.text);
+
+                await RecordService().insertRecord(recordParam);
+              } else {
+                Record record = container.record;
+                recordParam = Record(
+                  id: record.id,
                   score: container.score,
-                  dailyId: await DailyService()
-                      .getDailyByTimestamp(currentTimeStamp)
-                      .then((value) => value.id),
+                  dailyId: record.dailyId,
                   emotions: container.emotions,
                   tags: container.tags,
-                  createdAt: DateTime.now().toString(),
+                  createdAt: record.createdAt,
                   updatedAt: DateTime.now().toString(),
                   description: _textEditingController.text);
 
-              await RecordService().insertRecord(recordParam);
+                await RecordService().deleteRecord(recordParam.id);
+                await RecordService().insertRecord(recordParam);
+
+                await TagService().deleteRecordHasTagByRecordId(recordParam.id);
+                await EmotionService().deleteRecordHasEmotionByRecordId(recordParam.id);
+              }
 
               container.tags.forEach((tag) async {
                 RecordHasTag recordHasTagParam = RecordHasTag(
@@ -223,6 +253,8 @@ class _InputPageStep3State extends State<InputPageStep3> {
                     createdAt: DateTime.now().toString());
                 await EmotionService().insertRecordHasEmotion(recordHasEmotion);
               });
+
+
 
               CommonService.showToast("당신의 감정을 기록했습니다..");
 
@@ -247,11 +279,6 @@ class _InputPageStep3State extends State<InputPageStep3> {
     print('build input_page_step3');
 
     final height = MediaQuery.of(context).size.height;
-
-    final container = StateContainer.of(context);
-    setState(() {
-      _textEditingController = TextEditingController(text: container.description);
-    });
 //    SingleChildScrollView
     return Container(
         child: SingleChildScrollView(
