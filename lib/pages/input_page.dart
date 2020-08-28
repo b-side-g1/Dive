@@ -15,9 +15,8 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  List emotions = [];
 
-  TextEditingController _textEditingController = TextEditingController();
+  List emotions = [];
 
   Color get backgroundColor {
     switch (step) {
@@ -35,7 +34,6 @@ class _InputPageState extends State<InputPage> {
   );
   int step = 1;
   int testScore;
-
 
   @override
   void dispose() {
@@ -58,7 +56,7 @@ class _InputPageState extends State<InputPage> {
   }
 
   Widget stepActionButton(ArrowAction action, int step) {
-    final handleStep = (action == ArrowAction.up) ? (step-2) : (step);
+    final handleStep = (action == ArrowAction.up) ? (step - 2) : (step);
     String rowAction = (action == ArrowAction.up) ? "up" : "down";
     return FloatingActionButton(
       heroTag: rowAction,
@@ -76,7 +74,6 @@ class _InputPageState extends State<InputPage> {
   }
 
   renderStepButton(step) {
-
     final height = MediaQuery.of(context).size.height;
 
     return Container(
@@ -85,22 +82,21 @@ class _InputPageState extends State<InputPage> {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Visibility(
-            visible: (step == 1 ) ? false : true,
+            visible: (step == 1) ? false : true,
             child: Align(
                 alignment: Alignment.topCenter,
-
                 child: Padding(
-                  padding:  EdgeInsets.only(top: height * 0.05 ),
+                  padding: EdgeInsets.only(top: height * 0.05),
                   child: stepActionButton(ArrowAction.up, step),
                 )),
           ),
           Visibility(
-            visible: (step == 3 ) ? false : true,
+            visible: (step == 3) ? false : true,
             child: Expanded(
               child: Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
-                    padding:  EdgeInsets.only(bottom: height * 0.05 ),
+                    padding: EdgeInsets.only(bottom: height * 0.05),
                     child: stepActionButton(ArrowAction.down, step),
                   )),
             ),
@@ -128,8 +124,10 @@ class _InputPageState extends State<InputPage> {
               new FlatButton(
                 child: new Text("네"),
                 onPressed: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => DailyPage()));
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => DailyPage()),
+                      (e) => false);
                 },
               ),
             ],
@@ -194,7 +192,11 @@ class _InputPageState extends State<InputPage> {
     final container = StateContainer.of(context);
     testScore = container.score;
 
+    setState(() {
+      emotions = container.emotions;
+    });
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         color: backgroundColor,
         child: Stack(
@@ -208,7 +210,7 @@ class _InputPageState extends State<InputPage> {
                 InputPageStep2(
                   emotions: emotions,
                 ),
-                InputPageStep3()
+                InputPageStep3(description: container.description,)
               ],
               onPageChanged: (page) {
                 setState(() {

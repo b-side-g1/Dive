@@ -18,6 +18,7 @@ class _AddTagDialogState extends State<AddTagDialog> {
     return AlertDialog(
       title: Center(child: Text('새 태그 추가')),
       content: TextFormField(
+        maxLength: 10,
         controller: this.addTagController,
         cursorColor: CommonService.hexToColor("#34b7eb"),
         decoration: new InputDecoration(
