@@ -31,7 +31,7 @@ class DBHelper {
     var ddlList = [];
 
     var recordTable = Record.tableName;
-    var recordDDL = "CREATE TABLE $recordTable (id TEXT PRIMARY KEY, score INTEGER, description TEXT, dailyId TEXT, createdAt TEXT, updatedAt TEXT)";
+    var recordDDL = "CREATE TABLE $recordTable (id TEXT PRIMARY KEY, score INTEGER, description TEXT, dailyId TEXT, createdAt TEXT, updatedAt TEXT, createdTimestamp INTEGER)";
     ddlList.add(recordDDL);
 
     var dailyTable = Daily.tableName;

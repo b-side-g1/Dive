@@ -4,14 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/components/record_card.dart';
 import 'package:flutterapp/inherited/state_container.dart';
-import 'package:flutterapp/models/basic_model.dart';
-import 'package:flutterapp/models/daily_model.dart';
-import 'package:flutterapp/models/emotion_model.dart';
 import 'package:flutterapp/models/record_model.dart';
-import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/pages/setting_page.dart';
-import 'package:flutterapp/services/basic/basic_service.dart';
-import 'package:flutterapp/services/daily/daily_service.dart';
 import 'package:flutterapp/services/record/record_service.dart';
 import 'package:intl/intl.dart';
 
@@ -28,10 +22,8 @@ class _DailyPageState extends State<DailyPage> {
   List<Record> _recordList;
   bool isToday = true;
   bool isEmpty = true;
-  Daily _daily;
 
   RecordService _recordService = RecordService();
-  DailyService _dailyService = DailyService();
 
   @override
   void dispose() {
@@ -45,16 +37,9 @@ class _DailyPageState extends State<DailyPage> {
   }
 
   void _setDataByDate(DateTime date) async {
-    var resDaily = await _dailyService.selectDailyByDate(date);
-
-    var records = List<Record>();
-    if (resDaily != null) {
-      records = await _recordService
-          .selectAllWithEmotionsAndTagsByDailyId(resDaily.id);
-      setState(() {
-        _daily = resDaily;
-      });
-    }
+    DateTime startDate = DateTime(date.year, date.month, date.day, 0, 0, 0);
+    DateTime endDate = startDate.add(Duration(days: 1));
+    var records = await _recordService.selectAllWithEmotionsAndTagsByTimestampBetween(startDate.millisecondsSinceEpoch, endDate.millisecondsSinceEpoch);
     setDataByRecord(records, date);
   }
 
