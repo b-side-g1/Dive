@@ -227,6 +227,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                       emotions: container.emotions,
                       tags: container.tags,
                       createdAt: DateTime.now().toString(),
+                      createdTimestamp: DateTime.now().millisecondsSinceEpoch,
                       updatedAt: DateTime.now().toString(),
                       description: _textEditingController.text)),
                   this._saveEmotions(container.emotions, id),
@@ -243,6 +244,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                     emotions: container.emotions,
                     tags: container.tags,
                     createdAt: record.createdAt,
+                    createdTimestamp: record.createdTimestamp,
                     updatedAt: DateTime.now().toString(),
                     description: _textEditingController.text);
 
