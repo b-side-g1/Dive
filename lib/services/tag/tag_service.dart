@@ -30,6 +30,26 @@ class TagService {
     return tags;
   }
 
+  Future<List<Tag>> selectStatisticsOfTags() async {
+    final db = await DBHelper().database;
+
+    var res = await db.rawQuery(
+        "SELECT tagId as id,tag.name,COUNT(tagId) as count "
+            "FROM ${Tag.tableName} "
+        "INNER JOIN tag"
+        "ON tag.id = recordHasTag.tagId"
+        "WHERE tag.deletedAt is NULL"
+        "GROUP BY tagId "
+        "ORDER BY count DESC");
+
+    List<Tag> tags =
+    res.isNotEmpty ? res.map((c) => Tag.fromJson(c)).toList() : [];
+
+    return tags;
+  }
+
+
+
   Future<Tag> insertTag(Tag tag) async {
     final db = await DBHelper().database;
 
