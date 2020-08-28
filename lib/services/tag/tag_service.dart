@@ -31,7 +31,7 @@ class TagService {
     ON recordHasTag.tagId = tag.id
     WHERE deletedAt is NULL
     GROUP BY tag.id
-        ORDER BY COUNT(recordHasTag.tagId) desc
+        ORDER BY COUNT(recordHasTag.tagId) desc, tag.createdat ASC
         ''');
 
     List<Tag> tags =

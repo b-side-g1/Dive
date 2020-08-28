@@ -69,11 +69,13 @@ class DBHelper {
         await db.rawInsert(
             'INSERT INTO basic(id,status,is_push,uuid) VALUES("1","FST","0","0123456789")'
         );
+        String nowDate = DateTime.now().toString();
+
         TagNames.forEach((tag) async {
           String uuid = CommonService.generateUUID();
           await db.rawInsert(
-              'INSERT INTO tag(id,name) VALUES(?,?)',
-              [uuid,tag]
+              'INSERT INTO tag(id,name,createdAt) VALUES(?,?,?)',
+              [uuid,tag,nowDate]
           );
         });
 
