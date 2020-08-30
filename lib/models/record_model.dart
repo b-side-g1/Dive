@@ -11,6 +11,7 @@ class Record {
   final String dailyId;
   final String updatedAt;
   final String createdAt;
+  final int createdTimestamp;
   Daily daily;
   List<Tag> tags;
   List<Emotion> emotions;
@@ -22,6 +23,7 @@ class Record {
       this.dailyId,
       this.updatedAt,
       this.createdAt,
+      this.createdTimestamp,
       this.daily,
       this.tags,
       this.emotions});
@@ -33,6 +35,7 @@ class Record {
         dailyId: json["dailyId"],
         updatedAt: json["updatedAt"],
         createdAt: json["createdAt"],
+        createdTimestamp: json["createdTimestamp"],
         daily: json["daily"],
         tags: json["tags"],
         emotions: json["emotions"],
@@ -45,6 +48,7 @@ class Record {
         "dailyId": dailyId ,
         "updatedAt": updatedAt ,
         "createdAt": createdAt ,
+        "createdTimestamp": createdTimestamp,
         "daily": daily,
         "tags": tags,
         "emotions": emotions,
@@ -57,6 +61,7 @@ class Record {
     "dailyId": dailyId ,
     "updatedAt": updatedAt ,
     "createdAt": createdAt ,
+    "createdTimestamp": createdTimestamp ,
 //    "daily": daily,
 //    "tags": tags,
 //    "emotions": emotions,

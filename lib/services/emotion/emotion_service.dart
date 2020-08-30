@@ -27,4 +27,8 @@ class EmotionService {
   }
 
 
+  deleteRecordHasEmotionByRecordId(String recordId) async {
+    final db = await DBHelper().database;
+    await db.delete(RecordHasEmotion.tableName, where: 'recordId = ?', whereArgs: [recordId]);
+  }
 }

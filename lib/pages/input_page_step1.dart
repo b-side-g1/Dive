@@ -4,12 +4,10 @@ import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutterapp/inherited/state_container.dart';
 import 'dart:async';
 
-class InputPageStep1 extends StatefulWidget {
-  final int score;
+import 'package:intl/intl.dart';
 
-  InputPageStep1({Key key, this.score})
-      : super(key: key);
-//  Function handlerPageView;
+class InputPageStep1 extends StatefulWidget {
+  InputPageStep1({Key key}) : super(key: key);
 
   @override
   _InputPageStep1State createState() => _InputPageStep1State();
@@ -18,7 +16,8 @@ class InputPageStep1 extends StatefulWidget {
 class _InputPageStep1State extends State<InputPageStep1> {
   int hour, min, score;
   String mid, curDate;
-  Timer _timer;
+
+  var _scrollController;
 
   @protected
   @mustCallSuper
@@ -31,8 +30,15 @@ class _InputPageStep1State extends State<InputPageStep1> {
       min = now.minute;
       mid = now.hour >= 12 ? "오후" : "오전";
       curDate = "${mid} ${hour}시 ${min}분 ";
-      score = 50;
+
     });
+  }
+
+  @override
+  void dispose() {
+    this._scrollController.dispose();
+
+    super.dispose();
   }
 
   showTimePicker(BuildContext context) {
@@ -59,7 +65,11 @@ class _InputPageStep1State extends State<InputPageStep1> {
   }
 
   renderTimeSelect() {
-    String title = "당신의 기분을 알려주세요.";
+    final width = MediaQuery.of(context).size.width;
+
+    final container = StateContainer.of(context);
+    String title = container.record != null ? "당신의 기분을 바꿔주세요" : "당신의 기분을 알려주세요.";
+
     return Padding(
         padding: const EdgeInsets.only(top: 0),
         child: Column(children: <Widget>[
@@ -68,10 +78,12 @@ class _InputPageStep1State extends State<InputPageStep1> {
             children: <Widget>[
               Text(curDate == null ? '' : curDate,
                   style: TextStyle(
-                      fontSize: 21,
-                      color: const Color(0xffffffff),
-                      fontWeight: FontWeight.w700,
-                      fontStyle: FontStyle.normal)),
+                    fontSize: width * 0.07,
+                    color: const Color(0xffffffff),
+                    fontWeight: FontWeight.w700,
+                    fontFamily: "NotoSans",
+                  )),
+              container.record != null ? Container() :
               Container(
                 padding: const EdgeInsets.all(0.0),
                 height: 30,
@@ -92,14 +104,16 @@ class _InputPageStep1State extends State<InputPageStep1> {
           ),
           Text(title,
               style: TextStyle(
-                  fontSize: 21,
+                  fontSize: width * 0.07,
                   color: const Color(0xffffffff),
                   fontWeight: FontWeight.w700,
-                  fontStyle: FontStyle.normal))
+                  fontFamily: "NotoSans"))
         ]));
   }
 
   renderScoreSelect(StateContainerState container) {
+    final width = MediaQuery.of(context).size.width;
+
     List<int> scoreList = [for (var i = 0; i <= 100; i += 10) i];
 
     return Padding(
@@ -107,8 +121,8 @@ class _InputPageStep1State extends State<InputPageStep1> {
         child:
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
           Container(
-            width: 200,
-            height: 200,
+            width: width * 0.73,
+            height: width * 0.73,
             decoration: BoxDecoration(
                 image: DecorationImage(
               image: AssetImage('lib/src/image/daily/img_bubble.png'),
@@ -119,6 +133,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
                 child: Container(
                     height: 170,
                     child: new ListWheelScrollView.useDelegate(
+                      controller: _scrollController,
                       itemExtent: 60,
                       diameterRatio: 1.5,
                       physics: FixedExtentScrollPhysics(),
@@ -137,7 +152,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
                               style: TextStyle(
                                 fontFamily: 'Roboto',
                                 color: Color(0xffffffff),
-                                fontSize: 28,
+                                fontSize: width * 0.11,
                                 fontWeight: FontWeight.w300,
                                 fontStyle: FontStyle.normal,
                                 letterSpacing: 0.28,
@@ -154,11 +169,24 @@ class _InputPageStep1State extends State<InputPageStep1> {
 
   @override
   Widget build(BuildContext context) {
-
     final container = StateContainer.of(context);
 
+    if(container.record != null) {
+      DateFormat dateFormat = DateFormat('h:mm');
+      DateTime createDate = DateTime.parse(container.record.createdAt);
+      setState(() {
+
+        this.curDate = "${createDate.month}월 ${createDate.day}일 ${(createDate.hour >= 12 ? "오후 " : "오전 ") + dateFormat.format(createDate)}";
+      });
+    }
+    final height = MediaQuery.of(context).size.height;
+
+    setState(() {
+      _scrollController = FixedExtentScrollController(initialItem: container.score != null ? container.score ~/ 10 : 5);
+    });
+
     return Container(
-      padding: EdgeInsets.only(top: 130),
+      padding: EdgeInsets.only(top: height * 0.23),
       child: Stack(
         children: <Widget>[
           Column(

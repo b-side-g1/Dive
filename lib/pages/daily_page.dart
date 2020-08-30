@@ -4,14 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterapp/components/record_card.dart';
 import 'package:flutterapp/inherited/state_container.dart';
-import 'package:flutterapp/models/basic_model.dart';
-import 'package:flutterapp/models/daily_model.dart';
-import 'package:flutterapp/models/emotion_model.dart';
 import 'package:flutterapp/models/record_model.dart';
-import 'package:flutterapp/models/tag_model.dart';
 import 'package:flutterapp/pages/setting_page.dart';
-import 'package:flutterapp/services/basic/basic_service.dart';
-import 'package:flutterapp/services/daily/daily_service.dart';
 import 'package:flutterapp/services/record/record_service.dart';
 import 'package:intl/intl.dart';
 
@@ -30,7 +24,6 @@ class _DailyPageState extends State<DailyPage> {
   bool isEmpty = true;
 
   RecordService _recordService = RecordService();
-  DailyService _dailyService = DailyService();
 
   @override
   void dispose() {
@@ -44,13 +37,9 @@ class _DailyPageState extends State<DailyPage> {
   }
 
   void _setDataByDate(DateTime date) async {
-    var resDaily = await _dailyService.selectDailyByDate(date);
-
-    var records = List<Record>();
-    if (resDaily != null) {
-      records = await _recordService
-          .selectAllWithEmotionsAndTagsByDailyId(resDaily.id);
-    }
+    DateTime startDate = DateTime(date.year, date.month, date.day, 0, 0, 0);
+    DateTime endDate = startDate.add(Duration(days: 1));
+    var records = await _recordService.selectAllWithEmotionsAndTagsByTimestampBetween(startDate.millisecondsSinceEpoch, endDate.millisecondsSinceEpoch);
     setDataByRecord(records, date);
   }
 
@@ -252,8 +241,11 @@ class _DailyPageState extends State<DailyPage> {
         body: CustomScrollView(
           slivers: <Widget>[
             SliverAppBar(
-              pinned: true, // 스크롤 내릴때 남아 있음
+              pinned: false,
+              // 스크롤 내릴때 남아 있음
+              automaticallyImplyLeading: false,
               backgroundColor: Colors.white,
+              brightness: Brightness.light,
               expandedHeight: 56.0,
               flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
@@ -284,23 +276,38 @@ class _DailyPageState extends State<DailyPage> {
                 (BuildContext context, int index) {
                   final record = _recordList[index];
                   return Dismissible(
-                      key: Key(record.id),
-                      onDismissed: (direction) {
-                        setState(() {
-                          _recordList.removeAt(index);
-                        });
-                        _recordService.deleteRecord(record.id);
-                        setDataByRecord(_recordList, _date);
-                        Scaffold.of(context).showSnackBar(
-                            SnackBar(content: Text("기록이 삭제 됐습니다.")));
-                      },
+                    key: Key(record.id),
+                    onDismissed: (direction) {
+                      setState(() {
+                        _recordList.removeAt(index);
+                      });
+                      _recordService.deleteRecord(record.id);
+                      setDataByRecord(_recordList, _date);
+                      Scaffold.of(context).showSnackBar(
+                          SnackBar(content: Text("기록이 삭제 됐습니다.")));
+                    },
+                    child: InkWell(
                       child: Container(
                         alignment: Alignment.center,
                         padding: EdgeInsets.all(10),
                         child: RecordCard(
                           record: record,
                         ),
-                      ));
+                      ),
+                      onTap: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    StateContainer(child: InputPage(), score: record.score, emotions: record.emotions, tags: record.tags, description: record.description, record: record)));
+                      },
+                    ),
+                    // swipe 시 옆으로 삭제 되는 기능
+//                    background: Container(
+//                      color: Colors.red,
+//                      child: Icon(Icons.cancel)
+//                    ),
+                  );
                 },
                 childCount: _recordList == null ? 0 : _recordList.length,
               ),

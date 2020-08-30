@@ -47,6 +47,8 @@ class _EditTagListState extends State<EditTagList> {
   }
 
   Widget buildEditTagListView() {
+    final width = MediaQuery.of(context).size.width;
+
     return Container(
       width: 280,
       height: 324,
@@ -71,24 +73,28 @@ class _EditTagListState extends State<EditTagList> {
                                     "[edit_tag_list.dart] _showAddTagDialog then -> ${value.value}");
 
                                 if (value.isConfirm) {
+                                  final nameParam = value.value.split(" ").join("");
                                   Tag tagParam = Tag(
                                     id: CommonService.generateUUID(),
-                                    name: value.value
+                                    name: nameParam
                                   );
-                                  _tagService.insertTag(tagParam).then((_) {
+                                  final exist = this._tags.firstWhere((tag) => tag.name == tagParam.name, orElse: () => null);
+                                  if(exist == null) {
+                                    _tagService.insertTag(tagParam).then((_) {
                                       _tagService.selectAllTags().then((tags) {
                                         setState(() {
                                           this._tags = tags;
                                         });
                                       } );
-                                  });
+                                    });
+                                  }
                                 }
                               });
                             },
                             child: Text(
                               "새 태그 추가",
                               style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w400),
+                                  fontSize: width * 0.045, fontWeight: FontWeight.w400),
                             ),
                           ),
                         ],
@@ -99,7 +105,7 @@ class _EditTagListState extends State<EditTagList> {
                           Text(
                             "${this._tags[index - 1].name}",
                             style: TextStyle(
-                                fontSize: 14.0, fontWeight: FontWeight.w400),
+                                fontSize: width * 0.045, fontWeight: FontWeight.w400),
                           ),
                           GestureDetector(
                               onTap: () {
@@ -114,7 +120,7 @@ class _EditTagListState extends State<EditTagList> {
                               child: Text(
                                 "삭제",
                                 style: TextStyle(
-                                    fontSize: 14.0,
+                                    fontSize: width * 0.045,
                                     color: CommonService.hexToColor("#63c7ff")),
                               ))
                         ],

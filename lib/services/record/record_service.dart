@@ -39,6 +39,21 @@ class RecordService {
     var res = await db.query(Record.tableName, where: 'dailyId = ?', whereArgs: [dailyId]);
 
     List<Record> records = res.isNotEmpty ? res.map((c) => Record.fromJson(c)).toList() : [];
+    records.sort((r1, r2) => DateTime.parse(r2.createdAt).compareTo(DateTime.parse(r1.createdAt)));
+    for (var _record in records) {
+      _record.emotions = await _emotionService.selectEmotionAllByRecordId(_record.id);
+      _record.tags = await _tagService.selectTagAllByRecordId(_record.id);
+    }
+
+    return records;
+  }
+
+  Future<List<Record>> selectAllWithEmotionsAndTagsByTimestampBetween(int startTimestamp, int endTimestamp) async {
+    final db = await DBHelper().database;
+    var res = await db.query(Record.tableName, where: 'createdTimestamp >= ? and createdTimestamp < ?', whereArgs: [startTimestamp, endTimestamp]);
+
+    List<Record> records = res.isNotEmpty ? res.map((c) => Record.fromJson(c)).toList() : [];
+    records.sort((r1, r2) => DateTime.parse(r2.createdAt).compareTo(DateTime.parse(r1.createdAt)));
     for (var _record in records) {
       _record.emotions = await _emotionService.selectEmotionAllByRecordId(_record.id);
       _record.tags = await _tagService.selectTagAllByRecordId(_record.id);

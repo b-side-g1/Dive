@@ -7,15 +7,16 @@ import 'package:flutterapp/pages/input_page_step3.dart';
 
 import 'daily_page.dart';
 
+enum ArrowAction { up, down }
+
 class InputPage extends StatefulWidget {
   @override
   _InputPageState createState() => _InputPageState();
 }
 
 class _InputPageState extends State<InputPage> {
-  List emotions = [];
 
-  TextEditingController _textEditingController = TextEditingController();
+  List emotions = [];
 
   Color get backgroundColor {
     switch (step) {
@@ -31,14 +32,8 @@ class _InputPageState extends State<InputPage> {
   PageController _controller = PageController(
     initialPage: 0,
   );
-  int step = 0;
+  int step = 1;
   int testScore;
-
-  void handlerPageView(int index) {
-    step = index;
-    _controller.animateToPage(index,
-        curve: Curves.easeIn, duration: Duration(microseconds: 2000000));
-  }
 
   @override
   void dispose() {
@@ -53,49 +48,59 @@ class _InputPageState extends State<InputPage> {
     );
   }
 
-  renderStepButton() {
+  void handlerPageView(int index) {
+    debugPrint("[input_page.dart] #handlerPageView index -> ${index}");
+    step = index;
+    _controller.animateToPage(index,
+        curve: Curves.easeIn, duration: Duration(milliseconds: 700));
+  }
+
+  Widget stepActionButton(ArrowAction action, int step) {
+    final handleStep = (action == ArrowAction.up) ? (step - 2) : (step);
+    String rowAction = (action == ArrowAction.up) ? "up" : "down";
+    return FloatingActionButton(
+      heroTag: rowAction,
+      mini: true,
+      backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
+      child: Image.asset(
+        'lib/src/image/daily/icon_${rowAction}.png',
+        height: 16,
+        width: 16,
+      ),
+      onPressed: () {
+        handlerPageView(handleStep);
+      },
+    );
+  }
+
+  renderStepButton(step) {
+    final height = MediaQuery.of(context).size.height;
+
     return Container(
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              FloatingActionButton(
-                heroTag: 'up',
-                mini: true,
-                backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
-                child: Image.asset(
-                  'lib/src/image/daily/icon_up.png',
-                  height: 16,
-                  width: 16,
-                ),
-                onPressed: () {
-                  handlerPageView(step - 1);
-                },
-              ),
-            ],
+          Visibility(
+            visible: (step == 1) ? false : true,
+            child: Align(
+                alignment: Alignment.topCenter,
+                child: Padding(
+                  padding: EdgeInsets.only(top: height * 0.05),
+                  child: stepActionButton(ArrowAction.up, step),
+                )),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              FloatingActionButton(
-                heroTag: 'down',
-                mini: true,
-                backgroundColor: Color.fromRGBO(0, 0, 0, 0.5),
-                child: Image.asset(
-                  'lib/src/image/daily/icon_down.png',
-                  height: 16,
-                  width: 16,
-                ),
-                tooltip: 'next step',
-                onPressed: () {
-                  handlerPageView(step + 1);
-                },
-              ),
-            ],
-          ),
+          Visibility(
+            visible: (step == 3) ? false : true,
+            child: Expanded(
+              child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: EdgeInsets.only(bottom: height * 0.05),
+                    child: stepActionButton(ArrowAction.down, step),
+                  )),
+            ),
+          )
         ],
       ),
     );
@@ -119,8 +124,10 @@ class _InputPageState extends State<InputPage> {
               new FlatButton(
                 child: new Text("네"),
                 onPressed: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => DailyPage()));
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => DailyPage()),
+                      (e) => false);
                 },
               ),
             ],
@@ -185,7 +192,11 @@ class _InputPageState extends State<InputPage> {
     final container = StateContainer.of(context);
     testScore = container.score;
 
+    setState(() {
+      emotions = container.emotions;
+    });
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         color: backgroundColor,
         child: Stack(
@@ -196,8 +207,10 @@ class _InputPageState extends State<InputPage> {
               scrollDirection: Axis.vertical,
               children: <Widget>[
                 InputPageStep1(),
-                InputPageStep2(emotions: emotions,),
-                InputPageStep3()
+                InputPageStep2(
+                  emotions: emotions,
+                ),
+                InputPageStep3(description: container.description,)
               ],
               onPageChanged: (page) {
                 setState(() {
@@ -214,7 +227,7 @@ class _InputPageState extends State<InputPage> {
                     children: <Widget>[renderClose(), renderSteper(step)],
                   ),
                 )),
-            renderStepButton(),
+            renderStepButton(step),
           ],
         ),
       ),
