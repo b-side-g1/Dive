@@ -164,6 +164,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
     return Container(
         padding: EdgeInsets.only(top: 13, left: 20, right: 20),
         child: TextFormField(
+          textInputAction: TextInputAction.done,
           controller: _textEditingController,
           cursorColor: CommonService.hexToColor("#34b7eb"),
           style: TextStyle(color: Colors.white, fontSize: width * 0.04),
