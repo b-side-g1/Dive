@@ -233,8 +233,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                   this._saveEmotions(container.emotions, id),
                   this._saveTags(container.tags, id)
                 ];
-                await Future.wait(futures).then(
-                    (value) => {CommonService.showToast("당신의 감정을 기록했습니다..")});
+                await Future.wait(futures);
               } else {
                 Record record = container.record;
                 Record recordParam = Record(
@@ -256,8 +255,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                   this._saveEmotions(container.emotions, recordParam.id),
                   this._saveTags(container.tags, recordParam.id)
                 ];
-                await Future.wait(futures).then(
-                        (value) => {CommonService.showToast("당신의 감정을 바꿨습니다..")});
+                await Future.wait(futures);
               }
 
               Navigator.pushReplacement(
