@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutterapp/components/input/step3/edit_tag_dialog.dart';
 import 'package:flutterapp/components/input/step3/reason_tag_widget.dart';
@@ -26,6 +28,7 @@ class InputPageStep3 extends StatefulWidget {
 class _InputPageStep3State extends State<InputPageStep3> {
   TagProvider tagProvider;
   TextEditingController _textEditingController = TextEditingController();
+  ScrollController _scrollController = ScrollController();
   List<Tag> _tags;
   TagService _tagService = TagService();
   String description;
@@ -52,6 +55,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
   @override
   void dispose() {
     _textEditingController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -162,9 +166,17 @@ class _InputPageStep3State extends State<InputPageStep3> {
   Widget writeReasonField() {
     final width = MediaQuery.of(context).size.width;
     return Container(
-        padding: EdgeInsets.only(top: 13, left: 20, right: 20),
+        padding: EdgeInsets.only(top: 13, left: 20, right: 20,bottom: MediaQuery.of(context).viewInsets.bottom),
         child: TextFormField(
+          onTap: () {
+            Timer(
+                Duration(milliseconds: 300),
+            () => _scrollController.jumpTo(_scrollController.position.maxScrollExtent));
+          },
           controller: _textEditingController,
+          keyboardType: TextInputType.multiline,
+          minLines: 1,
+          maxLines: 5,
           cursorColor: CommonService.hexToColor("#34b7eb"),
           style: TextStyle(color: Colors.white, fontSize: width * 0.04),
           decoration: new InputDecoration(
@@ -279,24 +291,24 @@ class _InputPageStep3State extends State<InputPageStep3> {
     print('build input_page_step3');
 
     final height = MediaQuery.of(context).size.height;
-//    SingleChildScrollView
-    return Container(
-        child: SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          titleWidget(),
-          toolBarWidget(),
-          reasonTagList(),
-          writeReasonTitle(),
-          writeReasonField(),
-          SizedBox(
-            height: height * 0.1,
-          ),
-          recordButton(),
-        ],
-      ),
-    ));
+    return SingleChildScrollView(
+      controller: _scrollController,
+      child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              titleWidget(),
+              toolBarWidget(),
+              reasonTagList(),
+              writeReasonTitle(),
+              writeReasonField(),
+              SizedBox(
+                height: height * 0.1,
+              ),
+              recordButton(),
+            ],
+          )),
+    );
   }
 }
