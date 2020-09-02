@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutterapp/components/input/step3/edit_tag_dialog.dart';
 import 'package:flutterapp/components/input/step3/reason_tag_widget.dart';
@@ -162,7 +164,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
   Widget writeReasonField() {
     final width = MediaQuery.of(context).size.width;
     return Container(
-        padding: EdgeInsets.only(top: 13, left: 20, right: 20),
+        padding: EdgeInsets.only(top: 13, left: 20, right: 20,bottom: MediaQuery.of(context).viewInsets.bottom),
         child: TextFormField(
           controller: _textEditingController,
           keyboardType: TextInputType.multiline,
@@ -284,24 +286,23 @@ class _InputPageStep3State extends State<InputPageStep3> {
     print('build input_page_step3');
 
     final height = MediaQuery.of(context).size.height;
-//    SingleChildScrollView
-    return Container(
-        child: SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          titleWidget(),
-          toolBarWidget(),
-          reasonTagList(),
-          writeReasonTitle(),
-          writeReasonField(),
-          SizedBox(
-            height: height * 0.1,
-          ),
-          recordButton(),
-        ],
-      ),
-    ));
+    return SingleChildScrollView(
+      child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              titleWidget(),
+              toolBarWidget(),
+              reasonTagList(),
+              writeReasonTitle(),
+              writeReasonField(),
+              SizedBox(
+                height: height * 0.1,
+              ),
+              recordButton(),
+            ],
+          )),
+    );
   }
 }
