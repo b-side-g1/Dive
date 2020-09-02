@@ -1,4 +1,4 @@
-package com.example.flutterapp
+package com.gsb.dive
 
 import io.flutter.embedding.android.FlutterActivity
 
