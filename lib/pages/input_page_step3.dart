@@ -28,6 +28,7 @@ class InputPageStep3 extends StatefulWidget {
 class _InputPageStep3State extends State<InputPageStep3> {
   TagProvider tagProvider;
   TextEditingController _textEditingController = TextEditingController();
+  ScrollController _scrollController = ScrollController();
   List<Tag> _tags;
   TagService _tagService = TagService();
   String description;
@@ -54,6 +55,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
   @override
   void dispose() {
     _textEditingController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -166,6 +168,11 @@ class _InputPageStep3State extends State<InputPageStep3> {
     return Container(
         padding: EdgeInsets.only(top: 13, left: 20, right: 20,bottom: MediaQuery.of(context).viewInsets.bottom),
         child: TextFormField(
+          onTap: () {
+            Timer(
+                Duration(milliseconds: 300),
+            () => _scrollController.jumpTo(_scrollController.position.maxScrollExtent));
+          },
           controller: _textEditingController,
           keyboardType: TextInputType.multiline,
           minLines: 1,
@@ -285,6 +292,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
 
     final height = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
+      controller: _scrollController,
       child: Container(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
