@@ -131,7 +131,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
     final container = StateContainer.of(context);
 
     return Container(
-      height: height * 0.18,
+      height: height * 0.23,
       padding: EdgeInsets.only(left: 20, right: 20),
       alignment: Alignment.centerLeft,
       child: ReasonTagWidget(
@@ -144,7 +144,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
     final width = MediaQuery.of(context).size.width / 100;
 
     return Container(
-        padding: EdgeInsets.only(top: 50, left: 20, right: 20),
+        padding: EdgeInsets.only(top: 25, left: 20, right: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -202,7 +202,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
     final container = StateContainer.of(context);
 
     return Container(
-      padding: EdgeInsets.only(left: 20, right: 20),
+      padding: EdgeInsets.only(left: 30, right: 30),
       child: ButtonTheme(
           minWidth: 316,
           height: 60,
