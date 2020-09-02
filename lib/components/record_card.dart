@@ -55,7 +55,8 @@ class RecordCard extends StatelessWidget {
                               ),
                             )),
                             Padding(
-                                padding: EdgeInsets.only(top: 25, right: 10),
+                                padding: EdgeInsets.only(top: (this.record.emotions.isNotEmpty ||
+                                    this.record.tags.isNotEmpty ) && this.record.description.isEmpty ? 0 : 25, right: 10),
                                 child: Align(
                                     alignment: Alignment.topRight,
                                     child: Text(
