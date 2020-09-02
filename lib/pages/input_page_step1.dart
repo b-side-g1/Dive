@@ -68,7 +68,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
     final width = MediaQuery.of(context).size.width;
 
     final container = StateContainer.of(context);
-    String title = container.record != null ? "당신의 기분을 바꿔주세요" : "당신의 기분을 알려주세요.";
+    String title = "당신의 기분을 알려주세요.";
 
     return Padding(
         padding: const EdgeInsets.only(top: 0),
