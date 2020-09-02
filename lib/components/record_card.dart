@@ -8,6 +8,7 @@ class RecordCard extends StatelessWidget {
   RecordCard({this.record});
 
   final Record record;
+  DateFormat _dateFormat = DateFormat('h:mm');
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +62,7 @@ class RecordCard extends StatelessWidget {
                                     child: Text(
                                       record.createdAt == null
                                           ? ''
-                                          : dateFormat(record.createdAt),
+                                          : dateFormat(record.createdAt, record.isCreatedSameDay()),
                                       //DateFormat('kk:mm').format(record.createdAt),
                                       style: TextStyle(
                                           color: Colors.white,
@@ -76,10 +77,9 @@ class RecordCard extends StatelessWidget {
         ));
   }
 
-  dateFormat(String dateStr) {
-    DateFormat dateFormat = DateFormat('h:mm');
+  dateFormat(String dateStr, bool isCreatedSameDay) {
     DateTime datetime = DateTime.parse(dateStr);
-    return (datetime.hour >= 12 ? "오후 " : "오전 ") + dateFormat.format(datetime);
+    return (!isCreatedSameDay ? "${datetime.month}/${datetime.day} " : "" ) + (datetime.hour >= 12 ? "오후 " : "오전 ") + _dateFormat.format(datetime);
   }
 
   tagWidget() {

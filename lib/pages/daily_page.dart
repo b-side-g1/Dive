@@ -22,9 +22,11 @@ class _DailyPageState extends State<DailyPage> {
   DateTime _date = DateTime.now();
   DateTime _currentDate;
   int _dailyScore = 0;
-  List<Record> _recordList;
+  List<Record> _firstRecordList = [];
+  List<Record> _secondRecordList = [];
   bool isToday = true;
   bool isEmpty = true;
+  bool existDifferentDayRecord = false;
 
   RecordService _recordService = RecordService();
   DailyService _dailyService = DailyService();
@@ -41,13 +43,17 @@ class _DailyPageState extends State<DailyPage> {
   }
 
   void _setDataByDate(DateTime date, bool createDaily) async {
-    var resDaily = await _dailyService.getDailyByTimestamp(date.millisecondsSinceEpoch, createDaily);
+    var resDaily = await _dailyService.getDailyByTimestamp(
+        date.millisecondsSinceEpoch, createDaily);
 
     var records = List<Record>();
-    if(resDaily != null) {
+    if (resDaily != null) {
       _setDateByDaily(resDaily);
-      records = await _recordService.selectAllWithEmotionsAndTagsByDailyId(resDaily.id);
-      records.forEach((element) {element.daily = resDaily;});
+      records = await _recordService
+          .selectAllWithEmotionsAndTagsByDailyId(resDaily.id);
+      records.forEach((element) {
+        element.daily = resDaily;
+      });
     }
 
     setDataByRecord(records, date);
@@ -56,28 +62,53 @@ class _DailyPageState extends State<DailyPage> {
   void _setDateByDaily(Daily daily) {
     DateTime datetime = DateTime.parse(daily.endAt);
     setState(() {
-      _date = datetime.hour <= 6 ? datetime.subtract(Duration(days: 1)): datetime;
-      if(_currentDate == null) {
+      _date =
+          datetime.hour <= 6 ? datetime.subtract(Duration(days: 1)) : datetime;
+      if (_currentDate == null) {
         _currentDate = _date;
       }
     });
   }
+
   void setDataByRecord(List<Record> records, DateTime date) {
     var resDailyScore = records.isEmpty
         ? 0
         : (records.map((c) => c.score).reduce((a, b) => a + b) / records.length)
             .round();
 
-    var resIsToday = _today.difference(date).inDays == 0 && _today.day == date.day;
+    var resIsToday =
+        _today.difference(date).inDays == 0 && _today.day == date.day;
     var resIsEmpty = records.length == 0;
+
+    int differentDayIndex = getDifferentDayIndex(records);
+
     setState(() {
-      _recordList = records;
+      _firstRecordList = differentDayIndex > 0
+          ? records.sublist(0, differentDayIndex)
+          : records;
+      _secondRecordList =
+          differentDayIndex > 0 ? records.sublist(differentDayIndex) : [];
+      existDifferentDayRecord = differentDayIndex > 0 ? true : records.any((element) => !element.isCreatedSameDay());
+
       _dailyScore = resDailyScore;
       isToday = resIsToday;
       isEmpty = resIsEmpty;
     });
   }
 
+  int getDifferentDayIndex(List<Record> records) {
+    for (int i = 0; i < records.length - 1; i++) {
+      if ((records[i].isCreatedSameDay() &&
+          !records[i + 1].isCreatedSameDay()) ||
+          (!records[i].isCreatedSameDay() &&
+              records[i + 1].isCreatedSameDay())) {
+        return i + 1;
+      }
+    }
+
+    return -1;
+  }
+  
   int weekNumber(DateTime date) {
     int dayOfYear = int.parse(DateFormat("D").format(date));
     return ((dayOfYear - date.weekday + 10) / 7).floor();
@@ -94,7 +125,8 @@ class _DailyPageState extends State<DailyPage> {
         helpText: "");
     if (picked != null)
       setState(() {
-        _date = picked.add(Duration(hours: 12)); // 마감시간에 상관 없이 정오는 무조건 동일한 날로 포함됨
+        _date =
+            picked.add(Duration(hours: 12)); // 마감시간에 상관 없이 정오는 무조건 동일한 날로 포함됨
         _setDataByDate(_date, false);
       });
   }
@@ -293,15 +325,14 @@ class _DailyPageState extends State<DailyPage> {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                 (BuildContext context, int index) {
-                  final record = _recordList[index];
+                  final record = _firstRecordList[index];
                   return Dismissible(
                     key: Key(record.id),
                     onDismissed: (direction) {
                       setState(() {
-                        _recordList.removeAt(index);
+                        _firstRecordList.removeAt(index);
                       });
                       _recordService.deleteRecord(record.id);
-                      setDataByRecord(_recordList, _date);
                       Scaffold.of(context).showSnackBar(
                           SnackBar(content: Text("기록이 삭제 됐습니다.")));
                     },
@@ -317,8 +348,13 @@ class _DailyPageState extends State<DailyPage> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    StateContainer(child: InputPage(), score: record.score, emotions: record.emotions, tags: record.tags, description: record.description, record: record)));
+                                builder: (context) => StateContainer(
+                                    child: InputPage(),
+                                    score: record.score,
+                                    emotions: record.emotions,
+                                    tags: record.tags,
+                                    description: record.description,
+                                    record: record)));
                       },
                     ),
                     // swipe 시 옆으로 삭제 되는 기능
@@ -328,7 +364,66 @@ class _DailyPageState extends State<DailyPage> {
 //                    ),
                   );
                 },
-                childCount: _recordList == null ? 0 : _recordList.length,
+                childCount:
+                    _firstRecordList == null ? 0 : _firstRecordList.length,
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return Divider(
+                      height: 10,
+                      thickness: 10,
+                      color: Colors.black,
+                    );
+                  },
+                childCount: _secondRecordList.isNotEmpty || existDifferentDayRecord ? 1 : 0
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                  final record = _secondRecordList[index];
+                  return Dismissible(
+                    key: Key(record.id),
+                    onDismissed: (direction) {
+                      setState(() {
+                        _secondRecordList.removeAt(index);
+                      });
+//                      _recordService.deleteRecord(record.id);
+                      Scaffold.of(context).showSnackBar(
+                          SnackBar(content: Text("기록이 삭제 됐습니다.")));
+                    },
+                    child: InkWell(
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(10),
+                        child: RecordCard(
+                          record: record,
+                        ),
+                      ),
+                      onTap: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StateContainer(
+                                    child: InputPage(),
+                                    score: record.score,
+                                    emotions: record.emotions,
+                                    tags: record.tags,
+                                    description: record.description,
+                                    record: record)));
+                      },
+                    ),
+                    // swipe 시 옆으로 삭제 되는 기능
+//                    background: Container(
+//                      color: Colors.red,
+//                      child: Icon(Icons.cancel)
+//                    ),
+                  );
+                },
+                childCount:
+                _secondRecordList == null ? 0 : _secondRecordList.length,
               ),
             ),
           ],
