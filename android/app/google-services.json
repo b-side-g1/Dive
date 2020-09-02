@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "554605423311",
+    "firebase_url": "https://b-side-g1-diary-app.firebaseio.com",
+    "project_id": "b-side-g1-diary-app",
+    "storage_bucket": "b-side-g1-diary-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554605423311:android:46dc0384a99d62538de5ba",
+        "android_client_info": {
+          "package_name": "com.gsb.dive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "554605423311-0dia0mprr1r4tuv7nav36hrj7b4f4dvd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdoRGhc9igBxW7k7qdLLUhGa6oRbIIIAk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "554605423311-0dia0mprr1r4tuv7nav36hrj7b4f4dvd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "554605423311-d4q8gs31ugjjjbmog9eaeaviju9om3e0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gsb.dive",
+                "app_store_id": "123456789"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
