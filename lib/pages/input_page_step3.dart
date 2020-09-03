@@ -234,7 +234,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                       score: container.score,
                       dailyId: await DailyService()
                           .getDailyByTimestamp(
-                              DateTime.now().millisecondsSinceEpoch)
+                              DateTime.now().millisecondsSinceEpoch, true)
                           .then((value) => value.id),
                       emotions: container.emotions,
                       tags: container.tags,

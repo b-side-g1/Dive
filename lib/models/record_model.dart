@@ -66,4 +66,10 @@ class Record {
 //    "tags": tags,
 //    "emotions": emotions,
   };
+
+  bool isCreatedSameDay() {
+    DateTime datetime = DateTime.parse(daily.endAt);
+    datetime = datetime.hour <= 6 ? datetime.subtract(Duration(days: 1)) : datetime;
+    return DateTime.parse(createdAt).day ==  datetime.day;
+  }
 }
