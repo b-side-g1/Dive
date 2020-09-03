@@ -398,7 +398,7 @@ class _DailyPageState extends State<DailyPage> {
                       "${dateTime.month}/${dateTime.day}"
                     );
                   },
-                childCount: _secondRecordList.isNotEmpty || existDifferentDayRecord ? 1 : 0
+                childCount: (_secondRecordList.isNotEmpty || existDifferentDayRecord) && _firstRecordList.length != 0 ? 1 : 0
               ),
             ),
             SliverList(
