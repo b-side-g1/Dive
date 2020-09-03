@@ -78,12 +78,12 @@ class _InputPageStep1State extends State<InputPageStep1> {
     var timePicker = [];
     BasicService _basicService = BasicService();
     var basicTime= await _basicService.selectBasicData();
-//    var start = int.parse(basicTime.today_startAt);
-    var start = 7;
+    var start = int.parse(basicTime.today_startAt);
+//    var start = 23;
     if(start < now.hour){
       for(var i = start ; i<=now.hour;i++)
       {
-        timePicker.add(jsonDecode('{"${i}": ${minutes}}'));
+        timePicker.add(jsonDecode('{"${i}": ${ i == now.hour ? minutes.sublist(0,  now.minute)  : minutes}}'));
 
       }
     }else if(start > now.hour){
@@ -106,18 +106,17 @@ class _InputPageStep1State extends State<InputPageStep1> {
 
       for(var i = 0 ; i<=now.hour;i++)
       {
-        timePicker.add(jsonDecode('{"${i}": ${minutes}}'));
+        timePicker.add(jsonDecode('{"${i}": ${ i == now.hour ? minutes.sublist(0,  now.minute)  : minutes}}'));
 
       }
     }else{
-      timePicker.add(jsonDecode('{"${start}": ${minutes}}'));
+      timePicker.add(jsonDecode('{"${start}": ${ minutes.sublist(0,  now.minute) }}'));
 
     }
 
     var selectedTimeInx = null;
     for(var i in timePicker){
       var inx = i.keys.toList()[0];
-      print("i__ ${int.parse(inx).runtimeType ==now.hour.runtimeType} ${'${inx}' =='${now.hour}' }");
       // 왜 스트링으로 체크해야만 조건 통과하는건지 모르겠음...
       if('${inx}' == '${now.hour}') {
         selectedTimeInx = timePicker.indexOf(i);
