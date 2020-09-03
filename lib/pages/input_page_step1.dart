@@ -4,6 +4,7 @@ import 'package:flutter_picker/flutter_picker.dart';
 import 'package:flutterapp/inherited/state_container.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutterapp/services/basic/basic_service.dart';
 
 import 'package:intl/intl.dart';
 
@@ -37,50 +38,105 @@ class _InputPageStep1State extends State<InputPageStep1> {
   @override
   void dispose() {
     this._scrollController.dispose();
-
     super.dispose();
   }
 
-  showTimePicker(BuildContext context) {
+  showTimePicker(BuildContext context) async{
+//    var now = new DateTime.now();
+//    var hour = now.hour > 12 ? now.hour - 12 : now.hour;
+//    var min = now.minute;
+//    var mid = now.hour >= 12 ? "오후" : "오전";
+//
+//    List timeArr = [];
+//    List minArr = [for (var i = 1; i < 60; i += 1) i];
+//
+//    var morning = [];
+//    var night = [];
+//
+//    var isAm = mid == "오전";
+//
+//    for (var i = 1; i <= 12; i += 1) {
+//      timeArr.add(jsonDecode(
+//          '{"${i}": ${i == hour ? minArr.sublist(0, min) : minArr}}'));
+//    }
+
+//
+//    if (isAm) {
+//      morning = timeArr.sublist(0, hour);
+//      night = timeArr;
+//    } else {
+//      morning = timeArr;
+//      night = timeArr.sublist(0, hour);
+//    }
+//    var timePicker = [
+//      {'오전': morning, '오후': night}
+//    ];
+
     var now = new DateTime.now();
-    var hour = now.hour > 12 ? now.hour - 12 : now.hour;
-    var min = now.minute;
-    var mid = now.hour >= 12 ? "오후" : "오전";
+    var hours = List<int>.generate(24, (int index) => index);
+    var minutes = List<int>.generate(60, (int index) => index);
+    var timePicker = [];
+    BasicService _basicService = BasicService();
+    var basicTime= await _basicService.selectBasicData();
+//    var start = int.parse(basicTime.today_startAt);
+    var start = 7;
+    if(start < now.hour){
+      for(var i = start ; i<=now.hour;i++)
+      {
+        timePicker.add(jsonDecode('{"${i}": ${minutes}}'));
 
-    List timeArr = [];
-    List minArr = [for (var i = 1; i < 60; i += 1) i];
+      }
+    }else if(start > now.hour){
+      //이렇게하면 어제인지 오늘인지 구분안감
+//     for(var i = 0 ; i<=23;i++)
+//      {
+//        if(i>now.hour && i<start){
+//          continue;
+//        }
+//        timePicker.add(jsonDecode('{"${i}": ${minutes}}'));
+//
+//      }
 
-    var morning = [];
-    var night = [];
 
-    var isAm = mid == "오전";
+      for(var i = start ; i<=23;i++)
+      {
+        timePicker.add(jsonDecode('{"${i}": ${minutes}}'));
 
-    for (var i = 1; i <= 12; i += 1) {
-      timeArr.add(jsonDecode(
-          '{"${i}": ${i == hour ? minArr.sublist(0, min) : minArr}}'));
+      }
+
+      for(var i = 0 ; i<=now.hour;i++)
+      {
+        timePicker.add(jsonDecode('{"${i}": ${minutes}}'));
+
+      }
+    }else{
+      timePicker.add(jsonDecode('{"${start}": ${minutes}}'));
+
     }
 
-    if (isAm) {
-      morning = timeArr.sublist(0, hour);
-      night = timeArr;
-    } else {
-      morning = timeArr;
-      night = timeArr.sublist(0, hour);
+    var selectedTimeInx = null;
+    for(var i in timePicker){
+      var inx = i.keys.toList()[0];
+      print("i__ ${int.parse(inx).runtimeType ==now.hour.runtimeType} ${'${inx}' =='${now.hour}' }");
+      // 왜 스트링으로 체크해야만 조건 통과하는건지 모르겠음...
+      if('${inx}' == '${now.hour}') {
+        selectedTimeInx = timePicker.indexOf(i);
+ break;
+}
+
     }
-    var timePicker = [
-      {'오전': morning, '오후': night}
-    ];
 
     new Picker(
         adapter: PickerDataAdapter<String>(pickerdata: timePicker),
         changeToFirst: true,
         hideHeader: false,
-        selecteds: [isAm ? 0 : 1, hour - 1, min - 1],
+        selecteds: [selectedTimeInx, now.minute],
         onConfirm: (Picker picker, List value) {
+          var selectedHour = int.parse(timePicker[value[0]].keys.toList()[0]);
           setState(() {
-            mid = value[0] == 0 ? "오전" : "오후";
-            hour = value[1];
-            min = value[2];
+            mid = selectedHour < 12 ? "오전" : "오후";
+            hour = selectedHour;
+            min = value[1];
             curDate = "${mid} ${hour}시 ${min}분 ";
             score = null;
           });
