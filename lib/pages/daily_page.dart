@@ -96,6 +96,18 @@ class _DailyPageState extends State<DailyPage> {
     });
   }
 
+  void setScore() {
+    var records = [..._firstRecordList, ..._secondRecordList];
+    var resDailyScore = records.isEmpty
+        ? 0
+        : (records.map((c) => c.score).reduce((a, b) => a + b) / records.length)
+        .round();
+    var resIsEmpty = records.length == 0;
+    setState(() {
+      _dailyScore = resDailyScore;
+      isEmpty = resIsEmpty;
+    });
+  }
   int getDifferentDayIndex(List<Record> records) {
     for (int i = 0; i < records.length - 1; i++) {
       if ((records[i].isCreatedSameDay() &&
@@ -355,6 +367,7 @@ class _DailyPageState extends State<DailyPage> {
                         _firstRecordList.removeAt(index);
                       });
                       _recordService.deleteRecord(record.id);
+                      setScore();
                       Scaffold.of(context).showSnackBar(
                           SnackBar(content: Text("기록이 삭제 됐습니다.")));
                     },
@@ -412,6 +425,7 @@ class _DailyPageState extends State<DailyPage> {
                         _secondRecordList.removeAt(index);
                       });
                       _recordService.deleteRecord(record.id);
+                      setScore();
                       Scaffold.of(context).showSnackBar(
                           SnackBar(content: Text("기록이 삭제 됐습니다.")));
                     },
