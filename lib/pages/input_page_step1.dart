@@ -20,11 +20,12 @@ class _InputPageStep1State extends State<InputPageStep1> {
   String mid, curDate;
 
   var _scrollController;
-
   @protected
   @mustCallSuper
   void initState() {
     super.initState();
+print("time == ${new DateTime.fromMillisecondsSinceEpoch(1598533200000)}");
+
     setState(() {
       //TODO : step1 data
       var now = new DateTime.now();
@@ -42,36 +43,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
   }
 
   showTimePicker(BuildContext context) async{
-//    var now = new DateTime.now();
-//    var hour = now.hour > 12 ? now.hour - 12 : now.hour;
-//    var min = now.minute;
-//    var mid = now.hour >= 12 ? "오후" : "오전";
-//
-//    List timeArr = [];
-//    List minArr = [for (var i = 1; i < 60; i += 1) i];
-//
-//    var morning = [];
-//    var night = [];
-//
-//    var isAm = mid == "오전";
-//
-//    for (var i = 1; i <= 12; i += 1) {
-//      timeArr.add(jsonDecode(
-//          '{"${i}": ${i == hour ? minArr.sublist(0, min) : minArr}}'));
-//    }
-
-//
-//    if (isAm) {
-//      morning = timeArr.sublist(0, hour);
-//      night = timeArr;
-//    } else {
-//      morning = timeArr;
-//      night = timeArr.sublist(0, hour);
-//    }
-//    var timePicker = [
-//      {'오전': morning, '오후': night}
-//    ];
-
     var now = new DateTime.now();
     var hours = List<int>.generate(24, (int index) => index);
     var minutes = List<int>.generate(60, (int index) => index);
@@ -79,6 +50,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
     BasicService _basicService = BasicService();
     var basicTime= await _basicService.selectBasicData();
     var start = int.parse(basicTime.today_startAt);
+    final container = StateContainer.of(context);
 //    var start = 23;
     if(start < now.hour){
       for(var i = start ; i<=now.hour;i++)
@@ -87,7 +59,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
 
       }
     }else if(start > now.hour){
-      //이렇게하면 어제인지 오늘인지 구분안감
+//    이렇게하면 어제인지 오늘인지 구분안감
 //     for(var i = 0 ; i<=23;i++)
 //      {
 //        if(i>now.hour && i<start){
@@ -139,6 +111,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
             curDate = "${mid} ${hour}시 ${min}분 ";
             score = null;
           });
+          container.updateTime(new DateTime(now.year, now.month, now.day, hour,min).toString());
         }).showModal(context);
   }
 
@@ -214,7 +187,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
                       diameterRatio: 1.5,
                       physics: FixedExtentScrollPhysics(),
                       onSelectedItemChanged: (i) {
-                        print('${scoreList[i]}___changed value');
+//                        print('${scoreList[i]}___changed value');
                         setState(() {
                           score = scoreList[i];
                           container.updateScore(score);

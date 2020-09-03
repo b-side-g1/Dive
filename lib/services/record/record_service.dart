@@ -13,6 +13,7 @@ class RecordService {
   DailyService _dailyService = DailyService();
 
   insertRecord(Record record) async {
+    print("record == ${record}");
     final db = await DBHelper().database;
     var res = await db.insert(Record.tableName,record.toTableJson());
     return res;
