@@ -285,6 +285,28 @@ class _DailyPageState extends State<DailyPage> {
     );
   }
 
+  Widget _dividerWidget(String dateStr) {
+
+    return Row(
+      children: <Widget>[Expanded(
+        child: new Container(
+            margin: const EdgeInsets.only(left: 10.0, right: 20.0),
+            child: Divider(
+              color: Colors.black,
+              height: 36,
+            )),
+      ),
+      Text(dateStr),
+      Expanded(
+        child: new Container(
+            margin: const EdgeInsets.only(left: 20.0, right: 10.0),
+            child: Divider(
+              color: Colors.black,
+              height: 36,
+            )),
+      ),]
+    );
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -371,10 +393,9 @@ class _DailyPageState extends State<DailyPage> {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    return Divider(
-                      height: 10,
-                      thickness: 10,
-                      color: Colors.black,
+                    DateTime dateTime = DateTime.parse(_firstRecordList[0].createdAt);
+                    return _dividerWidget(
+                      "${dateTime.month}/${dateTime.day}"
                     );
                   },
                 childCount: _secondRecordList.isNotEmpty || existDifferentDayRecord ? 1 : 0
@@ -390,7 +411,7 @@ class _DailyPageState extends State<DailyPage> {
                       setState(() {
                         _secondRecordList.removeAt(index);
                       });
-//                      _recordService.deleteRecord(record.id);
+                      _recordService.deleteRecord(record.id);
                       Scaffold.of(context).showSnackBar(
                           SnackBar(content: Text("기록이 삭제 됐습니다.")));
                     },
@@ -424,6 +445,17 @@ class _DailyPageState extends State<DailyPage> {
                 },
                 childCount:
                 _secondRecordList == null ? 0 : _secondRecordList.length,
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                    DateTime dateTime = DateTime.parse(_secondRecordList[0].createdAt);
+                    return _dividerWidget(
+                        "${dateTime.month}/${dateTime.day}"
+                    );
+                  },
+                  childCount: _secondRecordList.isNotEmpty && !_secondRecordList[0].isCreatedSameDay() ? 1 : 0
               ),
             ),
           ],
