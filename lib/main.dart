@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/splash/splash_page.dart';
-import 'package:flutterapp/onboard/onboard_page.dart';
-import 'package:flutterapp/pages/input_page.dart';
 import 'package:flutterapp/services/basic/basic_service.dart';
+import 'package:flutterapp/services/common/push_notification_service.dart';
+import 'package:flutterapp/splash/splash_page.dart';
 
 bool initScreen;
 
@@ -11,6 +10,9 @@ void main() async {
 
   BasicService basicService = BasicService();
   initScreen = await basicService.isSetTodayEndAt();
+
+  PushNotificationService pushNotificationService = PushNotificationService();
+  await pushNotificationService.initialize();
 
   runApp(MyApp());
 }

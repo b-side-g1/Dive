@@ -32,7 +32,7 @@ class DailyService {
     return res;
   }
 
-  Future<Daily> getDailyByTimestamp(int timestamp) async {
+  Future<Daily> getDailyByTimestamp(int timestamp, bool create) async {
     final db = await DBHelper().database;
     final List<Map<String, dynamic>> immutableMaps = await db.query(
         Daily.tableName,
@@ -44,7 +44,7 @@ class DailyService {
       daily = immutableMaps.map((e) {
         return Daily.fromJson(e);
       }).toList()[0];
-    } else {
+    } else if(create){
       daily = await _insertDailyByTimestamp(timestamp);
     }
 
