@@ -118,8 +118,7 @@ print("time == ${new DateTime.fromMillisecondsSinceEpoch(1598533200000)}");
   renderTimeSelect() {
     final width = MediaQuery.of(context).size.width;
     final container = StateContainer.of(context);
-    String title =
-        container.record != null ? "당신의 기분을 바꿔주세요" : "당신의 기분을 알려주세요.";
+    String title = "당신의 기분을 알려주세요.";
 
     return GestureDetector(
       onTap: () {

@@ -30,6 +30,7 @@ class _EmotionTagState extends State<EmotionTag> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: widget.onTap,
+        onVerticalDragStart:(detail){ widget.onTap(); },
         child: Container(
           height: widget.width,
           width: widget.height,

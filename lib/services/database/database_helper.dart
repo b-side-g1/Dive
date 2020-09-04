@@ -31,7 +31,7 @@ class DBHelper {
     var ddlList = [];
 
     var recordTable = Record.tableName;
-    var recordDDL = "CREATE TABLE $recordTable (id TEXT PRIMARY KEY, score INTEGER, description TEXT, dailyId TEXT, createdAt TEXT, updatedAt TEXT)";
+    var recordDDL = "CREATE TABLE $recordTable (id TEXT PRIMARY KEY, score INTEGER, description TEXT, dailyId TEXT, createdAt TEXT, updatedAt TEXT, createdTimestamp INTEGER)";
     ddlList.add(recordDDL);
 
     var dailyTable = Daily.tableName;
@@ -69,11 +69,13 @@ class DBHelper {
         await db.rawInsert(
             'INSERT INTO basic(id,status,is_push,uuid) VALUES("1","FST","0","0123456789")'
         );
+        String nowDate = DateTime.now().toString();
+
         TagNames.forEach((tag) async {
           String uuid = CommonService.generateUUID();
           await db.rawInsert(
-              'INSERT INTO tag(id,name) VALUES(?,?)',
-              [uuid,tag]
+              'INSERT INTO tag(id,name,createdAt) VALUES(?,?,?)',
+              [uuid,tag,nowDate]
           );
         });
 
