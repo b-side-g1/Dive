@@ -176,6 +176,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
           },
           controller: _textEditingController,
           keyboardType: TextInputType.multiline,
+          textInputAction: TextInputAction.done,
           minLines: 1,
           maxLines: 5,
           cursorColor: CommonService.hexToColor("#34b7eb"),
