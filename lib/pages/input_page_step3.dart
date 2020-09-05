@@ -268,7 +268,8 @@ class _InputPageStep3State extends State<InputPageStep3> {
                   this._saveEmotions(container.emotions, recordParam.id),
                   this._saveTags(container.tags, recordParam.id)
                 ];
-                await Future.wait(futures);
+                await Future.wait(futures)
+                .then((value) => CommonService.showToast("감정 기록이 수정되었습니다."));
               }
 
               Navigator.pushReplacement(
