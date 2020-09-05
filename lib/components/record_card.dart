@@ -39,24 +39,15 @@ class RecordCard extends StatelessWidget {
                           children: <Widget>[
                             emotionWidget(),
                             tagWidget(),
-                            Expanded(
-                                child: Padding(
-                              padding: EdgeInsets.only(
-                                  top: this.record.emotions.isNotEmpty ||
-                                          this.record.tags.isNotEmpty
-                                      ? 13
-                                      : 0),
-                              child: Text(
-                                record.description,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontFamily: "NotoSansKR"),
-                              ),
-                            )),
+                            descriptionWidget(),
                             Padding(
-                                padding: EdgeInsets.only(top: (this.record.emotions.isNotEmpty ||
-                                    this.record.tags.isNotEmpty ) && this.record.description.isEmpty ? 0 : 25, right: 10),
+                                padding: EdgeInsets.only(
+                                    top: (this.record.emotions.isNotEmpty ||
+                                                this.record.tags.isNotEmpty) &&
+                                            this.record.description.isEmpty
+                                        ? 0
+                                        : 25,
+                                    right: 10),
                                 child: Align(
                                     alignment: Alignment.topRight,
                                     child: Text(
@@ -140,5 +131,24 @@ class RecordCard extends StatelessWidget {
                   fontFamily: "NotoSans",
                   fontWeight: FontWeight.w700),
             ))));
+  }
+
+  descriptionWidget() {
+    String description = this.record.description;
+    return (description == null || description.isEmpty)
+        ? Container()
+        : Expanded(
+            child: Padding(
+            padding: EdgeInsets.only(
+                top: this.record.emotions.isNotEmpty ||
+                        this.record.tags.isNotEmpty
+                    ? 13
+                    : 0),
+            child: Text(
+              record.description,
+              style: TextStyle(
+                  color: Colors.white, fontSize: 9, fontFamily: "NotoSansKR"),
+            ),
+          ));
   }
 }
