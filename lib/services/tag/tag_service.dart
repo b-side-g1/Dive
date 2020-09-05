@@ -22,7 +22,17 @@ class TagService {
   Future<List<Tag>> selectAllTags() async {
     final db = await DBHelper().database;
 
-    var res = await db.rawQuery("SELECT * FROM ${Tag.tableName} WHERE deletedAt is NULL");
+    var res =
+        await db.rawQuery(
+            '''
+            SELECT tag.id ,tag.name,tag.createdat,tag.deletedat
+    FROM tag
+    LEFT JOIN recordHasTag
+    ON recordHasTag.tagId = tag.id
+    WHERE deletedAt is NULL
+    GROUP BY tag.id
+        ORDER BY COUNT(recordHasTag.tagId) desc, tag.createdat ASC
+        ''');
 
     List<Tag> tags =
         res.isNotEmpty ? res.map((c) => Tag.fromJson(c)).toList() : [];
@@ -38,7 +48,7 @@ class TagService {
     return tag;
   }
 
-   Future<RecordHasTag>insertRecordHasTag(RecordHasTag recordHasTag) async {
+  Future<RecordHasTag> insertRecordHasTag(RecordHasTag recordHasTag) async {
     final db = await DBHelper().database;
 
     await db.insert(RecordHasTag.tableName, recordHasTag.toJson());
@@ -49,13 +59,15 @@ class TagService {
   Future<Tag> deleteTag(Tag tag) async {
     final db = await DBHelper().database;
     final nowDate = DateTime.now().toString();
-    await db.rawUpdate("UPDATE ${Tag.tableName} SET deletedAt = ? WHERE id = ?",[nowDate,tag.id]);
+    await db.rawUpdate("UPDATE ${Tag.tableName} SET deletedAt = ? WHERE id = ?",
+        [nowDate, tag.id]);
 
     return tag;
   }
 
   deleteRecordHasTagByRecordId(String recordId) async {
     final db = await DBHelper().database;
-    await db.delete(RecordHasTag.tableName, where: 'recordId = ?', whereArgs: [recordId]);
+    await db.delete(RecordHasTag.tableName,
+        where: 'recordId = ?', whereArgs: [recordId]);
   }
 }

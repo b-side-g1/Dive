@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutterapp/components/input/step3/edit_tag_dialog.dart';
 import 'package:flutterapp/components/input/step3/reason_tag_widget.dart';
@@ -26,6 +28,7 @@ class InputPageStep3 extends StatefulWidget {
 class _InputPageStep3State extends State<InputPageStep3> {
   TagProvider tagProvider;
   TextEditingController _textEditingController = TextEditingController();
+  ScrollController _scrollController = ScrollController();
   List<Tag> _tags;
   TagService _tagService = TagService();
   String description;
@@ -52,6 +55,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
   @override
   void dispose() {
     _textEditingController.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -131,7 +135,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
     final container = StateContainer.of(context);
 
     return Container(
-      height: height * 0.18,
+      height: height * 0.23,
       padding: EdgeInsets.only(left: 20, right: 20),
       alignment: Alignment.centerLeft,
       child: ReasonTagWidget(
@@ -144,7 +148,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
     final width = MediaQuery.of(context).size.width / 100;
 
     return Container(
-        padding: EdgeInsets.only(top: 50, left: 20, right: 20),
+        padding: EdgeInsets.only(top: 25, left: 20, right: 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -162,10 +166,18 @@ class _InputPageStep3State extends State<InputPageStep3> {
   Widget writeReasonField() {
     final width = MediaQuery.of(context).size.width;
     return Container(
-        padding: EdgeInsets.only(top: 13, left: 20, right: 20),
+        padding: EdgeInsets.only(top: 13, left: 20, right: 20,bottom: MediaQuery.of(context).viewInsets.bottom),
         child: TextFormField(
           textInputAction: TextInputAction.done,
+          onTap: () {
+            Timer(
+                Duration(milliseconds: 300),
+            () => _scrollController.jumpTo(_scrollController.position.maxScrollExtent));
+          },
           controller: _textEditingController,
+          keyboardType: TextInputType.multiline,
+          minLines: 1,
+          maxLines: 5,
           cursorColor: CommonService.hexToColor("#34b7eb"),
           style: TextStyle(color: Colors.white, fontSize: width * 0.04),
           decoration: new InputDecoration(
@@ -203,7 +215,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
     final container = StateContainer.of(context);
 
     return Container(
-      padding: EdgeInsets.only(left: 20, right: 20),
+      padding: EdgeInsets.only(left: 30, right: 30),
       child: ButtonTheme(
           minWidth: 316,
           height: 60,
@@ -223,7 +235,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                       score: container.score,
                       dailyId: await DailyService()
                           .getDailyByTimestamp(
-                              DateTime.now().millisecondsSinceEpoch)
+                              DateTime.now().millisecondsSinceEpoch, true)
                           .then((value) => value.id),
                       emotions: container.emotions,
                       tags: container.tags,
@@ -234,8 +246,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                   this._saveEmotions(container.emotions, id),
                   this._saveTags(container.tags, id)
                 ];
-                await Future.wait(futures).then(
-                    (value) => {CommonService.showToast("당신의 감정을 기록했습니다..")});
+                await Future.wait(futures);
               } else {
                 Record record = container.record;
                 Record recordParam = Record(
@@ -257,8 +268,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                   this._saveEmotions(container.emotions, recordParam.id),
                   this._saveTags(container.tags, recordParam.id)
                 ];
-                await Future.wait(futures).then(
-                        (value) => {CommonService.showToast("당신의 감정을 바꿨습니다..")});
+                await Future.wait(futures);
               }
 
               Navigator.pushReplacement(
@@ -282,24 +292,24 @@ class _InputPageStep3State extends State<InputPageStep3> {
     print('build input_page_step3');
 
     final height = MediaQuery.of(context).size.height;
-//    SingleChildScrollView
-    return Container(
-        child: SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          titleWidget(),
-          toolBarWidget(),
-          reasonTagList(),
-          writeReasonTitle(),
-          writeReasonField(),
-          SizedBox(
-            height: height * 0.1,
-          ),
-          recordButton(),
-        ],
-      ),
-    ));
+    return SingleChildScrollView(
+      controller: _scrollController,
+      child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              titleWidget(),
+              toolBarWidget(),
+              reasonTagList(),
+              writeReasonTitle(),
+              writeReasonField(),
+              SizedBox(
+                height: height * 0.1,
+              ),
+              recordButton(),
+            ],
+          )),
+    );
   }
 }

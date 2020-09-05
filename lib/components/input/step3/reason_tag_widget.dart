@@ -57,10 +57,9 @@ class _BuildReasonTagState extends State<ReasonTagWidget> {
         : SingleChildScrollView(
           child: Wrap(
               spacing: 8.0,
-              runSpacing: 4.0,
               children: List.generate(widget.tags.length, (index) {
                 return ButtonTheme(
-                    minWidth: width * 0.2,
+                    minWidth: width * 0.19,
                     height: 30,
                     child: FlatButton(
                       shape: RoundedRectangleBorder(

@@ -74,9 +74,11 @@ class _EditTagListState extends State<EditTagList> {
 
                                 if (value.isConfirm) {
                                   final nameParam = value.value.split(" ").join("");
+                                  final nowDate = DateTime.now().toString();
                                   Tag tagParam = Tag(
                                     id: CommonService.generateUUID(),
-                                    name: nameParam
+                                    name: nameParam,
+                                    createdAt: nowDate
                                   );
                                   final exist = this._tags.firstWhere((tag) => tag.name == tagParam.name, orElse: () => null);
                                   if(exist == null) {
