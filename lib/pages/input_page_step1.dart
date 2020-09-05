@@ -44,32 +44,18 @@ print("time == ${new DateTime.fromMillisecondsSinceEpoch(1598533200000)}");
 
   showTimePicker(BuildContext context) async{
     var now = new DateTime.now();
-    var hours = List<int>.generate(24, (int index) => index);
     var minutes = List<int>.generate(60, (int index) => index);
     var timePicker = [];
     BasicService _basicService = BasicService();
     var basicTime= await _basicService.selectBasicData();
     var start = int.parse(basicTime.today_startAt);
     final container = StateContainer.of(context);
-//    var start = 23;
     if(start < now.hour){
       for(var i = start ; i<=now.hour;i++)
       {
         timePicker.add(jsonDecode('{"${i}": ${ i == now.hour ? minutes.sublist(0,  now.minute)  : minutes}}'));
-
       }
-    }else if(start > now.hour){
-//    이렇게하면 어제인지 오늘인지 구분안감
-//     for(var i = 0 ; i<=23;i++)
-//      {
-//        if(i>now.hour && i<start){
-//          continue;
-//        }
-//        timePicker.add(jsonDecode('{"${i}": ${minutes}}'));
-//
-//      }
-
-
+    } else if(start > now.hour) {
       for(var i = start ; i<=23;i++)
       {
         timePicker.add(jsonDecode('{"${i}": ${minutes}}'));
@@ -83,18 +69,17 @@ print("time == ${new DateTime.fromMillisecondsSinceEpoch(1598533200000)}");
       }
     }else{
       timePicker.add(jsonDecode('{"${start}": ${ minutes.sublist(0,  now.minute) }}'));
-
     }
 
     var selectedTimeInx = null;
-    for(var i in timePicker){
+
+    for(var i in timePicker) {
       var inx = i.keys.toList()[0];
       // 왜 스트링으로 체크해야만 조건 통과하는건지 모르겠음...
-      if('${inx}' == '${now.hour}') {
+      if ('${inx}' == '${now.hour}') {
         selectedTimeInx = timePicker.indexOf(i);
- break;
-}
-
+        break;
+      }
     }
 
     new Picker(
@@ -111,7 +96,8 @@ print("time == ${new DateTime.fromMillisecondsSinceEpoch(1598533200000)}");
             curDate = "${mid} ${hour}시 ${min}분 ";
             score = null;
           });
-          container.updateTime(new DateTime(now.year, now.month, now.day, hour,min).toString());
+          DateTime selectedDateTime = new DateTime(now.year, now.month, now.day, hour, min);
+          container.updateTime(selectedDateTime.isAfter(now) ? selectedDateTime.subtract(Duration(days: 1)).toString(): selectedDateTime.toString());
         }).showModal(context);
   }
 
