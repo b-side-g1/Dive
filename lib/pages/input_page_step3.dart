@@ -168,6 +168,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
     return Container(
         padding: EdgeInsets.only(top: 13, left: 20, right: 20,bottom: MediaQuery.of(context).viewInsets.bottom),
         child: TextFormField(
+          textInputAction: TextInputAction.done,
           onTap: () {
             Timer(
                 Duration(milliseconds: 300),
