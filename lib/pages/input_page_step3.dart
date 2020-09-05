@@ -192,7 +192,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
   }
 
   _saveEmotions(List<Emotion> emotions, String recordId) async {
-    print('====Called save emotions====');
+//    print('====Called save emotions====');
     return Future.wait(emotions.map((emotion) async {
       return EmotionService().insertRecordHasEmotion(RecordHasEmotion(
           recordId: recordId,
@@ -202,7 +202,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
   }
 
   _saveTags(List<Tag> tags, String recordId) async {
-    print('====Called save tags====');
+//    print('====Called save tags====');
     return Future.wait(tags.map((tag) async {
       return TagService().insertRecordHasTag(RecordHasTag(
           recordId: recordId,
@@ -239,7 +239,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                           .then((value) => value.id),
                       emotions: container.emotions,
                       tags: container.tags,
-                      createdAt: DateTime.now().toString(),
+                      createdAt: container.selectedTime,
                       createdTimestamp: DateTime.now().millisecondsSinceEpoch,
                       updatedAt: DateTime.now().toString(),
                       description: _textEditingController.text)),
@@ -255,7 +255,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                     dailyId: record.dailyId,
                     emotions: container.emotions,
                     tags: container.tags,
-                    createdAt: record.createdAt,
+                    createdAt: container.selectedTime,
                     createdTimestamp: record.createdTimestamp,
                     updatedAt: DateTime.now().toString(),
                     description: _textEditingController.text);

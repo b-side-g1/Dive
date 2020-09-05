@@ -49,7 +49,7 @@ class _InputPageState extends State<InputPage> {
   }
 
   void handlerPageView(int index) {
-    debugPrint("[input_page.dart] #handlerPageView index -> ${index}");
+//    debugPrint("[input_page.dart] #handlerPageView index -> ${index}");
     step = index;
     _controller.animateToPage(index,
         curve: Curves.easeIn, duration: Duration(milliseconds: 700));
