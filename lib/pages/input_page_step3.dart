@@ -19,7 +19,10 @@ import 'package:flutterapp/services/tag/tag_service.dart';
 
 class InputPageStep3 extends StatefulWidget {
   String description;
-  InputPageStep3({Key key, String description}) : description = description ?? "", super(key: key);
+
+  InputPageStep3({Key key, String description})
+      : description = description ?? "",
+        super(key: key);
 
   @override
   _InputPageStep3State createState() => _InputPageStep3State();
@@ -49,7 +52,6 @@ class _InputPageStep3State extends State<InputPageStep3> {
       });
     });
     _textEditingController.text = widget.description;
-
   }
 
   @override
@@ -63,80 +65,75 @@ class _InputPageStep3State extends State<InputPageStep3> {
     final width = MediaQuery.of(context).size.width / 100;
 
     return Container(
-        padding: EdgeInsets.only(top: 110, left: 70, right: 70),
         child: Center(
             child: Text(
-          "그렇게 느끼는 이유는...",
-          style: TextStyle(
-              fontSize: width * 6.3,
-              fontWeight: FontWeight.w700,
-              color: Colors.white),
-        )));
+      "그렇게 느끼는 이유는...",
+      style: TextStyle(
+          fontSize: width * 6.3,
+          fontWeight: FontWeight.w700,
+          color: Colors.white),
+    )));
   }
 
   Widget toolBarWidget() {
     final width = MediaQuery.of(context).size.width / 100;
 
     return Container(
-        padding: EdgeInsets.only(top: 20, left: 20, right: 20),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(
-              "이유태그",
-              style: TextStyle(
-                  fontSize: width * 5.5,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white),
-            ),
-            FlatButton(
-              padding: EdgeInsets.all(0),
-              onPressed: () async {
-                createEditTagDialog(context).then((_) {
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text(
+          "이유태그",
+          style: TextStyle(
+              fontSize: width * 5.5,
+              fontWeight: FontWeight.w700,
+              color: Colors.white),
+        ),
+        FlatButton(
+          padding: EdgeInsets.all(0),
+          onPressed: () async {
+            createEditTagDialog(context).then((_) {
+              setState(() {
+                _tagService.selectAllTags().then((tags) {
                   setState(() {
-                    _tagService.selectAllTags().then((tags) {
-                      setState(() {
-                        this._tags = tags;
-                      });
-                    });
+                    this._tags = tags;
                   });
                 });
-              },
-              child: Row(
-                children: <Widget>[
-                  Icon(
-                    Icons.edit,
-                    color: Colors.grey,
-                    size: width * 5,
-                  ),
-                  SizedBox(
-                    width: 3,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: 15),
-                    child: Text(
-                      "태그편집",
-                      style: TextStyle(
-                          fontSize: width * 4.5,
-                          fontWeight: FontWeight.w400,
-                          color: Colors.grey),
-                    ),
-                  ),
-                ],
+              });
+            });
+          },
+          child: Row(
+            children: <Widget>[
+              Icon(
+                Icons.edit,
+                color: Colors.grey,
+                size: width * 5,
               ),
-            )
-          ],
-        ));
+              SizedBox(
+                width: 3,
+              ),
+              Padding(
+                padding: EdgeInsets.only(right: 15),
+                child: Text(
+                  "태그편집",
+                  style: TextStyle(
+                      fontSize: width * 4.5,
+                      fontWeight: FontWeight.w400,
+                      color: Colors.grey),
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    ));
   }
 
   Widget reasonTagList() {
     final height = MediaQuery.of(context).size.height;
 
-    final container = StateContainer.of(context);
-
     return Container(
       height: height * 0.23,
-      padding: EdgeInsets.only(left: 20, right: 20),
       alignment: Alignment.centerLeft,
       child: ReasonTagWidget(
         tags: this._tags,
@@ -148,31 +145,32 @@ class _InputPageStep3State extends State<InputPageStep3> {
     final width = MediaQuery.of(context).size.width / 100;
 
     return Container(
-        padding: EdgeInsets.only(top: 25, left: 20, right: 20),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              "이유적기",
-              style: TextStyle(
-                  fontSize: width * 5.5,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white),
-            ),
-          ],
-        ));
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          "이유적기",
+          style: TextStyle(
+              fontSize: width * 5.5,
+              fontWeight: FontWeight.w700,
+              color: Colors.white),
+        ),
+      ],
+    ));
   }
 
   Widget writeReasonField() {
     final width = MediaQuery.of(context).size.width;
     return Container(
-        padding: EdgeInsets.only(top: 13, left: 20, right: 20,bottom: MediaQuery.of(context).viewInsets.bottom),
+        padding: EdgeInsets.only(
+            top: 13, bottom: MediaQuery.of(context).viewInsets.bottom),
         child: TextFormField(
           textInputAction: TextInputAction.done,
           onTap: () {
             Timer(
                 Duration(milliseconds: 300),
-            () => _scrollController.jumpTo(_scrollController.position.maxScrollExtent));
+                () => _scrollController
+                    .jumpTo(_scrollController.position.maxScrollExtent));
           },
           controller: _textEditingController,
           keyboardType: TextInputType.multiline,
@@ -215,7 +213,6 @@ class _InputPageStep3State extends State<InputPageStep3> {
     final container = StateContainer.of(context);
 
     return Container(
-      padding: EdgeInsets.only(left: 30, right: 30),
       child: ButtonTheme(
           minWidth: 316,
           height: 60,
@@ -227,7 +224,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
             textColor: Colors.white,
             padding: EdgeInsets.all(8.0),
             onPressed: () async {
-              if(container.record == null) {
+              if (container.record == null) {
                 String id = CommonService.generateUUID();
                 Iterable<Future<dynamic>> futures = [
                   RecordService().insertRecord(Record(
@@ -264,12 +261,13 @@ class _InputPageStep3State extends State<InputPageStep3> {
                   RecordService().deleteRecord(recordParam.id),
                   RecordService().insertRecord(recordParam),
                   TagService().deleteRecordHasTagByRecordId(recordParam.id),
-                  EmotionService().deleteRecordHasEmotionByRecordId(recordParam.id),
+                  EmotionService()
+                      .deleteRecordHasEmotionByRecordId(recordParam.id),
                   this._saveEmotions(container.emotions, recordParam.id),
                   this._saveTags(container.tags, recordParam.id)
                 ];
-                await Future.wait(futures)
-                .then((value) => CommonService.showToast("감정 기록이 수정되었습니다."));
+                await Future.wait(futures).then(
+                    (value) => CommonService.showToast("감정 기록이 수정되었습니다."));
               }
 
               Navigator.pushReplacement(
@@ -281,7 +279,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
             child: Text(
               "기록하기",
               style: TextStyle(
-                fontSize: 18.0,
+                fontSize: 22.0,
               ),
             ),
           )),
@@ -296,19 +294,21 @@ class _InputPageStep3State extends State<InputPageStep3> {
     return SingleChildScrollView(
       controller: _scrollController,
       child: Container(
+          height: height,
+          padding: EdgeInsets.only(top: 100,bottom: 20,left: 25,right: 25),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              titleWidget(),
-              toolBarWidget(),
-              reasonTagList(),
-              writeReasonTitle(),
-              writeReasonField(),
+              Expanded(child: titleWidget()),
               SizedBox(
-                height: height * 0.1,
+                height: 20,
               ),
-              recordButton(),
+              Expanded(child: toolBarWidget()),
+              Expanded(flex: 2, child: reasonTagList()),
+              Expanded(child: writeReasonTitle()),
+              Expanded(flex: 3, child: writeReasonField()),
+              Expanded(child: recordButton()),
             ],
           )),
     );
