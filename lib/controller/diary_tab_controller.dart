@@ -11,6 +11,10 @@ class DiaryTabController extends StatefulWidget {
 class _DiaryTabControllerState extends State<DiaryTabController> {
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: DailyPage(),
+    );
+    /* TODO: 통계 페이지 나오기 전까지 보류
     return DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -22,5 +26,6 @@ class _DiaryTabControllerState extends State<DiaryTabController> {
           ]),
           bottomNavigationBar: BottomBar(),
         ));
+     */
   }
 }
