@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutterapp/commons/static.dart';
-import 'package:flutterapp/inherited/state_container.dart';
-import 'package:flutterapp/models/emotion_model.dart';
-import 'package:flutterapp/services/common/common_service.dart';
+import 'package:Dive/commons/static.dart';
+import 'package:Dive/inherited/state_container.dart';
+import 'package:Dive/models/emotion_model.dart';
+import 'package:Dive/services/common/common_service.dart';
 
 import 'emotion_tag.dart';
 

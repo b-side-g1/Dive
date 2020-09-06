@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/onboard/onboard_page.dart';
-import 'package:flutterapp/controller/diary_tab_controller.dart';
+import 'package:Dive/onboard/onboard_page.dart';
+import 'package:Dive/controller/diary_tab_controller.dart';
 
 class SplashPage extends StatefulWidget {
   bool initScreen;

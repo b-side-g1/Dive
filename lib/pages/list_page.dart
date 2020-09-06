@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/pages/tag_setting_page.dart';
+import 'package:Dive/pages/tag_setting_page.dart';
 
 class ListPage extends StatefulWidget {
   ListPage({Key key, this.title}) : super(key: key);

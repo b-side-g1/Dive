@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/components/input/step3/add_tag_dialog.dart';
-import 'package:flutterapp/components/input/step3/model/tag_dialog_entity_model.dart';
-import 'package:flutterapp/models/tag_model.dart';
-import 'package:flutterapp/provider/input/tag_provider.dart';
-import 'package:flutterapp/services/common/common_service.dart';
-import 'package:flutterapp/services/tag/tag_service.dart';
+import 'package:Dive/components/input/step3/add_tag_dialog.dart';
+import 'package:Dive/components/input/step3/model/tag_dialog_entity_model.dart';
+import 'package:Dive/models/tag_model.dart';
+import 'package:Dive/provider/input/tag_provider.dart';
+import 'package:Dive/services/common/common_service.dart';
+import 'package:Dive/services/tag/tag_service.dart';
 import 'package:provider/provider.dart';
 
 class EditTagList extends StatefulWidget {

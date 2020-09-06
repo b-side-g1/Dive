@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/components/bottom_bar.dart';
-import 'package:flutterapp/pages/daily_page.dart';
-import 'package:flutterapp/pages/list_page.dart';
+import 'package:Dive/components/bottom_bar.dart';
+import 'package:Dive/pages/daily_page.dart';
+import 'package:Dive/pages/list_page.dart';
 
 class DiaryTabController extends StatefulWidget {
   @override

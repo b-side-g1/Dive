@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/animation.dart';
-import 'package:flutterapp/models/onboard/picker_time_model.dart';
-import 'package:flutterapp/onboard/animate/picker/time_picker_widget.dart';
-import 'package:flutterapp/onboard/animate/start_dive_widget.dart';
-import 'package:flutterapp/provider/time_picker_provider.dart';
+import 'package:Dive/models/onboard/picker_time_model.dart';
+import 'package:Dive/onboard/animate/picker/time_picker_widget.dart';
+import 'package:Dive/onboard/animate/start_dive_widget.dart';
+import 'package:Dive/provider/time_picker_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter/rendering.dart';

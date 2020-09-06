@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutterapp/models/basic_model.dart';
-import 'package:flutterapp/services/basic/basic_service.dart';
+import 'package:Dive/models/basic_model.dart';
+import 'package:Dive/services/basic/basic_service.dart';
 
 class PushNotificationService {
   final BasicService _basicService = BasicService();

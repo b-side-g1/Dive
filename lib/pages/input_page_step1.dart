@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
-import 'package:flutterapp/inherited/state_container.dart';
+import 'package:Dive/inherited/state_container.dart';
 import 'dart:async';
 import 'dart:convert';
-import 'package:flutterapp/services/basic/basic_service.dart';
+import 'package:Dive/services/basic/basic_service.dart';
 
 import 'package:intl/intl.dart';
 
