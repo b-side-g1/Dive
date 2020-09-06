@@ -21,6 +21,8 @@ class _InputPageStep1State extends State<InputPageStep1> {
 
   var _scrollController;
 
+  final DEFAULT_SCORE = 50;
+
   @protected
   @mustCallSuper
   void initState() {
@@ -28,6 +30,9 @@ class _InputPageStep1State extends State<InputPageStep1> {
     print("time == ${new DateTime.fromMillisecondsSinceEpoch(1598533200000)}");
 
     setState(() {
+
+      score = DEFAULT_SCORE;
+
       //TODO : step1 data
       var now = new DateTime.now();
       hour = now.hour > 12 ? now.hour - 12 : now.hour;
@@ -146,9 +151,9 @@ class _InputPageStep1State extends State<InputPageStep1> {
             ),
             Text(title,
                 style: TextStyle(
-                    fontSize: width * 0.07,
+                    fontSize: width * 0.058,
                     color: const Color(0xffffffff),
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w400,
                     fontFamily: "NotoSans"))
           ])),
     );
