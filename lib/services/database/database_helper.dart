@@ -5,7 +5,9 @@ import 'package:sqflite/sqflite.dart';
 
 class DBHelper {
   DBHelper._();
+
   static final DBHelper _db = DBHelper._();
+
   factory DBHelper() => _db;
   static Database _database;
 
@@ -18,10 +20,8 @@ class DBHelper {
 
   initDB() async {
 //    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    return openDatabase(
-        join(await getDatabasesPath(), 'diary_app_database.db'),
-        version: 1,
-        onCreate: (Database db, int version) async {
+    return openDatabase(join(await getDatabasesPath(), 'diary_app_database.db'),
+        version: 1, onCreate: (Database db, int version) async {
       Migration v1 = new V1Initialization();
       await db.transaction((txn) async {
         await v1.up(txn);
