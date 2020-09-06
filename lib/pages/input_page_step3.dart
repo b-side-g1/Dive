@@ -162,15 +162,15 @@ class _InputPageStep3State extends State<InputPageStep3> {
   Widget writeReasonField() {
     final width = MediaQuery.of(context).size.width;
     return Container(
-        padding: EdgeInsets.only(
-            top: 13, bottom: MediaQuery.of(context).viewInsets.bottom),
+
         child: TextFormField(
           textInputAction: TextInputAction.done,
+          onFieldSubmitted: (value) {},
           onTap: () {
-            Timer(
-                Duration(milliseconds: 300),
-                () => _scrollController
-                    .jumpTo(_scrollController.position.maxScrollExtent));
+//            Timer(
+//                Duration(milliseconds: 300),
+//                () => _scrollController
+//                    .jumpTo(_scrollController.position.maxScrollExtent));
           },
           controller: _textEditingController,
           keyboardType: TextInputType.multiline,
@@ -213,6 +213,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
     final container = StateContainer.of(context);
 
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10),
       child: ButtonTheme(
           minWidth: 316,
           height: 60,
@@ -291,26 +292,41 @@ class _InputPageStep3State extends State<InputPageStep3> {
     print('build input_page_step3');
 
     final height = MediaQuery.of(context).size.height;
-    return SingleChildScrollView(
-      controller: _scrollController,
-      child: Container(
-          height: height,
-          padding: EdgeInsets.only(top: 100,bottom: 20,left: 25,right: 25),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Expanded(child: titleWidget()),
-              SizedBox(
-                height: 20,
-              ),
-              Expanded(child: toolBarWidget()),
-              Expanded(flex: 2, child: reasonTagList()),
-              Expanded(child: writeReasonTitle()),
-              Expanded(flex: 3, child: writeReasonField()),
-              Expanded(child: recordButton()),
-            ],
-          )),
+    return Container(
+      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: SingleChildScrollView(
+        child: Container(
+            height: height,
+            padding: EdgeInsets.only(top: 100, bottom: 20, left: 25, right: 25),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Expanded(flex: 1, child: titleWidget()),
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      toolBarWidget(),
+                      reasonTagList()
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      writeReasonTitle(),
+                      writeReasonField()
+                    ],
+                  ),
+                ),
+                recordButton(),
+              ],
+            )),
+      ),
     );
   }
 }

@@ -32,7 +32,6 @@ class Splash extends State<SplashPage> {
   Widget build(BuildContext context) {
     AssetImage assetsImage = AssetImage('lib/src/image/splash/splash@3x.png');
     return Scaffold(
-        resizeToAvoidBottomInset : true,
         body: Container(
       decoration: BoxDecoration(
           image: DecorationImage(image: assetsImage, fit: BoxFit.cover)),
