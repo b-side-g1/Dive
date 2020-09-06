@@ -20,11 +20,12 @@ class _InputPageStep1State extends State<InputPageStep1> {
   String mid, curDate;
 
   var _scrollController;
+
   @protected
   @mustCallSuper
   void initState() {
     super.initState();
-print("time == ${new DateTime.fromMillisecondsSinceEpoch(1598533200000)}");
+    print("time == ${new DateTime.fromMillisecondsSinceEpoch(1598533200000)}");
 
     setState(() {
       //TODO : step1 data
@@ -42,38 +43,40 @@ print("time == ${new DateTime.fromMillisecondsSinceEpoch(1598533200000)}");
     super.dispose();
   }
 
-  showTimePicker(BuildContext context) async{
+  showTimePicker(BuildContext context) async {
     var now = new DateTime.now();
     var minutes = List<int>.generate(60, (int index) => index);
     var timePicker = [];
     BasicService _basicService = BasicService();
-    var basicTime= await _basicService.selectBasicData();
+    var basicTime = await _basicService.selectBasicData();
     var start = int.parse(basicTime.today_startAt);
     final container = StateContainer.of(context);
-    if(start < now.hour){
-      for(var i = start ; i<=now.hour;i++)
-      {
-        timePicker.add(jsonDecode('{"${i}": ${ i == now.hour ? minutes.sublist(0,  now.minute)  : minutes}}'));
+    if (start < now.hour) {
+      for (var i = start; i <= now.hour; i++) {
+        timePicker.add(jsonDecode(
+            '{"${i}": ${i == now.hour
+                ? minutes.sublist(0, now.minute)
+                : minutes}}'));
       }
-    } else if(start > now.hour) {
-      for(var i = start ; i<=23;i++)
-      {
+    } else if (start > now.hour) {
+      for (var i = start; i <= 23; i++) {
         timePicker.add(jsonDecode('{"${i}": ${minutes}}'));
-
       }
 
-      for(var i = 0 ; i<=now.hour;i++)
-      {
-        timePicker.add(jsonDecode('{"${i}": ${ i == now.hour ? minutes.sublist(0,  now.minute)  : minutes}}'));
-
+      for (var i = 0; i <= now.hour; i++) {
+        timePicker.add(jsonDecode(
+            '{"${i}": ${i == now.hour
+                ? minutes.sublist(0, now.minute)
+                : minutes}}'));
       }
-    }else{
-      timePicker.add(jsonDecode('{"${start}": ${ minutes.sublist(0,  now.minute) }}'));
+    } else {
+      timePicker
+          .add(jsonDecode('{"${start}": ${minutes.sublist(0, now.minute)}}'));
     }
 
     var selectedTimeInx = null;
 
-    for(var i in timePicker) {
+    for (var i in timePicker) {
       var inx = i.keys.toList()[0];
       // 왜 스트링으로 체크해야만 조건 통과하는건지 모르겠음...
       if ('${inx}' == '${now.hour}') {
@@ -96,13 +99,19 @@ print("time == ${new DateTime.fromMillisecondsSinceEpoch(1598533200000)}");
             curDate = "${mid} ${hour}시 ${min}분 ";
             score = null;
           });
-          DateTime selectedDateTime = new DateTime(now.year, now.month, now.day, hour, min);
-          container.updateTime(selectedDateTime.isAfter(now) ? selectedDateTime.subtract(Duration(days: 1)).toString(): selectedDateTime.toString());
+          DateTime selectedDateTime =
+          new DateTime(now.year, now.month, now.day, hour, min);
+          container.updateTime(selectedDateTime.isAfter(now)
+              ? selectedDateTime.subtract(Duration(days: 1)).toString()
+              : selectedDateTime.toString());
         }).showModal(context);
   }
 
   renderTimeSelect() {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
     final container = StateContainer.of(context);
     String title = "당신의 기분을 알려주세요.";
 
@@ -146,22 +155,25 @@ print("time == ${new DateTime.fromMillisecondsSinceEpoch(1598533200000)}");
   }
 
   renderScoreSelect(StateContainerState container) {
-    final width = MediaQuery.of(context).size.width;
+    final width = MediaQuery
+        .of(context)
+        .size
+        .width;
 
     List<int> scoreList = [for (var i = 0; i <= 100; i += 10) i];
 
     return Padding(
         padding: const EdgeInsets.only(top: 25),
         child:
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
           Container(
             width: width * 0.73,
             height: width * 0.73,
             decoration: BoxDecoration(
                 image: DecorationImage(
-              image: AssetImage('lib/src/image/daily/img_bubble.png'),
-              fit: BoxFit.cover,
-            )),
+                  image: AssetImage('lib/src/image/daily/img_bubble.png'),
+                  fit: BoxFit.cover,
+                )),
             child: Container(
               child: Center(
                 child: Container(
@@ -172,7 +184,6 @@ print("time == ${new DateTime.fromMillisecondsSinceEpoch(1598533200000)}");
                       diameterRatio: 1.5,
                       physics: FixedExtentScrollPhysics(),
                       onSelectedItemChanged: (i) {
-//                        print('${scoreList[i]}___changed value');
                         setState(() {
                           score = scoreList[i];
                           container.updateScore(score);
@@ -181,17 +192,20 @@ print("time == ${new DateTime.fromMillisecondsSinceEpoch(1598533200000)}");
                       childDelegate: ListWheelChildLoopingListDelegate(
                         children: [
                           for (var i in scoreList)
-                            Text(
-                              i.toString(),
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                color: Color(0xffffffff),
-                                fontSize: width * 0.11,
-                                fontWeight: FontWeight.w300,
-                                fontStyle: FontStyle.normal,
-                                letterSpacing: 0.28,
+                          Opacity(
+                              opacity: score == i ? 1 : 0.4,
+                              child: Text(
+                                i.toString(),
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  color: Color(0xffffffff),
+                                  fontSize: width * 0.11,
+                                  fontWeight: FontWeight.w300,
+                                  fontStyle: FontStyle.normal,
+                                  letterSpacing: 0.28,
+                                ),
                               ),
-                            )
+                          )
                         ],
                       ),
                     )),
@@ -210,10 +224,15 @@ print("time == ${new DateTime.fromMillisecondsSinceEpoch(1598533200000)}");
       DateTime createDate = DateTime.parse(container.record.createdAt);
       setState(() {
         this.curDate =
-            "${createDate.month}월 ${createDate.day}일 ${(createDate.hour >= 12 ? "오후 " : "오전 ") + dateFormat.format(createDate)}";
+        "${createDate.month}월 ${createDate.day}일 ${(createDate.hour >= 12
+            ? "오후 "
+            : "오전 ") + dateFormat.format(createDate)}";
       });
     }
-    final height = MediaQuery.of(context).size.height;
+    final height = MediaQuery
+        .of(context)
+        .size
+        .height;
 
     setState(() {
       _scrollController = FixedExtentScrollController(
@@ -231,7 +250,10 @@ print("time == ${new DateTime.fromMillisecondsSinceEpoch(1598533200000)}");
               Container(
                 margin: EdgeInsets.only(top: 45),
                 height: 35,
-                width: MediaQuery.of(context).size.width * 0.8,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width * 0.8,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('lib/src/image/daily/img_shadow.png'),
