@@ -1,4 +1,4 @@
-import 'package:flutterapp/models/record_model.dart';
+import 'package:Dive/models/record_model.dart';
 
 class Emotion {
   static final tableName = 'emotion';

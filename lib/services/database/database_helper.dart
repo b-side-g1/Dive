@@ -1,14 +1,14 @@
-import 'package:flutterapp/models/basic_model.dart';
-import 'package:flutterapp/models/daily_model.dart';
-import 'package:flutterapp/models/emotion_model.dart';
-import 'package:flutterapp/models/record_has_emotion.dart';
-import 'package:flutterapp/models/record_has_tag.dart';
-import 'package:flutterapp/models/record_model.dart';
-import 'package:flutterapp/models/tag_model.dart';
+import 'package:Dive/models/basic_model.dart';
+import 'package:Dive/models/daily_model.dart';
+import 'package:Dive/models/emotion_model.dart';
+import 'package:Dive/models/record_has_emotion.dart';
+import 'package:Dive/models/record_has_tag.dart';
+import 'package:Dive/models/record_model.dart';
+import 'package:Dive/models/tag_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:flutterapp/commons/static.dart';
-import 'package:flutterapp/services/common/common_service.dart';
+import 'package:Dive/commons/static.dart';
+import 'package:Dive/services/common/common_service.dart';
 class DBHelper {
   DBHelper._();
 

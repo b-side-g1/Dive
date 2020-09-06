@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/models/emotion_model.dart';
-import 'package:flutterapp/models/record_model.dart';
-import 'package:flutterapp/models/tag_model.dart';
+import 'package:Dive/models/emotion_model.dart';
+import 'package:Dive/models/record_model.dart';
+import 'package:Dive/models/tag_model.dart';
 
 class StateContainer extends StatefulWidget {
   final Widget child;

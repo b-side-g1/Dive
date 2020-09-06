@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutterapp/models/basic_model.dart';
-import 'package:flutterapp/services/database/database_helper.dart';
+import 'package:Dive/models/basic_model.dart';
+import 'package:Dive/services/database/database_helper.dart';
 
 class BasicService {
   Future<Basic> selectBasicData() async {

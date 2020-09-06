@@ -1,8 +1,8 @@
-import 'package:flutterapp/models/basic_model.dart';
-import 'package:flutterapp/models/daily_model.dart';
-import 'package:flutterapp/services/basic/basic_service.dart';
-import 'package:flutterapp/services/common/common_service.dart';
-import 'package:flutterapp/services/database/database_helper.dart';
+import 'package:Dive/models/basic_model.dart';
+import 'package:Dive/models/daily_model.dart';
+import 'package:Dive/services/basic/basic_service.dart';
+import 'package:Dive/services/common/common_service.dart';
+import 'package:Dive/services/database/database_helper.dart';
 import 'package:uuid/uuid.dart';
 import 'package:intl/intl.dart';
 

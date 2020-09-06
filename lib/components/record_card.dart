@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/components/forms/pie_chart.dart';
-import 'package:flutterapp/models/record_model.dart';
+import 'package:Dive/components/forms/pie_chart.dart';
+import 'package:Dive/models/record_model.dart';
 import 'package:intl/intl.dart';
 
 class RecordCard extends StatelessWidget {

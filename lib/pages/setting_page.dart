@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
-import 'package:flutterapp/models/basic_model.dart';
-import 'package:flutterapp/models/onboard/picker_time_model.dart';
-import 'package:flutterapp/onboard/animate/picker/picker_data.dart';
-import 'package:flutterapp/services/basic/basic_service.dart';
-import 'package:flutterapp/services/common/common_service.dart';
+import 'package:Dive/models/basic_model.dart';
+import 'package:Dive/models/onboard/picker_time_model.dart';
+import 'package:Dive/onboard/animate/picker/picker_data.dart';
+import 'package:Dive/services/basic/basic_service.dart';
+import 'package:Dive/services/common/common_service.dart';
 import 'package:package_info/package_info.dart';
 import 'dart:convert';
 

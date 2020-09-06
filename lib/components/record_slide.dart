@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/components/record_card.dart';
-import 'package:flutterapp/models/record_model.dart';
+import 'package:Dive/components/record_card.dart';
+import 'package:Dive/models/record_model.dart';
 
 class RecordSlide extends StatelessWidget {
   RecordSlide({this.recordList});

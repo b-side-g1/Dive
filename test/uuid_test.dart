@@ -1,9 +1,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutterapp/services/common/common_service.dart';
+import 'package:Dive/services/common/common_service.dart';
 import 'package:uuid/uuid.dart';
-import 'package:flutterapp/main.dart';
+import 'package:Dive/main.dart';
 
 void main() {
   test('uuid should be 32byte.', () {

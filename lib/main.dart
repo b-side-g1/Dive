@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/services/basic/basic_service.dart';
-import 'package:flutterapp/services/common/push_notification_service.dart';
-import 'package:flutterapp/splash/splash_page.dart';
+import 'package:Dive/services/basic/basic_service.dart';
+import 'package:Dive/services/common/push_notification_service.dart';
+import 'package:Dive/splash/splash_page.dart';
 
 bool initScreen;
 

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/components/emotion_tag_box.dart';
-import 'package:flutterapp/services/common/common_service.dart';
+import 'package:Dive/components/emotion_tag_box.dart';
+import 'package:Dive/services/common/common_service.dart';
 
 class InputPageStep2 extends StatefulWidget {
   List emotions;
