@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
-import 'package:flutterapp/models/basic_model.dart';
-import 'package:flutterapp/models/onboard/picker_time_model.dart';
-import 'package:flutterapp/services/basic/basic_service.dart';
+import 'package:Dive/models/basic_model.dart';
+import 'package:Dive/models/onboard/picker_time_model.dart';
+import 'package:Dive/services/basic/basic_service.dart';
 
 class TimePickerProvider {
   PickerTime pickerTime;

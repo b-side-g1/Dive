@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/components/tag_box.dart';
+import 'package:Dive/components/tag_box.dart';
 import 'package:random_string/random_string.dart';
 
-import 'package:flutterapp/components/forms/InputComponent.dart';
-import 'package:flutterapp/models/record_model.dart';
-import 'package:flutterapp/services/record/record_service.dart';
+import 'package:Dive/components/forms/InputComponent.dart';
+import 'package:Dive/models/record_model.dart';
+import 'package:Dive/services/record/record_service.dart';
 
 import '../time_picker.dart';
 

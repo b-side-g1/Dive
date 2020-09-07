@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/components/record_card.dart';
-import 'package:flutterapp/inherited/state_container.dart';
-import 'package:flutterapp/models/daily_model.dart';
-import 'package:flutterapp/models/record_model.dart';
-import 'package:flutterapp/pages/setting_page.dart';
-import 'package:flutterapp/services/daily/daily_service.dart';
-import 'package:flutterapp/services/record/record_service.dart';
+import 'package:Dive/components/record_card.dart';
+import 'package:Dive/inherited/state_container.dart';
+import 'package:Dive/models/daily_model.dart';
+import 'package:Dive/models/record_model.dart';
+import 'package:Dive/pages/setting_page.dart';
+import 'package:Dive/services/daily/daily_service.dart';
+import 'package:Dive/services/record/record_service.dart';
 import 'package:intl/intl.dart';
 
 import 'input_page.dart';

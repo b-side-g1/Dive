@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/models/emotion_model.dart';
-import 'package:flutterapp/models/record_model.dart';
-import 'package:flutterapp/models/tag_model.dart';
+import 'package:Dive/models/emotion_model.dart';
+import 'package:Dive/models/record_model.dart';
+import 'package:Dive/models/tag_model.dart';
 
 class StateContainer extends StatefulWidget {
   final Widget child;
@@ -10,6 +10,7 @@ class StateContainer extends StatefulWidget {
   final List<Tag> tags;
   final String description;
   final Record record;
+  final String selectedTime;
 
   StateContainer({
     @required this.child,
@@ -17,7 +18,8 @@ class StateContainer extends StatefulWidget {
     this.emotions,
     this.tags,
     this.description,
-    this.record
+    this.record,
+    this.selectedTime
   });
 
   static StateContainerState of(BuildContext context) {
@@ -36,6 +38,7 @@ class StateContainerState extends State<StateContainer> {
   List<Tag> tags = [];
   String description;
   Record record;
+  String selectedTime;
 
   @override
   void initState() {
@@ -47,6 +50,7 @@ class StateContainerState extends State<StateContainer> {
       tags = widget.tags ?? [];
       description = widget.description ?? "";
       record = widget.record ?? null;
+      selectedTime = DateTime.now().toString();
     });
   }
   void updateScore(score) {
@@ -54,7 +58,11 @@ class StateContainerState extends State<StateContainer> {
       this.score = score;
     });
   }
-
+  void updateTime(time) {
+    setState(() {
+      this.selectedTime = time;
+    });
+  }
   void updateEmotions(List<Emotion> emotions) {
     setState(() {
       this.emotions = emotions;

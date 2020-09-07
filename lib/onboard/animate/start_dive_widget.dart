@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
-import 'package:flutterapp/controller/diary_tab_controller.dart';
-import 'package:flutterapp/models/basic_model.dart';
-import 'package:flutterapp/models/onboard/picker_time_model.dart';
-import 'package:flutterapp/provider/time_picker_provider.dart';
-import 'package:flutterapp/services/basic/basic_service.dart';
-import 'package:flutterapp/services/common/common_service.dart';
+import 'package:Dive/controller/diary_tab_controller.dart';
+import 'package:Dive/models/basic_model.dart';
+import 'package:Dive/models/onboard/picker_time_model.dart';
+import 'package:Dive/provider/time_picker_provider.dart';
+import 'package:Dive/services/basic/basic_service.dart';
+import 'package:Dive/services/common/common_service.dart';
 import 'package:provider/provider.dart';
 
 class StartDiveWidget extends StatelessWidget {
