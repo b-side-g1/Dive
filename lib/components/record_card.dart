@@ -147,7 +147,7 @@ class RecordCard extends StatelessWidget {
             child: Text(
               record.description,
               style: TextStyle(
-                  color: Colors.white, fontSize: 9, fontFamily: "NotoSansKR"),
+                  color: Colors.white, fontSize: 15, fontFamily: "NotoSansKR"),
             ),
           ));
   }
