@@ -14,11 +14,9 @@ class DailyService {
     this.db = db ?? DBHelper().database;
   }
 
-  selectDailyById(String dailyId) async {
-    var res =
-        await (await db).query(Daily.tableName, where: 'id = ?', whereArgs: [dailyId]);
-
-    return res;
+  Future<List<Map<String, dynamic>>> selectDailyById(String dailyId) async {
+    return (await db)
+        .query(Daily.tableName, where: 'id = ?', whereArgs: [dailyId]);
   }
 
   selectDailyByDate(DateTime date) async {
@@ -29,9 +27,8 @@ class DailyService {
     return res.isEmpty ? null : Daily.fromJson(res[0]);
   }
 
-  insertDaily(Daily daily) async {
-    var res = await (await db).insert(Daily.tableName, daily.toJson());
-    return res;
+  Future<int> insertDaily(Daily daily) async {
+    return (await db).insert(Daily.tableName, daily.toJson());
   }
 
   Future<Daily> getDailyByTimestamp(int timestamp, bool create) async {
@@ -46,13 +43,13 @@ class DailyService {
         return Daily.fromJson(e);
       }).toList()[0];
     } else if (create) {
-      daily = await _insertDailyByTimestamp(timestamp);
+      return insertDailyByTimestamp(timestamp);
     }
 
     return daily;
   }
 
-  Future<Daily> _insertDailyByTimestamp(int timestamp) async {
+  Future<Daily> insertDailyByTimestamp(int timestamp) async {
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
 
     Basic basic = await _basicService.selectBasicData();
