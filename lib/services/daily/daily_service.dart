@@ -8,11 +8,11 @@ import 'package:intl/intl.dart';
 
 class DailyService {
   BasicService _basicService = BasicService();
-  Future<Database> db;
 
-  DailyService([Future<Database> db]) {
-    this.db = db ?? DBHelper().database;
-  }
+  Future<Database> get db => getDB();
+  Function getDB = () => DBHelper().database;
+
+  DailyService([this.getDB]);
 
   Future<List<Map<String, dynamic>>> selectDailyById(String dailyId) async {
     return (await db)
@@ -27,8 +27,8 @@ class DailyService {
     return res.isEmpty ? null : Daily.fromJson(res[0]);
   }
 
-  Future<int> insertDaily(Daily daily) async {
-    return (await db).insert(Daily.tableName, daily.toJson());
+  Future<int> insertDaily(Daily daily, [DatabaseExecutor txn]) async {
+    return (txn ?? await db).insert(Daily.tableName, daily.toJson());
   }
 
   Future<Daily> getDailyByTimestamp(int timestamp, bool create) async {
@@ -49,13 +49,15 @@ class DailyService {
     return daily;
   }
 
-  Future<Daily> insertDailyByTimestamp(int timestamp) async {
+  Future<Daily> insertDailyByTimestamp(int timestamp, [Basic basic]) async {
+    basic = basic ?? await _basicService.selectBasicData();
+    Daily daily = this.createDaily(timestamp, int.parse(basic.today_startAt),
+        int.parse(basic.today_endAt));
+    return insertDaily(daily).then((value) => daily);
+  }
+
+  Daily createDaily(int timestamp, int startHour, int endHour) {
     DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
-
-    Basic basic = await _basicService.selectBasicData();
-    int startHour = int.parse(basic.today_startAt);
-    int endHour = int.parse(basic.today_endAt);
-
     DateTime startDate =
         DateTime(dateTime.year, dateTime.month, dateTime.day, startHour)
             .subtract(Duration(days: dateTime.hour >= startHour ? 0 : 1));
@@ -64,7 +66,7 @@ class DailyService {
         DateTime(dateTime.year, dateTime.month, dateTime.day, endHour)
             .add(Duration(days: dateTime.hour >= endHour ? 1 : 0));
 
-    Daily daily = Daily(
+    return Daily(
         id: CommonService.generateUUID(),
         startTimestamp: startDate.millisecondsSinceEpoch,
         endTimestamp: endDate.millisecondsSinceEpoch,
@@ -75,10 +77,6 @@ class DailyService {
         week: weekNumber(startDate),
         month: startDate.month,
         year: startDate.year);
-
-    await insertDaily(daily);
-
-    return daily;
   }
 
   int weekNumber(DateTime date) {

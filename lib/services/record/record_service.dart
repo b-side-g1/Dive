@@ -10,14 +10,13 @@ class RecordService {
   EmotionService _emotionService = EmotionService();
   TagService _tagService = TagService();
   DailyService _dailyService = DailyService();
-  Future<Database> db;
+  Future<Database> get db => getDB();
+  Function getDB = () => DBHelper().database;
 
-  RecordService([Future<Database> db]) {
-    this.db = db ?? DBHelper().database;
-  }
+  RecordService([this.getDB]);
 
-  Future<int> insertRecord(Record record) async {
-    return (await db).insert(Record.tableName, record.toTableJson());
+  Future<int> insertRecord(Record record, [DatabaseExecutor txn]) async {
+    return (txn ?? await db).insert(Record.tableName, record.toTableJson());
   }
 
   Future<List<Record>> selectAllRecord() async {
