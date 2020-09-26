@@ -3,23 +3,26 @@ import 'package:flutterapp/models/daily_model.dart';
 import 'package:flutterapp/services/basic/basic_service.dart';
 import 'package:flutterapp/services/common/common_service.dart';
 import 'package:flutterapp/services/database/database_helper.dart';
-import 'package:uuid/uuid.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:intl/intl.dart';
 
 class DailyService {
   BasicService _basicService = BasicService();
+  Future<Database> db;
+
+  DailyService([Future<Database> db]) {
+    this.db = db ?? DBHelper().database;
+  }
 
   selectDailyById(String dailyId) async {
-    final db = await DBHelper().database;
     var res =
-        await db.query(Daily.tableName, where: 'id = ?', whereArgs: [dailyId]);
+        await (await db).query(Daily.tableName, where: 'id = ?', whereArgs: [dailyId]);
 
     return res;
   }
 
   selectDailyByDate(DateTime date) async {
-    final db = await DBHelper().database;
-    var res = await db.query(Daily.tableName,
+    var res = await (await db).query(Daily.tableName,
         where: 'day = ? and month = ? and year = ?',
         whereArgs: [date.day, date.month, date.year]);
 
@@ -27,14 +30,12 @@ class DailyService {
   }
 
   insertDaily(Daily daily) async {
-    final db = await DBHelper().database;
-    var res = await db.insert(Daily.tableName, daily.toJson());
+    var res = await (await db).insert(Daily.tableName, daily.toJson());
     return res;
   }
 
   Future<Daily> getDailyByTimestamp(int timestamp, bool create) async {
-    final db = await DBHelper().database;
-    final List<Map<String, dynamic>> immutableMaps = await db.query(
+    final List<Map<String, dynamic>> immutableMaps = await (await db).query(
         Daily.tableName,
         where: 'startTimestamp <= ? and endTimestamp > ?',
         whereArgs: [timestamp, timestamp]);
@@ -44,7 +45,7 @@ class DailyService {
       daily = immutableMaps.map((e) {
         return Daily.fromJson(e);
       }).toList()[0];
-    } else if(create){
+    } else if (create) {
       daily = await _insertDailyByTimestamp(timestamp);
     }
 
@@ -82,7 +83,6 @@ class DailyService {
 
     return daily;
   }
-
 
   int weekNumber(DateTime date) {
     int dayOfYear = int.parse(DateFormat("D").format(date));
