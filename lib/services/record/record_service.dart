@@ -3,7 +3,6 @@ import 'package:Dive/services/daily/daily_service.dart';
 import 'package:Dive/services/database/database_helper.dart';
 import 'package:Dive/services/emotion/emotion_service.dart';
 import 'package:Dive/services/tag/tag_service.dart';
-import 'package:sqflite/sqflite.dart';
 
 class RecordService {
   EmotionService _emotionService = EmotionService();
@@ -11,6 +10,7 @@ class RecordService {
   DailyService _dailyService = DailyService();
 
   Future<int> insertRecord(Record record) async {
+    print("record == ${record}");
     final db = await DBHelper().database;
     return await db.insert(Record.tableName, record.toTableJson());
   }

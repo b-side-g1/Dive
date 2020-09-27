@@ -3,8 +3,8 @@ import 'package:Dive/models/daily_model.dart';
 import 'package:Dive/services/basic/basic_service.dart';
 import 'package:Dive/services/common/common_service.dart';
 import 'package:Dive/services/database/database_helper.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:intl/intl.dart';
+import 'package:sqflite/sqflite.dart';
 
 class DailyService {
   BasicService _basicService = BasicService();
