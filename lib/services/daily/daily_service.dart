@@ -1,26 +1,23 @@
-import 'package:flutterapp/models/basic_model.dart';
-import 'package:flutterapp/models/daily_model.dart';
-import 'package:flutterapp/services/basic/basic_service.dart';
-import 'package:flutterapp/services/common/common_service.dart';
-import 'package:flutterapp/services/database/database_helper.dart';
+import 'package:Dive/models/basic_model.dart';
+import 'package:Dive/models/daily_model.dart';
+import 'package:Dive/services/basic/basic_service.dart';
+import 'package:Dive/services/common/common_service.dart';
+import 'package:Dive/services/database/database_helper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:intl/intl.dart';
 
 class DailyService {
   BasicService _basicService = BasicService();
 
-  Future<Database> get db => getDB();
-  Function getDB = () => DBHelper().database;
-
-  DailyService([this.getDB]);
-
   Future<List<Map<String, dynamic>>> selectDailyById(String dailyId) async {
-    return (await db)
+    final db = await DBHelper().database;
+    return await db
         .query(Daily.tableName, where: 'id = ?', whereArgs: [dailyId]);
   }
 
   selectDailyByDate(DateTime date) async {
-    var res = await (await db).query(Daily.tableName,
+    final db = await DBHelper().database;
+    var res = await db.query(Daily.tableName,
         where: 'day = ? and month = ? and year = ?',
         whereArgs: [date.day, date.month, date.year]);
 
@@ -28,11 +25,13 @@ class DailyService {
   }
 
   Future<int> insertDaily(Daily daily, [DatabaseExecutor txn]) async {
-    return (txn ?? await db).insert(Daily.tableName, daily.toJson());
+    final db = await DBHelper().database;
+    return await db.insert(Daily.tableName, daily.toJson());
   }
 
   Future<Daily> getDailyByTimestamp(int timestamp, bool create) async {
-    final List<Map<String, dynamic>> immutableMaps = await (await db).query(
+    final db = await DBHelper().database;
+    final List<Map<String, dynamic>> immutableMaps = await db.query(
         Daily.tableName,
         where: 'startTimestamp <= ? and endTimestamp > ?',
         whereArgs: [timestamp, timestamp]);

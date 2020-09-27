@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/inherited/state_container.dart';
-import 'package:flutterapp/models/tag_model.dart';
-import 'package:flutterapp/services/common/common_service.dart';
+import 'package:Dive/inherited/state_container.dart';
+import 'package:Dive/models/tag_model.dart';
+import 'package:Dive/services/common/common_service.dart';
 import 'package:provider/provider.dart';
 
 class SaveTagButton extends StatelessWidget {

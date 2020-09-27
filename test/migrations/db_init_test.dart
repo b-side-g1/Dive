@@ -1,6 +1,5 @@
-
-import 'package:flutterapp/migrations/migration.dart';
-import 'package:flutterapp/migrations/v1_initialization.dart';
+import 'package:Dive/migrations/migration.dart';
+import 'package:Dive/migrations/v1_initialization.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:test/test.dart';
 
@@ -59,8 +58,8 @@ Future<void> main() async {
       print(results);
       print('--------------------');
     }).catchError((onError) {
-     print(onError);
-     expect(false, true);
+      print(onError);
+      expect(false, true);
     });
 
     db.close();

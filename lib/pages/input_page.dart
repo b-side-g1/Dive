@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/inherited/state_container.dart';
-import 'package:flutterapp/pages/input_page_step1.dart';
-import 'package:flutterapp/pages/input_page_step2.dart';
-import 'package:flutterapp/pages/input_page_step3.dart';
+import 'package:Dive/inherited/state_container.dart';
+import 'package:Dive/pages/input_page_step1.dart';
+import 'package:Dive/pages/input_page_step2.dart';
+import 'package:Dive/pages/input_page_step3.dart';
 
 import 'daily_page.dart';
 
@@ -49,7 +49,7 @@ class _InputPageState extends State<InputPage> {
   }
 
   void handlerPageView(int index) {
-    debugPrint("[input_page.dart] #handlerPageView index -> ${index}");
+//    debugPrint("[input_page.dart] #handlerPageView index -> ${index}");
     step = index;
     _controller.animateToPage(index,
         curve: Curves.easeIn, duration: Duration(milliseconds: 700));

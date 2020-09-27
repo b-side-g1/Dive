@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'dart:ffi';
 
-import 'package:flutterapp/migrations/migration.dart';
-import 'package:flutterapp/migrations/v1_initialization.dart';
+import 'package:Dive/migrations/migration.dart';
+import 'package:Dive/migrations/v1_initialization.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutterapp/models/basic_model.dart';
-import 'package:flutterapp/models/daily_model.dart';
-import 'package:flutterapp/models/record_model.dart';
-import 'package:flutterapp/services/daily/daily_service.dart';
-import 'package:flutterapp/services/record/record_service.dart';
-import 'package:flutterapp/services/statistics/statistics_service.dart';
+import 'package:Dive/models/basic_model.dart';
+import 'package:Dive/models/daily_model.dart';
+import 'package:Dive/models/record_model.dart';
+import 'package:Dive/services/daily/daily_service.dart';
+import 'package:Dive/services/record/record_service.dart';
+import 'package:Dive/services/statistics/statistics_service.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 

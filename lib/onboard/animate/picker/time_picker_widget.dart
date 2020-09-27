@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter_picker/flutter_picker.dart';
-import 'package:flutterapp/onboard/animate/picker/picker_data.dart';
-import 'package:flutterapp/models/onboard/picker_time_model.dart';
-import 'package:flutterapp/provider/time_picker_provider.dart';
-import 'package:flutterapp/services/basic/basic_service.dart';
+import 'package:Dive/onboard/animate/picker/picker_data.dart';
+import 'package:Dive/models/onboard/picker_time_model.dart';
+import 'package:Dive/provider/time_picker_provider.dart';
+import 'package:Dive/services/basic/basic_service.dart';
 import 'package:provider/provider.dart';
 
 class TimePickerWidget extends StatefulWidget {

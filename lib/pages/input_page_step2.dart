@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/components/emotion_tag_box.dart';
+import 'package:Dive/components/emotion_tag_box.dart';
+import 'package:Dive/services/common/common_service.dart';
 
 class InputPageStep2 extends StatefulWidget {
   List emotions;
@@ -14,12 +15,38 @@ class InputPageStep2 extends StatefulWidget {
 }
 
 class _InputPageStep2State extends State<InputPageStep2> {
+
+  Widget slidHintText() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 10),
+        alignment: Alignment.centerRight,
+        child: Opacity(
+          opacity: 0.6,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text("가로로 넘겨보세요",style: TextStyle(
+                fontSize: 13,
+                color: CommonService.hexToColor("#ffffffff")
+              ),),
+              Icon(
+                Icons.navigate_next,
+                color: CommonService.hexToColor("#ffffffff"),
+              )
+            ],
+          ),
+        ));
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: <Widget>[
           Padding(
@@ -35,11 +62,12 @@ class _InputPageStep2State extends State<InputPageStep2> {
           ),
 
           Padding(
-            padding: EdgeInsets.only(left: 20.1, top: height * 0.04, bottom: 20.1),
+            padding: EdgeInsets.only(top: height * 0.04, bottom: 20.1),
             child: EmotionTagBox(
               emotions: widget.emotions,
             ),
           ),
+          slidHintText()
         ],
       ),
     );

@@ -1,5 +1,5 @@
+import 'package:Dive/models/tag_model.dart';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/models/tag_model.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:test/test.dart';
 

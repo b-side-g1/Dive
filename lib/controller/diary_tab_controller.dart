@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/components/bottom_bar.dart';
-import 'package:flutterapp/pages/daily_page.dart';
-import 'package:flutterapp/pages/list_page.dart';
+import 'package:Dive/components/bottom_bar.dart';
+import 'package:Dive/pages/daily_page.dart';
+import 'package:Dive/pages/list_page.dart';
 
 class DiaryTabController extends StatefulWidget {
   @override
@@ -11,6 +11,10 @@ class DiaryTabController extends StatefulWidget {
 class _DiaryTabControllerState extends State<DiaryTabController> {
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: DailyPage(),
+    );
+    /* TODO: 통계 페이지 나오기 전까지 보류
     return DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -22,5 +26,6 @@ class _DiaryTabControllerState extends State<DiaryTabController> {
           ]),
           bottomNavigationBar: BottomBar(),
         ));
+     */
   }
 }

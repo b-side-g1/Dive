@@ -1,6 +1,6 @@
-import 'package:flutterapp/models/emotion_model.dart';
-import 'package:flutterapp/models/record_has_emotion.dart';
-import 'package:flutterapp/services/database/database_helper.dart';
+import 'package:Dive/models/emotion_model.dart';
+import 'package:Dive/models/record_has_emotion.dart';
+import 'package:Dive/services/database/database_helper.dart';
 
 class EmotionService {
   final String recordHasEmotionTableName = RecordHasEmotion.tableName;

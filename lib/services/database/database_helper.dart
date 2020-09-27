@@ -1,7 +1,10 @@
-import 'package:flutterapp/migrations/migration.dart';
-import 'package:flutterapp/migrations/v1_initialization.dart';
+import 'dart:io';
+
+import 'package:Dive/migrations/migration.dart';
+import 'package:Dive/migrations/v1_initialization.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 class DBHelper {
   DBHelper._();
@@ -14,7 +17,9 @@ class DBHelper {
   Future<Database> get database async {
     if (_database != null) return _database;
 
-    _database = await initDB();
+    _database = await (Platform.environment.containsKey('TEST_DB_PATH')
+        ? databaseFactoryFfi.openDatabase(Platform.environment['TEST_DB_PATH'])
+        : initDB());
     return _database;
   }
 

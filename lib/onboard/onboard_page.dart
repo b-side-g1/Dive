@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/onboard/animate/animate_widget.dart';
-import 'package:flutterapp/provider/time_picker_provider.dart';
+import 'package:Dive/onboard/animate/animate_widget.dart';
+import 'package:Dive/provider/time_picker_provider.dart';
 import 'package:provider/provider.dart';
 
 class OnBoardPage extends StatelessWidget {

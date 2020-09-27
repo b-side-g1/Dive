@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutterapp/onboard/onboard_page.dart';
-import 'package:flutterapp/controller/diary_tab_controller.dart';
+import 'package:Dive/onboard/onboard_page.dart';
+import 'package:Dive/controller/diary_tab_controller.dart';
 
 class SplashPage extends StatefulWidget {
   bool initScreen;
@@ -32,7 +32,6 @@ class Splash extends State<SplashPage> {
   Widget build(BuildContext context) {
     AssetImage assetsImage = AssetImage('lib/src/image/splash/splash@3x.png');
     return Scaffold(
-        resizeToAvoidBottomInset : true,
         body: Container(
       decoration: BoxDecoration(
           image: DecorationImage(image: assetsImage, fit: BoxFit.cover)),

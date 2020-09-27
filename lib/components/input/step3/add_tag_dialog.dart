@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/components/input/step3/model/tag_dialog_entity_model.dart';
-import 'package:flutterapp/services/common/common_service.dart';
+import 'package:Dive/components/input/step3/model/tag_dialog_entity_model.dart';
+import 'package:Dive/services/common/common_service.dart';
 
 
 class AddTagDialog extends StatefulWidget {

@@ -1,6 +1,6 @@
-import 'package:flutterapp/models/record_has_tag.dart';
-import 'package:flutterapp/models/tag_model.dart';
-import 'package:flutterapp/services/database/database_helper.dart';
+import 'package:Dive/models/record_has_tag.dart';
+import 'package:Dive/models/tag_model.dart';
+import 'package:Dive/services/database/database_helper.dart';
 
 class TagService {
   final String recordHasTagTableName = RecordHasTag.tableName;

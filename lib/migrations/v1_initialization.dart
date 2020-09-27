@@ -1,7 +1,7 @@
 import 'dart:core';
 
-import 'package:flutterapp/commons/static.dart';
-import 'package:flutterapp/services/common/common_service.dart';
+import 'package:Dive/commons/static.dart';
+import 'package:Dive/services/common/common_service.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'migration.dart';
