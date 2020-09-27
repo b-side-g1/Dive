@@ -278,7 +278,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                           StateContainer(child: DailyPage())));
             },
             child: Text(
-              "기록하기",
+              (container.record == null) ?  "기록하기" : "수정하기",
               style: TextStyle(
                 fontSize: 22.0,
               ),
