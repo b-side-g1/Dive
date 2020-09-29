@@ -30,10 +30,9 @@ class DBHelper {
       Migration v1 = new V1Initialization();
       await db.transaction((txn) async {
         await v1.up(txn);
-        txn.query('COMMIT');
-        return;
         // TOOD: 배포 이후에는 DB 스키마 변경 시, v1을 대체하는 게 아니라, v2를 만들어 줘야 함.
         // 그래야, v1 DB를 갖고 있는 사람과 v1을 받지 않은 사람 모두 동일한 스키마를 가질 수 있음.
+        return;
       });
     });
   }
