@@ -12,25 +12,24 @@ class StatisticsService {
   }
 
   Future<double> getAverageScoreByMonth([int month, int year]) async {
-    final db = await DBHelper().database;
     DateTime now = new DateTime.now();
     month = month ?? now.month;
     year = year ?? now.year;
     // , groupBy: '(year, month)'
+    final db = await DBHelper().database;
     return db
         .query(Daily.tableName,
             columns: ['id'], where: 'month = $month AND year = $year')
-        .then((ids) async {
-      return db
-          .query(Record.tableName,
-              where: "dailyId IN('${ids.map((e) => e['id']).join("', '")}')")
-          .then((records) {
-        var sum = records
-            .map((e) => Record.fromJson(e).score)
-            .reduce((a, b) => a + b);
-        print(sum);
-        return sum / records.length;
-      });
-    });
+        .then((ids) async => db
+                .query(Record.tableName,
+                    where:
+                        "dailyId IN('${ids.map((e) => e['id']).join("', '")}')")
+                .then((records) {
+              var sum = records
+                  .map((e) => Record.fromJson(e).score)
+                  .reduce((a, b) => a + b);
+              print(sum);
+              return sum / records.length;
+            }));
   }
 }
