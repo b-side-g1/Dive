@@ -19,17 +19,34 @@ class StatisticsService {
     final db = await DBHelper().database;
     return db
         .query(Daily.tableName,
-            columns: ['id'], where: 'month = $month AND year = $year')
-        .then((ids) async => db
-                .query(Record.tableName,
-                    where:
-                        "dailyId IN('${ids.map((e) => e['id']).join("', '")}')")
-                .then((records) {
-              var sum = records
-                  .map((e) => Record.fromJson(e).score)
-                  .reduce((a, b) => a + b);
-              print(sum);
-              return sum / records.length;
-            }));
+        columns: ['id'], where: 'month = $month AND year = $year')
+        .then((ids) async =>
+        db
+            .query(Record.tableName,
+            where:
+            "dailyId IN('${ids.map((e) => e['id']).join("', '")}')")
+            .then((records) {
+          var sum = records
+              .map((e) =>
+          Record
+              .fromJson(e)
+              .score)
+              .reduce((a, b) => a + b);
+          print(sum);
+          return sum / records.length;
+        }));
+  }
+
+//  Future<List<GraphDto>> getGraphData([int month, int year]) async {
+  getGraphData([int month, int year]) async {
+    month = month ?? DateTime.now().month;
+    year = year ?? DateTime.now().year;
+    final db = await DBHelper().database;
+    var result = await db.rawQuery("""
+    SELECT day FROM Daily WHERE month = ? AND year = ?
+    GROUP BY year, month, day
+    """, [month, year]);
+    throw result;
+    return result;
   }
 }
