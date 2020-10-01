@@ -271,4 +271,9 @@ Future<void> main() async {
     expect(rows[0]['tags'].toString(), '[]');
     expect(rows[0]['tags'].isEmpty, true);
   });
+
+  test('getDetailsByTagName 함수 테스트', () async {
+    List<Map<String, dynamic>> rows = await statisticsService.getDetailsByTagName('그럴싸한 이유', 1);
+    expect(rows.isEmpty, true);
+  });
 }

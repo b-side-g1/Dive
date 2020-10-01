@@ -176,13 +176,42 @@ class StatisticsService {
                    LEFT OUTER JOIN recordHasTag rt ON r.id = rt.recordId
                    LEFT OUTER JOIN tag t ON t.id = rt.tagId
     WHERE e.name = ? AND d.month = ? AND d.year = ?
-    -- GROUP BY d.day
     ORDER BY d.day DESC
-    """, [name, month, year]).then((value) => value.map((e) => {
-          ...e,
-          'tags': value
-              .where((element) => element['tags'] != null)
-              .map((e) => e['tags']).toList()
-        }).toList());
+    """, [name, month, year]).then((value) => value
+        .map((e) => {
+              ...e,
+              'tags': value
+                  .where((element) => element['tags'] != null)
+                  .map((e) => e['tags'])
+                  .toList()
+            })
+        .toList());
+  }
+
+  Future getDetailsByTagName(String name, [int month, int year]) async {
+    month = month ?? DateTime.now().month;
+    year = year ?? DateTime.now().year;
+    final db = await DBHelper().database;
+    return db.rawQuery("""
+    SELECT d.day day,
+           r.score score,
+           r.description description,
+           e.name emotions
+    FROM tag t JOIN recordHasTag rt ON t.id = rt.tagId
+                   JOIN record r ON r.id = rt.recordId
+                   JOIN daily d ON d.id = r.dailyId
+                   LEFT OUTER JOIN recordHasEmotion re ON r.id = re.recordId
+                   LEFT OUTER JOIN emotion e ON e.id = re.emotionId
+    WHERE t.name = ? AND d.month = ? AND d.year = ?
+    ORDER BY d.day DESC
+    """, [name, month, year]).then((value) => value
+        .map((e) => {
+              ...e,
+              'emotions': value
+                  .where((element) => element['emotions'] != null)
+                  .map((e) => e['emotions'])
+                  .toList()
+            })
+        .toList());
   }
 }
