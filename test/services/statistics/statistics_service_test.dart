@@ -123,10 +123,15 @@ Future<void> main() async {
           id: 'test2',
           score: 100,
           dailyId: dailies[0].id,
-          description: '새해 첫날 끝!'),
+          description: '새해 첫날 끝!',
+          updatedAt: DateTime(2020, 1, 1).toString()),
       Record(id: 'test3', score: 30, dailyId: dailies[1].id),
       Record(id: 'test4', score: 10, dailyId: dailies[1].id),
-      Record(id: 'test5', score: 90, dailyId: dailies[2].id),
+      Record(
+          id: 'test5',
+          score: 90,
+          dailyId: dailies[2].id,
+          updatedAt: DateTime(2020, 1, 3).toString()),
       Record(id: 'test6', score: 60, dailyId: dailies[3].id),
       Record(id: 'test7', score: 80, dailyId: dailies[4].id),
       Record(id: 'test8', score: 60, dailyId: dailies[5].id),
@@ -200,5 +205,34 @@ Future<void> main() async {
     expect(graphData[0]['score'].toStringAsFixed(2), '61.67');
     expect(graphData[0]['score'].toStringAsFixed(4), '61.6667');
     expect(graphData[0]['score'].round(), 62);
+  });
+
+  test('getMostFrequentEmotions 함수 테스트', () async {
+    List<Map<String, dynamic>> rows =
+        await statisticsService.getMostFrequentEmotions(1);
+    expect(rows.length, 3);
+    expect(rows[0]['id'], '1');
+    expect(rows[0]['name'], '신남');
+    expect(rows[0]['percent'], 26.666666666666668);
+    expect(rows[0]['percent'].round(), 27);
+    expect(rows[0]['percent'].toStringAsFixed(2), '26.67');
+    expect(rows[0]['percent'].toStringAsFixed(3), '26.667');
+    expect(rows[1]['id'], '3');
+    expect(rows[1]['name'], '기분좋음');
+    expect(rows[1]['percent'].toStringAsFixed(2), '13.33');
+    expect(rows[2]['id'], '2');
+    expect(rows[2]['name'], '행복함');
+    expect(rows[2]['percent'].toStringAsFixed(2), '13.33');
+    expect(
+        rows[1]['percent'].toStringAsFixed(6) ==
+            rows[2]['percent'].toStringAsFixed(6),
+        true);
+    expect(
+        DateTime.parse(rows[1]['lastUpdatedAt']).compareTo(DateTime.parse(rows[2]['lastUpdatedAt'])),
+        1);
+    expect(
+        DateTime.parse(rows[2]['lastUpdatedAt']).compareTo(DateTime.parse(rows[1]['lastUpdatedAt'])),
+        -1);
+    throw rows;
   });
 }
