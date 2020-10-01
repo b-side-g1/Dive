@@ -5,10 +5,13 @@ import 'package:Dive/migrations/migration.dart';
 import 'package:Dive/migrations/v1_initialization.dart';
 import 'package:Dive/models/basic_model.dart';
 import 'package:Dive/models/daily_model.dart';
+import 'package:Dive/models/emotion_model.dart';
+import 'package:Dive/models/record_has_emotion.dart';
 import 'package:Dive/models/record_model.dart';
 import 'package:Dive/services/daily/daily_service.dart';
 import 'package:Dive/services/database/database_helper.dart'
     deferred as databaseHelper;
+import 'package:Dive/services/emotion/emotion_service.dart';
 import 'package:Dive/services/record/record_service.dart';
 import 'package:Dive/services/statistics/statistics_service.dart';
 import 'package:flutter/widgets.dart';
@@ -55,6 +58,7 @@ Future<void> main() async {
   StatisticsService statisticsService = StatisticsService();
   DailyService dailyService = DailyService();
   RecordService recordService = RecordService();
+  EmotionService emotionService = EmotionService();
 
   test('서비스 생성 테스트', () async {
     expect((statisticsService == null), false);
@@ -131,19 +135,35 @@ Future<void> main() async {
       Record(id: 'test11', score: 60, dailyId: dailies[6].id),
       Record(id: 'test12', score: 60, dailyId: dailies[6].id),
     ];
-//    List<Record> records = dailies.map((daily) {
-//      i++;
-//      return Record(
-//          id: 'test$i', score: 10, dailyId: daily.id, description: 'test');
-//    });
+
+    List<RecordHasEmotion> emotions = [
+      RecordHasEmotion(recordId: 'test1', emotionId: '1'),
+      RecordHasEmotion(recordId: 'test1', emotionId: '2'),
+      RecordHasEmotion(recordId: 'test1', emotionId: '3'),
+      RecordHasEmotion(recordId: 'test2', emotionId: '1'),
+      RecordHasEmotion(recordId: 'test2', emotionId: '2'),
+      RecordHasEmotion(recordId: 'test3', emotionId: '15'),
+      RecordHasEmotion(recordId: 'test3', emotionId: '16'),
+      RecordHasEmotion(recordId: 'test4', emotionId: '15'),
+      RecordHasEmotion(recordId: 'test4', emotionId: '14'),
+      RecordHasEmotion(recordId: 'test5', emotionId: '1'),
+      RecordHasEmotion(recordId: 'test5', emotionId: '3'),
+      RecordHasEmotion(recordId: 'test6', emotionId: '4'),
+      RecordHasEmotion(recordId: 'test7', emotionId: '1'),
+      RecordHasEmotion(recordId: 'test9', emotionId: '3'),
+      RecordHasEmotion(recordId: 'test10', emotionId: '18'),
+    ];
 
     // 테스트 데이터 저장
     var result1 =
         await Future.wait(dailies.map((e) => dailyService.insertDaily(e)));
     var result2 =
         await Future.wait(records.map((e) => recordService.insertRecord(e)));
+    var result3 = await Future.wait(
+        emotions.map((e) => emotionService.insertRecordHasEmotion(e)));
     expect(result1.length, 7);
     expect(result2.length, 12);
+    expect(result3.length, 15);
   });
 
   // Test DB의 데이터 수정이 있을 경우, 실행 전 데이터 초기화 필요
@@ -173,7 +193,8 @@ Future<void> main() async {
   });
 
   test('getGraphData 함수 테스트', () async {
-    List<Map<String, dynamic>> graphData = await statisticsService.getGraphData(1);
+    List<Map<String, dynamic>> graphData =
+        await statisticsService.getGraphData(1);
     expect(graphData[0]['week'], 7);
     expect(graphData[0]['score'], 61.666666666666664);
     expect(graphData[0]['score'].toStringAsFixed(2), '61.67');
