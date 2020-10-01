@@ -171,4 +171,13 @@ Future<void> main() async {
         scores.reduce((value, element) => value + element) / scores.length;
     expect(await statisticsService.getAverageScoreByMonth(1), avg);
   });
+
+  test('getGraphData 함수 테스트', () async {
+    List<Map<String, dynamic>> graphData = await statisticsService.getGraphData(1);
+    expect(graphData[0]['week'], 7);
+    expect(graphData[0]['score'], 61.666666666666664);
+    expect(graphData[0]['score'].toStringAsFixed(2), '61.67');
+    expect(graphData[0]['score'].toStringAsFixed(4), '61.6667');
+    expect(graphData[0]['score'].round(), 62);
+  });
 }
