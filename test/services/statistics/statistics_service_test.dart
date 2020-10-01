@@ -239,25 +239,25 @@ Future<void> main() async {
     ///     day: 5,
     ///     score: 80,
     ///     description: null,
-    ///     tags: []
+    ///     tags: null
     ///   },
     ///   {
     ///     day: 3,
     ///     score: 90,
     ///     description: null,
-    ///     tags: []
+    ///     tags: null
     ///   },
     ///   {
     ///     day: 1,
     ///     score: 100,
     ///     description: 새해~!,
-    ///     tags: []
+    ///     tags: null
     ///   },
     ///   {
     ///     day: 1,
     ///     score: 100,
     ///     description: 새해 첫날 끝!,
-    ///     tags: []
+    ///     tags: null
     ///   }
     /// ]
     List<Map<String, dynamic>> rows =
@@ -268,12 +268,12 @@ Future<void> main() async {
     expect(rows[3]['day'], 1);
     expect(rows[0]['score'], 80);
     expect(rows[0]['description'], null);
-    expect(rows[0]['tags'].toString(), '[]');
-    expect(rows[0]['tags'].isEmpty, true);
+    expect(rows[0]['tags'], null);
   });
 
   test('getDetailsByTagName 함수 테스트', () async {
     List<Map<String, dynamic>> rows = await statisticsService.getDetailsByTagName('그럴싸한 이유', 1);
     expect(rows.isEmpty, true);
+    expect(true, true);
   });
 }
