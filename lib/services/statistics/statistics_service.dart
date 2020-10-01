@@ -56,4 +56,9 @@ class StatisticsService {
     """,
         [getLastDay(month, year), month, year]).then((value) => value.toList());
   }
+
+  Future<List<Map<String, dynamic>>> getHappyReasons() async {}
+  Future<List<Map<String, dynamic>>> getUnHappyReasons() async {}
+  Future<List<Map<String, dynamic>>> getMostFrequentReasons() async {}
+  Future<List<Map<String, dynamic>>> getMostFrequentEmotions() async {}
 }
