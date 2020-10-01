@@ -59,7 +59,23 @@ class StatisticsService {
 
   Future<List<Map<String, dynamic>>> getHappyReasons() async {}
 
-  Future<List<Map<String, dynamic>>> getUnHappyReasons() async {}
+  Future<List<Map<String, dynamic>>> getUnHappyReasons([int month, int year]) async {
+    month = month ?? DateTime.now().month;
+    year = year ?? DateTime.now().year;
+    final db = await DBHelper().database;
+    return db.rawQuery("""
+    SELECT t.id, t.name name,
+           COUNT(*) count,
+           MAX(r.updatedAt) lastUpdatedAt
+    FROM daily d JOIN record r ON d.id = r.dailyId
+                 JOIN recordHasTag rt ON r.id = rt.recordId
+                 JOIN tag t ON t.id = rt.tagId
+    WHERE d.month = ? AND d.year = ? AND r.score <= 30
+    GROUP BY t.id, t.name
+    ORDER BY count DESC, lastUpdatedAt DESC
+    limit 5
+    """, [month, year]).then((value) => value.toList());
+  }
 
   Future<List<Map<String, dynamic>>> getMostFrequentTags(
       [int month, int year]) async {

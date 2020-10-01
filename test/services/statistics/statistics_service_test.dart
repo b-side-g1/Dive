@@ -224,4 +224,9 @@ Future<void> main() async {
     expect(rows[2]['name'], '행복함');
     expect(rows[2]['percent'].toStringAsFixed(2), '13.33');
   });
+
+  test('getUnhappyReasons 함수 테스트', () async {
+    List<Map<String, dynamic>> rows = await statisticsService.getUnHappyReasons(1);
+    expect(rows.isEmpty, true);
+  });
 }
