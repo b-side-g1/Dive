@@ -58,7 +58,50 @@ class StatisticsService {
   }
 
   Future<List<Map<String, dynamic>>> getHappyReasons() async {}
+
   Future<List<Map<String, dynamic>>> getUnHappyReasons() async {}
+
   Future<List<Map<String, dynamic>>> getMostFrequentReasons() async {}
-  Future<List<Map<String, dynamic>>> getMostFrequentEmotions() async {}
+
+  Future<List<Map<String, dynamic>>> getMostFrequentEmotions(
+      [int month, int year]) async {
+    month = month ?? DateTime.now().month;
+    year = year ?? DateTime.now().year;
+    final db = await DBHelper().database;
+    int totalCount = await getEmotionCount(month, year);
+    return db.rawQuery("""
+    SELECT e.id, e.name name,
+           COUNT(*) / CAST( ? as REAL) * 100 percent,
+           MAX(r.updatedAt) lastUpdatedAt
+    FROM daily d JOIN record r ON d.id = r.dailyId
+                 JOIN recordHasEmotion re ON r.id = re.recordId
+                 JOIN emotion e ON e.id = re.emotionId
+    WHERE d.month = ? AND d.year = ? AND 70 <= r.score
+    GROUP BY e.id, e.name
+    ORDER BY percent DESC, lastUpdatedAt DESC
+    limit 5
+    """, [totalCount, month, year]).then((value) => value.toList());
+  }
+
+  Future<int> getTagCount([int month, int year]) async {
+    final db = await DBHelper().database;
+    return db.rawQuery("""
+    SELECT COUNT(*) cnt 
+    FROM daily d JOIN record r ON d.id = r.dailyId
+                 JOIN recordHasTag rt ON r.id = rt.recordId
+                 JOIN tag t ON t.id = rt.tagId
+    WHERE d.month = ? AND d.year = ?
+    """, [month, year]).then((value) => value[0]['cnt']);
+  }
+
+  Future<int> getEmotionCount([int month, int year]) async {
+    final db = await DBHelper().database;
+    return db.rawQuery("""
+    SELECT COUNT(*) cnt
+    FROM daily d JOIN record r ON d.id = r.dailyId
+                 JOIN recordHasEmotion re ON r.id = re.recordId
+                 JOIN emotion e ON e.id = re.emotionId
+    WHERE d.month = ? AND d.year = ?
+    """, [month, year]).then((value) => value[0]['cnt']);
+  }
 }
