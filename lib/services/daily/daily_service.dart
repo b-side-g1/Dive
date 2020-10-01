@@ -24,7 +24,7 @@ class DailyService {
     return res.isEmpty ? null : Daily.fromJson(res[0]);
   }
 
-  Future<int> insertDaily(Daily daily, [DatabaseExecutor txn]) async {
+  Future<int> insertDaily(Daily daily) async {
     final db = await DBHelper().database;
     return await db.insert(Daily.tableName, daily.toJson());
   }
