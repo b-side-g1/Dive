@@ -226,7 +226,49 @@ Future<void> main() async {
   });
 
   test('getUnhappyReasons 함수 테스트', () async {
-    List<Map<String, dynamic>> rows = await statisticsService.getUnHappyReasons(1);
+    List<Map<String, dynamic>> rows =
+        await statisticsService.getUnHappyReasons(1);
     expect(rows.isEmpty, true);
+  });
+
+  test('getDetailsByEmotionName 함수 테스트', () async {
+    /// Example result
+    ///
+    /// [
+    ///   {
+    ///     day: 5,
+    ///     score: 80,
+    ///     description: null,
+    ///     tags: []
+    ///   },
+    ///   {
+    ///     day: 3,
+    ///     score: 90,
+    ///     description: null,
+    ///     tags: []
+    ///   },
+    ///   {
+    ///     day: 1,
+    ///     score: 100,
+    ///     description: 새해~!,
+    ///     tags: []
+    ///   },
+    ///   {
+    ///     day: 1,
+    ///     score: 100,
+    ///     description: 새해 첫날 끝!,
+    ///     tags: []
+    ///   }
+    /// ]
+    List<Map<String, dynamic>> rows =
+        await statisticsService.getDetailsByEmotionName('신남', 1);
+    expect(rows[0]['day'], 5);
+    expect(rows[1]['day'], 3);
+    expect(rows[2]['day'], 1);
+    expect(rows[3]['day'], 1);
+    expect(rows[0]['score'], 80);
+    expect(rows[0]['description'], null);
+    expect(rows[0]['tags'].toString(), '[]');
+    expect(rows[0]['tags'].isEmpty, true);
   });
 }
