@@ -61,7 +61,25 @@ class StatisticsService {
 
   Future<List<Map<String, dynamic>>> getUnHappyReasons() async {}
 
-  Future<List<Map<String, dynamic>>> getMostFrequentReasons() async {}
+  Future<List<Map<String, dynamic>>> getMostFrequentTags(
+      [int month, int year]) async {
+    month = month ?? DateTime.now().month;
+    year = year ?? DateTime.now().year;
+    final db = await DBHelper().database;
+    int totalCount = await getTagCount(month, year);
+    return db.rawQuery("""
+    SELECT t.id, t.name name,
+           COUNT(*) / CAST( ? as REAL) * 100 percent,
+           MAX(r.updatedAt) lastUpdatedAt
+    FROM daily d JOIN record r ON d.id = r.dailyId
+                 JOIN recordHasTag rt ON r.id = rt.recordId
+                 JOIN tag t ON t.id = rt.tagId
+    WHERE d.month = ? AND d.year = ?
+    GROUP BY t.id, t.name
+    ORDER BY percent DESC, lastUpdatedAt DESC
+    limit 3
+    """, [totalCount, month, year]).then((value) => value.toList());
+  }
 
   Future<List<Map<String, dynamic>>> getMostFrequentEmotions(
       [int month, int year]) async {
@@ -76,10 +94,10 @@ class StatisticsService {
     FROM daily d JOIN record r ON d.id = r.dailyId
                  JOIN recordHasEmotion re ON r.id = re.recordId
                  JOIN emotion e ON e.id = re.emotionId
-    WHERE d.month = ? AND d.year = ? AND 70 <= r.score
+    WHERE d.month = ? AND d.year = ?
     GROUP BY e.id, e.name
     ORDER BY percent DESC, lastUpdatedAt DESC
-    limit 5
+    limit 3
     """, [totalCount, month, year]).then((value) => value.toList());
   }
 

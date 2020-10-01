@@ -219,20 +219,9 @@ Future<void> main() async {
     expect(rows[0]['percent'].toStringAsFixed(3), '26.667');
     expect(rows[1]['id'], '3');
     expect(rows[1]['name'], '기분좋음');
-    expect(rows[1]['percent'].toStringAsFixed(2), '13.33');
+    expect(rows[1]['percent'].toStringAsFixed(2), '20.00');
     expect(rows[2]['id'], '2');
     expect(rows[2]['name'], '행복함');
     expect(rows[2]['percent'].toStringAsFixed(2), '13.33');
-    expect(
-        rows[1]['percent'].toStringAsFixed(6) ==
-            rows[2]['percent'].toStringAsFixed(6),
-        true);
-    expect(
-        DateTime.parse(rows[1]['lastUpdatedAt']).compareTo(DateTime.parse(rows[2]['lastUpdatedAt'])),
-        1);
-    expect(
-        DateTime.parse(rows[2]['lastUpdatedAt']).compareTo(DateTime.parse(rows[1]['lastUpdatedAt'])),
-        -1);
-    throw rows;
   });
 }
