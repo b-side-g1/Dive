@@ -5,10 +5,13 @@ import 'package:Dive/migrations/migration.dart';
 import 'package:Dive/migrations/v1_initialization.dart';
 import 'package:Dive/models/basic_model.dart';
 import 'package:Dive/models/daily_model.dart';
+import 'package:Dive/models/emotion_model.dart';
+import 'package:Dive/models/record_has_emotion.dart';
 import 'package:Dive/models/record_model.dart';
 import 'package:Dive/services/daily/daily_service.dart';
 import 'package:Dive/services/database/database_helper.dart'
     deferred as databaseHelper;
+import 'package:Dive/services/emotion/emotion_service.dart';
 import 'package:Dive/services/record/record_service.dart';
 import 'package:Dive/services/statistics/statistics_service.dart';
 import 'package:flutter/widgets.dart';
@@ -55,6 +58,7 @@ Future<void> main() async {
   StatisticsService statisticsService = StatisticsService();
   DailyService dailyService = DailyService();
   RecordService recordService = RecordService();
+  EmotionService emotionService = EmotionService();
 
   test('서비스 생성 테스트', () async {
     expect((statisticsService == null), false);
@@ -119,10 +123,15 @@ Future<void> main() async {
           id: 'test2',
           score: 100,
           dailyId: dailies[0].id,
-          description: '새해 첫날 끝!'),
+          description: '새해 첫날 끝!',
+          updatedAt: DateTime(2020, 1, 1).toString()),
       Record(id: 'test3', score: 30, dailyId: dailies[1].id),
       Record(id: 'test4', score: 10, dailyId: dailies[1].id),
-      Record(id: 'test5', score: 90, dailyId: dailies[2].id),
+      Record(
+          id: 'test5',
+          score: 90,
+          dailyId: dailies[2].id,
+          updatedAt: DateTime(2020, 1, 3).toString()),
       Record(id: 'test6', score: 60, dailyId: dailies[3].id),
       Record(id: 'test7', score: 80, dailyId: dailies[4].id),
       Record(id: 'test8', score: 60, dailyId: dailies[5].id),
@@ -131,19 +140,35 @@ Future<void> main() async {
       Record(id: 'test11', score: 60, dailyId: dailies[6].id),
       Record(id: 'test12', score: 60, dailyId: dailies[6].id),
     ];
-//    List<Record> records = dailies.map((daily) {
-//      i++;
-//      return Record(
-//          id: 'test$i', score: 10, dailyId: daily.id, description: 'test');
-//    });
+
+    List<RecordHasEmotion> emotions = [
+      RecordHasEmotion(recordId: 'test1', emotionId: '1'),
+      RecordHasEmotion(recordId: 'test1', emotionId: '2'),
+      RecordHasEmotion(recordId: 'test1', emotionId: '3'),
+      RecordHasEmotion(recordId: 'test2', emotionId: '1'),
+      RecordHasEmotion(recordId: 'test2', emotionId: '2'),
+      RecordHasEmotion(recordId: 'test3', emotionId: '15'),
+      RecordHasEmotion(recordId: 'test3', emotionId: '16'),
+      RecordHasEmotion(recordId: 'test4', emotionId: '15'),
+      RecordHasEmotion(recordId: 'test4', emotionId: '14'),
+      RecordHasEmotion(recordId: 'test5', emotionId: '1'),
+      RecordHasEmotion(recordId: 'test5', emotionId: '3'),
+      RecordHasEmotion(recordId: 'test6', emotionId: '4'),
+      RecordHasEmotion(recordId: 'test7', emotionId: '1'),
+      RecordHasEmotion(recordId: 'test9', emotionId: '3'),
+      RecordHasEmotion(recordId: 'test10', emotionId: '18'),
+    ];
 
     // 테스트 데이터 저장
     var result1 =
         await Future.wait(dailies.map((e) => dailyService.insertDaily(e)));
     var result2 =
         await Future.wait(records.map((e) => recordService.insertRecord(e)));
+    var result3 = await Future.wait(
+        emotions.map((e) => emotionService.insertRecordHasEmotion(e)));
     expect(result1.length, 7);
     expect(result2.length, 12);
+    expect(result3.length, 15);
   });
 
   // Test DB의 데이터 수정이 있을 경우, 실행 전 데이터 초기화 필요
@@ -173,11 +198,82 @@ Future<void> main() async {
   });
 
   test('getGraphData 함수 테스트', () async {
-    List<Map<String, dynamic>> graphData = await statisticsService.getGraphData(1);
+    List<Map<String, dynamic>> graphData =
+        await statisticsService.getGraphData(1);
     expect(graphData[0]['week'], 7);
     expect(graphData[0]['score'], 61.666666666666664);
     expect(graphData[0]['score'].toStringAsFixed(2), '61.67');
     expect(graphData[0]['score'].toStringAsFixed(4), '61.6667');
     expect(graphData[0]['score'].round(), 62);
+  });
+
+  test('getMostFrequentEmotions 함수 테스트', () async {
+    List<Map<String, dynamic>> rows =
+        await statisticsService.getMostFrequentEmotions(1);
+    expect(rows.length, 3);
+    expect(rows[0]['id'], '1');
+    expect(rows[0]['name'], '신남');
+    expect(rows[0]['percent'], 26.666666666666668);
+    expect(rows[0]['percent'].round(), 27);
+    expect(rows[0]['percent'].toStringAsFixed(2), '26.67');
+    expect(rows[0]['percent'].toStringAsFixed(3), '26.667');
+    expect(rows[1]['id'], '3');
+    expect(rows[1]['name'], '기분좋음');
+    expect(rows[1]['percent'].toStringAsFixed(2), '20.00');
+    expect(rows[2]['id'], '2');
+    expect(rows[2]['name'], '행복함');
+    expect(rows[2]['percent'].toStringAsFixed(2), '13.33');
+  });
+
+  test('getUnhappyReasons 함수 테스트', () async {
+    List<Map<String, dynamic>> rows =
+        await statisticsService.getUnHappyReasons(1);
+    expect(rows.isEmpty, true);
+  });
+
+  test('getDetailsByEmotionName 함수 테스트', () async {
+    /// Example result
+    ///
+    /// [
+    ///   {
+    ///     day: 5,
+    ///     score: 80,
+    ///     description: null,
+    ///     tags: null
+    ///   },
+    ///   {
+    ///     day: 3,
+    ///     score: 90,
+    ///     description: null,
+    ///     tags: null
+    ///   },
+    ///   {
+    ///     day: 1,
+    ///     score: 100,
+    ///     description: 새해~!,
+    ///     tags: null
+    ///   },
+    ///   {
+    ///     day: 1,
+    ///     score: 100,
+    ///     description: 새해 첫날 끝!,
+    ///     tags: null
+    ///   }
+    /// ]
+    List<Map<String, dynamic>> rows =
+        await statisticsService.getDetailsByEmotionName('신남', 1);
+    expect(rows[0]['day'], 5);
+    expect(rows[1]['day'], 3);
+    expect(rows[2]['day'], 1);
+    expect(rows[3]['day'], 1);
+    expect(rows[0]['score'], 80);
+    expect(rows[0]['description'], null);
+    expect(rows[0]['tags'], null);
+  });
+
+  test('getDetailsByTagName 함수 테스트', () async {
+    List<Map<String, dynamic>> rows = await statisticsService.getDetailsByTagName('그럴싸한 이유', 1);
+    expect(rows.isEmpty, true);
+    expect(true, true);
   });
 }
