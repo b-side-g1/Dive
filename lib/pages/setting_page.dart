@@ -1,4 +1,5 @@
-import 'package:Dive/services/common/share_service.dart';
+import 'package:Dive/services/common/share/share_service.dart';
+import 'package:Dive/services/common/share/templates/ShareKakao.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
@@ -159,7 +160,8 @@ class _SettingPageState extends State<SettingPage> {
     return RaisedButton(
       color: CommonService.hexToColor("#00a3ff"),
       onPressed: () async {
-        ShareService shareService = new ShareService();
+        ShareService shareService = new ShareService.template(new ShareKakao());
+
         try{
           await shareService.doShare();
         } catch(error) {
