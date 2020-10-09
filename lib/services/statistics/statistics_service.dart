@@ -1,5 +1,6 @@
 import 'package:Dive/commons/function.dart';
 import 'package:Dive/models/daily_model.dart';
+import 'package:Dive/models/record_has_tag.dart';
 import 'package:Dive/models/record_model.dart';
 import 'package:Dive/services/database/database_helper.dart';
 
@@ -44,11 +45,11 @@ class StatisticsService {
     FROM daily d JOIN record r ON d.id = r.dailyId
     WHERE d.month = ? AND d.year = ?
     GROUP BY d.year, d.month, d.day
-    """,
-        [month, year]).then((value) => value.toList());
+    """, [month, year]).then((value) => value.toList());
   }
 
-  Future<List<Map<String, dynamic>>> getGraphDataByWeekOfMonth([int month, int year]) async {
+  Future<List<Map<String, dynamic>>> getGraphDataByWeekOfMonth(
+      [int month, int year]) async {
     month = month ?? DateTime.now().month;
     year = year ?? DateTime.now().year;
     final db = await DBHelper().database;
@@ -194,7 +195,8 @@ class StatisticsService {
     """, [name, month, year]).then((value) => value.toList());
   }
 
-  Future getDetailsByTagName(String name, [int month, int year]) async {
+  Future _getDetailsBy(String tagColumn, String value,
+      [int month, int year]) async {
     month = month ?? DateTime.now().month;
     year = year ?? DateTime.now().year;
     final db = await DBHelper().database;
@@ -204,13 +206,46 @@ class StatisticsService {
            r.description description,
            GROUP_CONCAT(e.name) emotions
     FROM tag t JOIN recordHasTag rt ON t.id = rt.tagId
-                   JOIN record r ON r.id = rt.recordId
-                   JOIN daily d ON d.id = r.dailyId
-                   LEFT OUTER JOIN recordHasEmotion re ON r.id = re.recordId
-                   LEFT OUTER JOIN emotion e ON e.id = re.emotionId
-    WHERE t.name = ? AND d.month = ? AND d.year = ?
+               JOIN record r ON r.id = rt.recordId
+               JOIN daily d ON d.id = r.dailyId
+               LEFT OUTER JOIN recordHasEmotion re ON r.id = re.recordId
+               LEFT OUTER JOIN emotion e ON e.id = re.emotionId
+    WHERE t.$tagColumn = ? AND d.month = ? AND d.year = ?
     GROUP BY d.day, t.id
     ORDER BY d.day DESC
-    """, [name, month, year]).then((value) => value.toList());
+    """, [value, month, year]).then((value) => value.toList());
+  }
+
+  Future getDetailsByTagId(String id, [int month, int year]) async {
+    return this._getDetailsBy('id', id, month, year);
+  }
+
+  Future getDetailsByTagName(String name, [int month, int year]) async {
+    return this._getDetailsBy('name', name, month, year);
+  }
+
+  Future getScoreByTagId(String tagId, [int month, int year]) async {
+    month = month ?? DateTime.now().month;
+    year = year ?? DateTime.now().year;
+    final db = await DBHelper().database;
+    return db.rawQuery("""
+    SELECT AVG(r.score) score
+    FROM recordHasTag rt JOIN record r ON rt.recordId = r.id
+                         JOIN daily d ON d.id = r.dailyId
+    WHERE rt.tagId = ? AND d.month = ? AND d.year = ?
+    """, [tagId, month, year]);
+  }
+
+  Future getScoreByTagName(String tagName, [int month, int year]) async {
+    month = month ?? DateTime.now().month;
+    year = year ?? DateTime.now().year;
+    final db = await DBHelper().database;
+    return db.rawQuery("""
+    SELECT AVG(r.score) score
+    FROM recordHasTag rt JOIN record r ON rt.recordId = r.id
+                         JOIN daily d ON d.id = r.dailyId
+                         JOIN tag t ON t.id = rt.tagId
+    WHERE t.name = ? AND d.month = ? AND d.year = ?
+    """, [tagName, month, year]);
   }
 }

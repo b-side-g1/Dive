@@ -294,4 +294,9 @@ Future<void> main() async {
     expect(rows.isEmpty, true);
     expect(true, true);
   });
+
+  test('getScoreByTagName 함수 테스트', () async {
+    List rows = await statisticsService.getScoreByTagName('그럴싸한 이유', 1);
+//    throw rows;
+  });
 }
