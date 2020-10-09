@@ -224,7 +224,7 @@ class StatisticsService {
     return this._getDetailsBy('name', name, month, year);
   }
 
-  Future getScoreByTagId(String tagId, [int month, int year]) async {
+  Future<double> getAverageScoreByTagId(String tagId, [int month, int year]) async {
     month = month ?? DateTime.now().month;
     year = year ?? DateTime.now().year;
     final db = await DBHelper().database;
@@ -233,10 +233,10 @@ class StatisticsService {
     FROM recordHasTag rt JOIN record r ON rt.recordId = r.id
                          JOIN daily d ON d.id = r.dailyId
     WHERE rt.tagId = ? AND d.month = ? AND d.year = ?
-    """, [tagId, month, year]);
+    """, [tagId, month, year]).then((value) => value[0]['score']);
   }
 
-  Future getScoreByTagName(String tagName, [int month, int year]) async {
+  Future<double> getAverageScoreByTagName(String tagName, [int month, int year]) async {
     month = month ?? DateTime.now().month;
     year = year ?? DateTime.now().year;
     final db = await DBHelper().database;
@@ -246,6 +246,32 @@ class StatisticsService {
                          JOIN daily d ON d.id = r.dailyId
                          JOIN tag t ON t.id = rt.tagId
     WHERE t.name = ? AND d.month = ? AND d.year = ?
-    """, [tagName, month, year]);
+    """, [tagName, month, year]).then((value) => value[0]['score']);
+  }
+
+
+  Future<double> getAverageScoreByEmotionId(String emotionId, [int month, int year]) async {
+    month = month ?? DateTime.now().month;
+    year = year ?? DateTime.now().year;
+    final db = await DBHelper().database;
+    return db.rawQuery("""
+    SELECT AVG(r.score) score
+    FROM recordHasEmotion re JOIN record r ON re.recordId = r.id
+                         JOIN daily d ON d.id = r.dailyId
+    WHERE re.emotionId = ? AND d.month = ? AND d.year = ?
+    """, [emotionId, month, year]).then((value) => value[0]['score']);
+  }
+
+  Future<double> getAverageScoreByEmotionName(String emotionName, [int month, int year]) async {
+    month = month ?? DateTime.now().month;
+    year = year ?? DateTime.now().year;
+    final db = await DBHelper().database;
+    return db.rawQuery("""
+    SELECT AVG(r.score) score
+    FROM recordHasEmotion re JOIN record r ON re.recordId = r.id
+                         JOIN daily d ON d.id = r.dailyId
+                         JOIN emotion e ON e.id = re.emotionId
+    WHERE e.name = ? AND d.month = ? AND d.year = ?
+    """, [emotionName, month, year]).then((value) => value[0]['score']);
   }
 }

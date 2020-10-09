@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:Dive/migrations/migration.dart';
 import 'package:Dive/migrations/v1_initialization.dart';
@@ -295,8 +296,13 @@ Future<void> main() async {
     expect(true, true);
   });
 
-  test('getScoreByTagName 함수 테스트', () async {
-    List rows = await statisticsService.getScoreByTagName('그럴싸한 이유', 1);
-//    throw rows;
+  test('getAverageScoreByTagName 함수 테스트', () async {
+    double score = await statisticsService.getAverageScoreByTagName('그럴싸한 이유', 1);
+    expect(score, null);
+  });
+
+  test('getAverageScoreByEmotionName 함수 테스트', () async {
+    double score = await statisticsService.getAverageScoreByEmotionName('신남', 1);
+    expect(score, 92.5);
   });
 }
