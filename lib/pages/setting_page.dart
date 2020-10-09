@@ -154,6 +154,15 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
+  Widget doShareWidget() {
+    return RaisedButton(
+      color: CommonService.hexToColor("#00a3ff"),
+      onPressed: () {},
+      child: Text("공유하기",style: TextStyle(color: Colors.white),),
+
+    );
+  }
+
   Widget _bgContainer() {
     return FittedBox(
       fit: BoxFit.fill, // width 100% 적용!
@@ -256,6 +265,7 @@ class _SettingPageState extends State<SettingPage> {
                     },
                   ),
                   settingWidget('현재 버전', currentVersionWidget()),
+                  settingWidget('앱 공유하기', doShareWidget()),
                 ],
               ),
             ),
