@@ -1,3 +1,4 @@
+import 'package:Dive/services/common/share_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/Picker.dart';
@@ -154,10 +155,18 @@ class _SettingPageState extends State<SettingPage> {
     );
   }
 
-  Widget doShareWidget() {
+  Widget doShareWidget(BuildContext context) {
     return RaisedButton(
       color: CommonService.hexToColor("#00a3ff"),
-      onPressed: () {},
+      onPressed: () async {
+        ShareService shareService = new ShareService();
+        try{
+          await shareService.doShare();
+        } catch(error) {
+          debugPrint("[setting_page.dart] #doShareWidget onPressed() error -> ${error}");
+          CommonService.showToast(error.msg);
+        }
+      },
       child: Text("공유하기",style: TextStyle(color: Colors.white),),
 
     );
@@ -265,7 +274,7 @@ class _SettingPageState extends State<SettingPage> {
                     },
                   ),
                   settingWidget('현재 버전', currentVersionWidget()),
-                  settingWidget('앱 공유하기', doShareWidget()),
+                  settingWidget('앱 공유하기', doShareWidget(context)),
                 ],
               ),
             ),
