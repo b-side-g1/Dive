@@ -34,8 +34,21 @@ class StatisticsService {
             }));
   }
 
-//  Future<List<GraphDto>> getGraphData([int month, int year]) async {
   Future<List<Map<String, dynamic>>> getGraphData([int month, int year]) async {
+    month = month ?? DateTime.now().month;
+    year = year ?? DateTime.now().year;
+    final db = await DBHelper().database;
+    return db.rawQuery("""
+    SELECT d.day day,
+           AVG(r.score) score
+    FROM daily d JOIN record r ON d.id = r.dailyId
+    WHERE d.month = ? AND d.year = ?
+    GROUP BY d.year, d.month, d.day
+    """,
+        [month, year]).then((value) => value.toList());
+  }
+
+  Future<List<Map<String, dynamic>>> getGraphDataByWeekOfMonth([int month, int year]) async {
     month = month ?? DateTime.now().month;
     year = year ?? DateTime.now().year;
     final db = await DBHelper().database;
