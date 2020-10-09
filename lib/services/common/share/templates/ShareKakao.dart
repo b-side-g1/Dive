@@ -1,9 +1,12 @@
+import 'package:Dive/services/common/share/share_service.dart';
+import 'package:Dive/services/common/share/templates/DefaultShareTemplate.dart';
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/link.dart';
 
-import '../../commons/static.dart';
+import '../../../../commons/static.dart';
 
-class ShareService {
+class ShareKakao extends DefaultShareTemplate {
+  @override
   void doShare() async {
     LinkClient lc = LinkClient.instance;
     bool isInstalled = await isKakaoTalkInstalled();
