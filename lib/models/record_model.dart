@@ -68,6 +68,9 @@ class Record {
   };
 
   bool isCreatedSameDay() {
+    if(daily == null) {
+      return true;
+    }
     DateTime datetime = DateTime.parse(daily.endAt);
     datetime = datetime.hour <= 6 ? datetime.subtract(Duration(days: 1)) : datetime;
     return DateTime.parse(createdAt).day ==  datetime.day;
