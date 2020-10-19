@@ -332,7 +332,7 @@ class _DailyPageState extends State<DailyPage> {
               automaticallyImplyLeading: false,
               backgroundColor: Colors.white,
               brightness: Brightness.light,
-              expandedHeight: SizeConfig.blockSizeVertical * 9,
+              expandedHeight: SizeConfig.blockSizeVertical * 5,
               flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
                   titlePadding: EdgeInsets.fromLTRB(15, 0, 0, 5),

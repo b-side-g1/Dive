@@ -1,3 +1,4 @@
+import 'package:Dive/config/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Dive/inherited/state_container.dart';
@@ -159,14 +160,14 @@ class _InputPageState extends State<InputPage> {
 
   renderSteper(step) {
     return Container(
-      margin: EdgeInsets.only(top: 25),
-      height: MediaQuery.of(context).size.height - 40,
+      margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 4),
+      height: SizeConfig.blockSizeVertical * 100,
       child: Stack(
         children: <Widget>[
           Opacity(
             opacity: 0.20000000298023224,
             child: new Container(
-                width: 4,
+                width: SizeConfig.blockSizeHorizontal * 1,
                 decoration: new BoxDecoration(
                     color: Color(0xff000000),
                     borderRadius: new BorderRadius.only(
@@ -176,9 +177,9 @@ class _InputPageState extends State<InputPage> {
           ),
           Positioned(
               child: Container(
-                  width: 4,
+                  width: SizeConfig.blockSizeHorizontal * 1,
                   height:
-                      ((MediaQuery.of(context).size.height - 40) / 3) * step,
+                      (SizeConfig.blockSizeVertical * 90 / 3) * step,
                   decoration: new BoxDecoration(
                       color: Color(0xff33f7fe),
                       borderRadius: BorderRadius.circular(100)))),
@@ -219,8 +220,8 @@ class _InputPageState extends State<InputPage> {
               },
             ),
             Positioned(
-                right: 20.0,
-                top: 40.0,
+                right: SizeConfig.blockSizeHorizontal * 6,
+                top: SizeConfig.blockSizeVertical * 7,
                 child: Container(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
