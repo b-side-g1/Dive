@@ -6,8 +6,8 @@ class ShareService extends DefaultShareTemplate{
   ShareService.template(this.template);
 
   @override
-  void doShare() {
-    template.doShare();
+  void doShare() async {
+    await template.doShare();
   }
 
 }

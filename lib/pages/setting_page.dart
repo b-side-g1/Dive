@@ -166,7 +166,7 @@ class _SettingPageState extends State<SettingPage> {
           await shareService.doShare();
         } catch(error) {
           debugPrint("[setting_page.dart] #doShareWidget onPressed() error -> ${error}");
-          CommonService.showToast(error.msg);
+          CommonService.showToast(error);
         }
       },
       child: Text("공유하기",style: TextStyle(color: Colors.white),),
