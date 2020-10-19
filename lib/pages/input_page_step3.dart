@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:Dive/controller/diary_tab_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:Dive/components/input/step3/edit_tag_dialog.dart';
 import 'package:Dive/components/input/step3/reason_tag_widget.dart';
@@ -275,7 +276,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          StateContainer(child: DailyPage())));
+                          StateContainer(child: DiaryTabController())));
             },
             child: Text(
               (container.record == null) ?  "기록하기" : "수정하기",
