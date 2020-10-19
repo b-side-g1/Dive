@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:Dive/components/record_card.dart';
+import 'package:Dive/config/size_config.dart';
 import 'package:Dive/inherited/state_container.dart';
 import 'package:Dive/models/daily_model.dart';
 import 'package:Dive/models/record_model.dart';
@@ -331,26 +332,27 @@ class _DailyPageState extends State<DailyPage> {
               automaticallyImplyLeading: false,
               backgroundColor: Colors.white,
               brightness: Brightness.light,
-              expandedHeight: 56.0,
+              expandedHeight: SizeConfig.blockSizeVertical * 9,
               flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
                   titlePadding: EdgeInsets.fromLTRB(15, 0, 0, 5),
                   title: _topNav(context)),
             ),
             SliverFixedExtentList(
-              itemExtent: 121.0,
+              itemExtent: SizeConfig.blockSizeVertical * 20,
               delegate: SliverChildListDelegate([
                 _dailyContainer(context, _date),
               ]),
             ),
             SliverFixedExtentList(
-              itemExtent: 160.0,
+              itemExtent: SizeConfig.blockSizeVertical * 26,
               delegate: SliverChildListDelegate([
                 _waveContainer(),
               ]),
             ),
             SliverFixedExtentList(
-              itemExtent: !isToday && !isEmpty ? 0 : 150.0,
+//              itemExtent: !isToday && !isEmpty ? 0 : 150.0,
+              itemExtent: !isToday && !isEmpty ? 0 : SizeConfig.blockSizeVertical * 24,
               // TODO: 없애야 되는데 height 0으로 변경한 거;;리팩토링 필수
               delegate: SliverChildListDelegate([
                 _createRecordContainer(context),
