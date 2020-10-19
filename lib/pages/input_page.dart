@@ -87,7 +87,7 @@ class _InputPageState extends State<InputPage> {
             child: Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
-                  padding: EdgeInsets.only(top: height * 0.05),
+                  padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 5),
                   child: stepActionButton(ArrowAction.up, step),
                 )),
           ),
@@ -97,7 +97,7 @@ class _InputPageState extends State<InputPage> {
               child: Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
-                    padding: EdgeInsets.only(bottom: height * 0.05),
+                    padding: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical * 5),
                     child: stepActionButton(ArrowAction.down, step),
                   )),
             ),
@@ -139,8 +139,8 @@ class _InputPageState extends State<InputPage> {
 
     return Container(
       child: Container(
-        width: 40,
-        height: 40,
+        width: SizeConfig.blockSizeHorizontal * 12,
+        height: SizeConfig.blockSizeVertical * 6,
         decoration: BoxDecoration(
             color: Color.fromRGBO(0, 0, 0, 0.0), shape: BoxShape.rectangle),
         child: IconButton(
