@@ -26,6 +26,9 @@ class StatisticsService {
                     where:
                         "dailyId IN('${ids.map((e) => e['id']).join("', '")}')")
                 .then((records) {
+                  if(records.isEmpty) {
+                    return 0;
+                  }
               var sum = records
                   .map((e) => Record.fromJson(e).score)
                   .reduce((a, b) => a + b);
@@ -40,7 +43,7 @@ class StatisticsService {
     year = year ?? DateTime.now().year;
     final db = await DBHelper().database;
     return db.rawQuery("""
-    SELECT week, CAST(SUM(sum) AS REAL) / SUM(cnt) score
+    SELECT week, CAST(SUM(sum) AS REAL) / SUM(cnt) score, cnt
     FROM (SELECT CASE WHEN 7 >= day THEN 7
                       WHEN day BETWEEN 8 AND 14 THEN 14
                       WHEN day BETWEEN 15 AND 21 THEN 21
@@ -169,7 +172,9 @@ class StatisticsService {
     SELECT d.day day,
            r.score score,
            r.description description,
-           GROUP_CONCAT(t.name) tags
+           r.createdAt createdAt,
+           GROUP_CONCAT(t.name) tags,
+           GROUP_CONCAT(e.name) emotions
     FROM emotion e JOIN recordHasEmotion re ON e.id = re.emotionId
                    JOIN record r ON r.id = re.recordId
                    JOIN daily d ON d.id = r.dailyId
@@ -189,6 +194,8 @@ class StatisticsService {
     SELECT d.day day,
            r.score score,
            r.description description,
+           r.createdAt createdAt,
+           GROUP_CONCAT(t.name) tags,
            GROUP_CONCAT(e.name) emotions
     FROM tag t JOIN recordHasTag rt ON t.id = rt.tagId
                    JOIN record r ON r.id = rt.recordId
