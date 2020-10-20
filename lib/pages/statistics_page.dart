@@ -162,11 +162,12 @@ class _StatisticPageState extends State<StatisticsPage> {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
         color: Colors.white,
         child: Column(
-          children: [_widget1_1(), _widget1_2()],
+          children: [_graphMonth(), _summaryMonth()],
         ));
   }
 
-  Widget _widget1_1() {
+  // TODO: 월간 그래프 요약 한 부분
+  Widget _graphMonth() {
     var data = [
       50.0,
       10.0,
@@ -189,7 +190,7 @@ class _StatisticPageState extends State<StatisticsPage> {
     );
   }
 
-  Widget _widget1_2() {
+  Widget _summaryMonth() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
