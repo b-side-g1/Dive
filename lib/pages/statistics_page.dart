@@ -168,6 +168,7 @@ class _StatisticPageState extends State<StatisticsPage> {
 
   // TODO: 월간 그래프 요약 한 부분
   Widget _graphMonth() {
+    return Container();
     var data = [
       50.0,
       10.0,
