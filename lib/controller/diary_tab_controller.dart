@@ -8,20 +8,40 @@ class DiaryTabController extends StatefulWidget {
   _DiaryTabControllerState createState() => _DiaryTabControllerState();
 }
 
-class _DiaryTabControllerState extends State<DiaryTabController> {
+class _DiaryTabControllerState extends State<DiaryTabController> with SingleTickerProviderStateMixin {
+  TabController _tabController;
+
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(initialIndex: 0, length: 2, vsync: this);
+  }
+
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
         length: 2,
         child: Scaffold(
-          backgroundColor: Colors.white,
-          body: TabBarView(physics: NeverScrollableScrollPhysics(),
-              // 스크롤해서 탭 넘어가는거 막는 설정, 일단 추가해봤어욤
-              children: [
-                DailyPage(),
-                StatisticsPage(),
-              ]),
-          bottomNavigationBar: BottomBar(),
+          body: Stack(
+            children: [
+            TabBarView(physics: NeverScrollableScrollPhysics(),
+                // 스크롤해서 탭 넘어가는거 막는 설정, 일단 추가해봤어욤
+                children: [
+                  DailyPage(),
+                  StatisticsPage(),
+                ]),
+              BottomBar()
+            ],
+          )
+//          bottomNavigationBar: BottomBar(),
         ));
   }
 }
