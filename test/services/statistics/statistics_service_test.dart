@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:Dive/migrations/migration.dart';
 import 'package:Dive/migrations/v1_initialization.dart';
@@ -197,14 +198,32 @@ Future<void> main() async {
     expect(await statisticsService.getAverageScoreByMonth(1), avg);
   });
 
-  test('getGraphData 함수 테스트', () async {
+  test('getGraphDataByWeekOfMonth 함수 테스트', () async {
     List<Map<String, dynamic>> graphData =
-        await statisticsService.getGraphData(1);
+        await statisticsService.getGraphDataByWeekOfMonth(1);
     expect(graphData[0]['week'], 7);
     expect(graphData[0]['score'], 61.666666666666664);
     expect(graphData[0]['score'].toStringAsFixed(2), '61.67');
     expect(graphData[0]['score'].toStringAsFixed(4), '61.6667');
     expect(graphData[0]['score'].round(), 62);
+  });
+
+  test('getGraphData 함수 테스트', () async {
+    List<Map<String, dynamic>> graphData = await statisticsService.getGraphData(1);
+    expect(graphData[0]['day'], 1);
+    expect(graphData[0]['score'], 100);
+    expect(graphData[1]['day'], 2);
+    expect(graphData[1]['score'], 20);
+    expect(graphData[2]['day'], 3);
+    expect(graphData[2]['score'], 90);
+    expect(graphData[3]['day'], 4);
+    expect(graphData[3]['score'], 60);
+    expect(graphData[4]['day'], 5);
+    expect(graphData[4]['score'], 80);
+    expect(graphData[5]['day'], 6);
+    expect(graphData[5]['score'], 60);
+    expect(graphData[6]['day'], 7);
+    expect(graphData[6]['score'], 52.5);
   });
 
   test('getMostFrequentEmotions 함수 테스트', () async {
@@ -275,5 +294,15 @@ Future<void> main() async {
     List<Map<String, dynamic>> rows = await statisticsService.getDetailsByTagName('그럴싸한 이유', 1);
     expect(rows.isEmpty, true);
     expect(true, true);
+  });
+
+  test('getAverageScoreByTagName 함수 테스트', () async {
+    double score = await statisticsService.getAverageScoreByTagName('그럴싸한 이유', 1);
+    expect(score, null);
+  });
+
+  test('getAverageScoreByEmotionName 함수 테스트', () async {
+    double score = await statisticsService.getAverageScoreByEmotionName('신남', 1);
+    expect(score, 92.5);
   });
 }
