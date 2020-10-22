@@ -1,3 +1,4 @@
+import 'package:Dive/controller/diary_tab_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Dive/inherited/state_container.dart';
@@ -126,7 +127,7 @@ class _InputPageState extends State<InputPage> {
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => DailyPage()),
+                      MaterialPageRoute(builder: (context) => DiaryTabController()),
                       (e) => false);
                 },
               ),
