@@ -44,6 +44,7 @@ dependencies:
   fluttertoast: ^7.0.1
   flutter_svg: ^0.18.0
   firebase_messaging: ^6.0.1
+  kakao_flutter_sdk: ^0.5.2
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

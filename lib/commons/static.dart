@@ -31,3 +31,10 @@ final List<String> TagNames = [
   '쇼핑',
   '알콜',
 ];
+
+// 민감한 정보라 ignore!
+// slack 확인!
+final String KakaNativeKey = "go to slack!";
+final int ShareTemplateId = 000000;
+
+
