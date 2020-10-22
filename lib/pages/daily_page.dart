@@ -88,7 +88,9 @@ class _DailyPageState extends State<DailyPage> {
           : records;
       _secondRecordList =
           differentDayIndex > 0 ? records.sublist(differentDayIndex) : [];
-      existDifferentDayRecord = differentDayIndex > 0 ? true : records.any((element) => !element.isCreatedSameDay());
+      existDifferentDayRecord = differentDayIndex > 0
+          ? true
+          : records.any((element) => !element.isCreatedSameDay());
 
       _dailyScore = resDailyScore;
       isToday = resIsToday;
@@ -101,17 +103,18 @@ class _DailyPageState extends State<DailyPage> {
     var resDailyScore = records.isEmpty
         ? 0
         : (records.map((c) => c.score).reduce((a, b) => a + b) / records.length)
-        .round();
+            .round();
     var resIsEmpty = records.length == 0;
     setState(() {
       _dailyScore = resDailyScore;
       isEmpty = resIsEmpty;
     });
   }
+
   int getDifferentDayIndex(List<Record> records) {
     for (int i = 0; i < records.length - 1; i++) {
       if ((records[i].isCreatedSameDay() &&
-          !records[i + 1].isCreatedSameDay()) ||
+              !records[i + 1].isCreatedSameDay()) ||
           (!records[i].isCreatedSameDay() &&
               records[i + 1].isCreatedSameDay())) {
         return i + 1;
@@ -120,7 +123,7 @@ class _DailyPageState extends State<DailyPage> {
 
     return -1;
   }
-  
+
   int weekNumber(DateTime date) {
     int dayOfYear = int.parse(DateFormat("D").format(date));
     return ((dayOfYear - date.weekday + 10) / 7).floor();
@@ -298,9 +301,8 @@ class _DailyPageState extends State<DailyPage> {
   }
 
   Widget _dividerWidget(String dateStr) {
-
-    return Row(
-      children: <Widget>[Expanded(
+    return Row(children: <Widget>[
+      Expanded(
         child: new Container(
             margin: const EdgeInsets.only(left: 10.0, right: 20.0),
             child: Divider(
@@ -316,9 +318,10 @@ class _DailyPageState extends State<DailyPage> {
               color: Colors.black,
               height: 36,
             )),
-      ),]
-    );
+      ),
+    ]);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -362,6 +365,47 @@ class _DailyPageState extends State<DailyPage> {
                   final record = _firstRecordList[index];
                   return Dismissible(
                     key: Key(record.id),
+                    direction: DismissDirection.endToStart,
+                    background: Container(
+                      color: Colors.transparent,
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                          padding: const EdgeInsets.only(right: 45),
+                          child: Container(
+                            width: 60,
+                            height: 60,
+                            child: Transform.scale(
+                              scale: 0.5,
+                              child: IconButton(
+                                onPressed: (){},
+                                icon: new Image.asset("lib/src/image/daily/icon_trash_ori.png"),
+                              ),
+                            ),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.red),
+                          )),
+                    ),
+                    confirmDismiss: (DismissDirection direction) async {
+                      return await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text("감정 삭제"),
+                            content: const Text("감정을 삭제할까요?"),
+                            actions: <Widget>[
+                              FlatButton(
+                                  onPressed: () => Navigator.of(context).pop(true),
+                                  child: const Text("삭제하기")
+                              ),
+                              FlatButton(
+                                onPressed: () => Navigator.of(context).pop(false),
+                                child: const Text("취소"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
                     onDismissed: (direction) {
                       setState(() {
                         _firstRecordList.removeAt(index);
@@ -406,17 +450,19 @@ class _DailyPageState extends State<DailyPage> {
             SliverList(
               delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    DateTime dateTime = DateTime.parse(_firstRecordList[0].createdAt);
-                    return _dividerWidget(
-                      "${dateTime.month}/${dateTime.day}"
-                    );
-                  },
-                childCount: (_secondRecordList.isNotEmpty || existDifferentDayRecord) && _firstRecordList.length != 0 ? 1 : 0
-              ),
+                DateTime dateTime =
+                    DateTime.parse(_firstRecordList[0].createdAt);
+                return _dividerWidget("${dateTime.month}/${dateTime.day}");
+              },
+                  childCount: (_secondRecordList.isNotEmpty ||
+                              existDifferentDayRecord) &&
+                          _firstRecordList.length != 0
+                      ? 1
+                      : 0),
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
+                (BuildContext context, int index) {
                   final record = _secondRecordList[index];
                   return Dismissible(
                     key: Key(record.id),
@@ -458,19 +504,20 @@ class _DailyPageState extends State<DailyPage> {
                   );
                 },
                 childCount:
-                _secondRecordList == null ? 0 : _secondRecordList.length,
+                    _secondRecordList == null ? 0 : _secondRecordList.length,
               ),
             ),
             SliverList(
               delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                    DateTime dateTime = DateTime.parse(_secondRecordList[0].createdAt);
-                    return _dividerWidget(
-                        "${dateTime.month}/${dateTime.day}"
-                    );
-                  },
-                  childCount: _secondRecordList.isNotEmpty && !_secondRecordList[0].isCreatedSameDay() ? 1 : 0
-              ),
+                  (BuildContext context, int index) {
+                DateTime dateTime =
+                    DateTime.parse(_secondRecordList[0].createdAt);
+                return _dividerWidget("${dateTime.month}/${dateTime.day}");
+              },
+                  childCount: _secondRecordList.isNotEmpty &&
+                          !_secondRecordList[0].isCreatedSameDay()
+                      ? 1
+                      : 0),
             ),
           ],
         ));
