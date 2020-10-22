@@ -50,7 +50,7 @@ class _StatisticPageState extends State<StatisticsPage> {
     setState(() {
       _year = year;
       _month = month;
-      _monthCnt = graphResult.isEmpty ? 0 : graphResult[0]["cnt"] as int;
+      _monthCnt = graphResult.isEmpty ? 0 : graphResult.length as int;
       isEmpty = graphResult.isEmpty || _monthCnt < 2;
       _averageScore = averageScore;
     });
