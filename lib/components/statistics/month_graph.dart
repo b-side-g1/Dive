@@ -17,10 +17,12 @@ class MonthGraph extends StatelessWidget {
 
   static List<charts.Series<LinearSales, int>> _createSampleLineData() {
     final data = [
-      new LinearSales(0, 0),
-      new LinearSales(1, 0),
-      new LinearSales(2, 0),
-      new LinearSales(3, 0),
+      new LinearSales(0, 10),
+      new LinearSales(7, 10),
+      new LinearSales(14, 10),
+      new LinearSales(21, 10),
+      new LinearSales(28, 10),
+      new LinearSales(29, 10),
     ];
 
     return [
