@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:Dive/config/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:Dive/onboard/onboard_page.dart';
 import 'package:Dive/controller/diary_tab_controller.dart';
@@ -30,6 +31,7 @@ class Splash extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     AssetImage assetsImage = AssetImage('lib/src/image/splash/splash@3x.png');
     return Scaffold(
         body: Container(
