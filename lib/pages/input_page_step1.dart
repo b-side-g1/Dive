@@ -157,10 +157,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
   }
 
   renderScoreSelect(StateContainerState container) {
-    final width = MediaQuery
-        .of(context)
-        .size
-        .width;
 
     List<int> scoreList = [for (var i = 0; i <= 100; i += 10) i];
 
@@ -201,7 +197,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
                                 style: TextStyle(
                                   fontFamily: 'Roboto',
                                   color: Color(0xffffffff),
-                                  fontSize: width * 0.11,
+                                  fontSize: SizeConfig.blockSizeHorizontal * 11,
                                   fontWeight: FontWeight.w300,
                                   fontStyle: FontStyle.normal,
                                   letterSpacing: 0.28,
@@ -231,10 +227,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
             : "오전 ") + dateFormat.format(createDate)}";
       });
     }
-    final height = MediaQuery
-        .of(context)
-        .size
-        .height;
 
     setState(() {
       _scrollController = FixedExtentScrollController(
