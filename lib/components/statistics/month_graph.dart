@@ -1,46 +1,29 @@
+import 'package:Dive/services/statistics/statistics_service.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 import 'package:Dive/config/size_config.dart';
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 
-class MonthGraph extends StatelessWidget {
-  final List<charts.Series> seriesList  = _createSampleLineData ();
-  final bool animate = false;
+class MonthGraph extends StatefulWidget {
+  @override
+  _MonthGraphState createState() => _MonthGraphState();
+}
 
-//  factory MonthGraph.withSampleData() {
-//    return new MonthGraph(
-//      _createSampleData(),
-//      animate: false,
-//    );
-//  }
+class _MonthGraphState extends State<MonthGraph> {
+  var data;
 
-  static List<charts.Series<LinearSales, int>> _createSampleLineData() {
-    final data = [
-      new LinearSales(0, 10),
-      new LinearSales(7, 10),
-      new LinearSales(14, 10),
-      new LinearSales(21, 10),
-      new LinearSales(28, 10),
-      new LinearSales(29, 10),
-    ];
-
-    return [
-      new charts.Series<LinearSales, int>(
-        id: 'Sales',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (LinearSales sales, _) => sales.year,
-        measureFn: (LinearSales sales, _) => sales.sales,
-        data: data,
-      )
-    ];
-  }
-  Widget buildGraph() {
-    return charts.LineChart(
-      seriesList,
-      animate: animate,
-      defaultRenderer: new charts.LineRendererConfig(includePoints: true),
-    );;
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      data = [
+        new TimeSeriesSales(new DateTime(2017, 10, 1), null),
+        new TimeSeriesSales(new DateTime(2017, 10, 2), 10),
+        new TimeSeriesSales(new DateTime(2017, 10, 3), 30),
+        new TimeSeriesSales(new DateTime(2017, 10, 31), null),
+      ];
+    });
   }
 
   @override
@@ -49,21 +32,108 @@ class MonthGraph extends StatelessWidget {
       width: double.infinity,
       height: SizeConfig.blockSizeVertical * 35,
       decoration: BoxDecoration(border: Border.all()),
-      child: buildGraph(),
+      child: GraphBuilder(this.data),
     );
   }
 }
 
-//class TimeSeriesSales {
-//  final DateTime time;
-//  final int sales;
+class GraphBuilder extends StatelessWidget {
+  final data;
+
+  GraphBuilder(this.data);
+
+  List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
+    return [
+      new charts.Series<TimeSeriesSales, DateTime>(
+        id: 'Sales',
+        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        domainFn: (TimeSeriesSales sales, _) => sales.time,
+        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+        data: this.data,
+      )
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return charts.TimeSeriesChart(_createSampleData(),
+        animate: false,
+        dateTimeFactory: const charts.LocalDateTimeFactory(),
+        defaultRenderer: new charts.LineRendererConfig(includePoints: true),
+        primaryMeasureAxis: new charts.NumericAxisSpec(
+            tickProviderSpec:
+                new charts.BasicNumericTickProviderSpec(desiredTickCount: 1)));
+  }
+}
+
+//class MonthGraph extends StatefulWidget {
+//  @override
+//  _MonthGraphState createState() => _MonthGraphState();
+//}
 //
-//  TimeSeriesSales(this.time, this.sales);
+//class _MonthGraphState extends State<MonthGraph> {
+//
+////  @override
+////  void dispose() {
+////    super.dispose();
+////  }
+////
+////  @override
+////  void initState() {
+////    super.initState();
+//////    new StatisticsService().getGraphData(10,2020).then((value) => print("데이터 : " + value.toString()));
+////  }
+//
+//  final List<charts.Series> seriesList  = _createSampleData ();
+//  final bool animate = false;
+//
+//  static List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
+//    final data = [
+//      new TimeSeriesSales(new DateTime(2017, 10, 1), null),
+//      new TimeSeriesSales(new DateTime(2017, 10, 2), 10),
+//      new TimeSeriesSales(new DateTime(2017, 10, 3), 30),
+//      new TimeSeriesSales(new DateTime(2017, 10, 31), null),
+//    ];
+//
+//    return [
+//      new charts.Series<TimeSeriesSales, DateTime>(
+//        id: 'Sales',
+//        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+//        domainFn: (TimeSeriesSales sales, _) => sales.time,
+//        measureFn: (TimeSeriesSales sales, _) => sales.sales,
+//        data: data,
+//      )
+//    ];
+//  }
+//  Widget buildGraph() {
+//    return charts.TimeSeriesChart(
+//        seriesList,
+//        animate: animate,
+//        dateTimeFactory: const charts.LocalDateTimeFactory(),
+//        defaultRenderer: new charts.LineRendererConfig(includePoints: true),
+//        primaryMeasureAxis: new charts.NumericAxisSpec(
+//            tickProviderSpec:
+//            new charts.BasicNumericTickProviderSpec(
+//                desiredTickCount: 1
+//            )
+//        )
+//    );
+//  }
+//
+//  @override
+//  Widget build(BuildContext context) {
+//    return Container(
+//      width: double.infinity,
+//      height: SizeConfig.blockSizeVertical * 35,
+//      decoration: BoxDecoration(border: Border.all()),
+//      child: buildGraph(),
+//    );
+//  }
 //}
 
-class LinearSales {
-  final int year;
+class TimeSeriesSales {
+  final DateTime time;
   final int sales;
 
-  LinearSales(this.year, this.sales);
+  TimeSeriesSales(this.time, this.sales);
 }

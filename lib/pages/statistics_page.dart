@@ -169,30 +169,10 @@ class _StatisticPageState extends State<StatisticsPage> {
   }
 
   // TODO: 월간 그래프 요약 한 부분
-  Widget _graphMonth() {
+  Widget _graphMonth()  {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 15,horizontal: 10),
       child: MonthGraph()
-    );
-    var data = [
-      50.0,
-      10.0,
-      20.0,
-      25.0,
-      90.0,
-      100.0,
-      10.0,
-      30.0,
-      40.0,
-      50.0,
-      0.0
-    ];
-
-    return new Sparkline(
-      data: data,
-      pointsMode: PointsMode.all,
-      pointSize: 8.0,
-      pointColor: Colors.amber,
     );
   }
 
