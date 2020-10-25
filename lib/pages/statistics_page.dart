@@ -172,7 +172,7 @@ class _StatisticPageState extends State<StatisticsPage> {
   Widget _graphMonth()  {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 15,horizontal: 10),
-      child: MonthGraph()
+      child: MonthGraph(_year,_month)
     );
   }
 
