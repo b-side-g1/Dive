@@ -16,7 +16,7 @@ class MonthGraph extends StatefulWidget {
 }
 
 class _MonthGraphState extends State<MonthGraph> {
-  var graphData;
+  List<TimeSeriesSales> graphData;
   List<Map<String, dynamic>> testData;
 
   @override
@@ -32,11 +32,10 @@ class _MonthGraphState extends State<MonthGraph> {
       setState(() {
         testData = value;
         print("테스트 : ${testData}");
+        List<TimeSeriesSales> monthStatistics  = value.map((e) =>  new TimeSeriesSales(new DateTime(year, month, e["day"]), e["score"].round())).toList();
+        graphData = [...graphData, ...monthStatistics ];
       });
     });
-
-
-
   }
 
   void initGraphData(month,year) {
