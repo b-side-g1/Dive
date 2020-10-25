@@ -2,7 +2,6 @@ import 'package:Dive/services/statistics/statistics_service.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 import 'package:Dive/config/size_config.dart';
-import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 
 class MonthGraph extends StatefulWidget {
@@ -17,7 +16,6 @@ class MonthGraph extends StatefulWidget {
 
 class _MonthGraphState extends State<MonthGraph> {
   List<TimeSeriesSales> graphData;
-  List<Map<String, dynamic>> testData;
 
   @override
   void initState() {
@@ -26,22 +24,23 @@ class _MonthGraphState extends State<MonthGraph> {
     int year = widget._year;
     int month = widget._month;
 
-    initGraphData(month,year);
+    initGraphData(month, year);
 
-    StatisticsService().getGraphData(widget._month, widget._year).then((value)  {
+    StatisticsService().getGraphData(widget._month, widget._year).then((value) {
       setState(() {
-        testData = value;
-        print("테스트 : ${testData}");
-        List<TimeSeriesSales> monthStatistics  = value.map((e) =>  new TimeSeriesSales(new DateTime(year, month, e["day"]), e["score"].round())).toList();
-        graphData = [...graphData, ...monthStatistics ];
+        List<TimeSeriesSales> monthStatistics = value
+            .map((e) => TimeSeriesSales(
+                DateTime(year, month, e["day"]), e["score"].round()))
+            .toList();
+        graphData = [...graphData, ...monthStatistics];
       });
     });
   }
 
-  void initGraphData(month,year) {
+  void initGraphData(month, year) {
     graphData = [
-      new TimeSeriesSales(new DateTime(year, month, 1), null),
-      new TimeSeriesSales(new DateTime(year, month + 1, 0), null),
+      TimeSeriesSales(DateTime(year, month, 1), null), // month의 첫날
+      TimeSeriesSales(DateTime(year, month + 1, 0), null), // month의 마지막날
     ];
   }
 
@@ -50,7 +49,6 @@ class _MonthGraphState extends State<MonthGraph> {
     return Container(
       width: double.infinity,
       height: SizeConfig.blockSizeVertical * 35,
-      decoration: BoxDecoration(border: Border.all()),
       child: GraphBuilder(this.graphData),
     );
   }
@@ -61,9 +59,9 @@ class GraphBuilder extends StatelessWidget {
 
   GraphBuilder(this.graphData);
 
-  List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
+  List<charts.Series<TimeSeriesSales, DateTime>> _createGraphData() {
     return [
-      new charts.Series<TimeSeriesSales, DateTime>(
+      charts.Series<TimeSeriesSales, DateTime>(
         id: 'Sales',
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
         domainFn: (TimeSeriesSales sales, _) => sales.time,
@@ -75,13 +73,13 @@ class GraphBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return charts.TimeSeriesChart(_createSampleData(),
+    return charts.TimeSeriesChart(_createGraphData(),
         animate: false,
         dateTimeFactory: const charts.LocalDateTimeFactory(),
-        defaultRenderer: new charts.LineRendererConfig(includePoints: true),
-        primaryMeasureAxis: new charts.NumericAxisSpec(
+        defaultRenderer: charts.LineRendererConfig(includePoints: true),
+        primaryMeasureAxis: charts.NumericAxisSpec(
             tickProviderSpec:
-                new charts.BasicNumericTickProviderSpec(desiredTickCount: 1)));
+                charts.BasicNumericTickProviderSpec(desiredTickCount: 1)));
   }
 }
 
