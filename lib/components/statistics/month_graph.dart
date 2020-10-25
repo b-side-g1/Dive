@@ -16,35 +16,34 @@ class MonthGraph extends StatefulWidget {
 }
 
 class _MonthGraphState extends State<MonthGraph> {
-  var data;
+  var graphData;
   List<Map<String, dynamic>> testData;
 
   @override
   void initState() {
     super.initState();
-    data = [
-      new TimeSeriesSales(new DateTime(2017, 10, 1), null),
-      new TimeSeriesSales(new DateTime(2017, 10, 31), null),
-    ];
 
+    int year = widget._year;
+    int month = widget._month;
 
-    setState(() {
+    initGraphData(month,year);
 
-
-      StatisticsService().getGraphData(widget._month, widget._year).then((value)  {
-
-//        data = [
-//          new TimeSeriesSales(new DateTime(2017, 10, 1), 10),
-//          new TimeSeriesSales(new DateTime(2017, 10, 2), null),
-//          new TimeSeriesSales(new DateTime(2017, 10, 3), null),
-//          new TimeSeriesSales(new DateTime(2017, 10, 31), null),
-//        ];
-
+    StatisticsService().getGraphData(widget._month, widget._year).then((value)  {
+      setState(() {
         testData = value;
         print("테스트 : ${testData}");
       });
     });
 
+
+
+  }
+
+  void initGraphData(month,year) {
+    graphData = [
+      new TimeSeriesSales(new DateTime(year, month, 1), null),
+      new TimeSeriesSales(new DateTime(year, month + 1, 0), null),
+    ];
   }
 
   @override
@@ -53,15 +52,15 @@ class _MonthGraphState extends State<MonthGraph> {
       width: double.infinity,
       height: SizeConfig.blockSizeVertical * 35,
       decoration: BoxDecoration(border: Border.all()),
-      child: GraphBuilder(this.data),
+      child: GraphBuilder(this.graphData),
     );
   }
 }
 
 class GraphBuilder extends StatelessWidget {
-  final data;
+  final graphData;
 
-  GraphBuilder(this.data);
+  GraphBuilder(this.graphData);
 
   List<charts.Series<TimeSeriesSales, DateTime>> _createSampleData() {
     return [
@@ -70,7 +69,7 @@ class GraphBuilder extends StatelessWidget {
         colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
         domainFn: (TimeSeriesSales sales, _) => sales.time,
         measureFn: (TimeSeriesSales sales, _) => sales.sales,
-        data: this.data,
+        data: this.graphData,
       )
     ];
   }
