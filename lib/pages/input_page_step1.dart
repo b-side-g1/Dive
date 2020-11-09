@@ -1,3 +1,4 @@
+import 'package:Dive/config/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_picker/flutter_picker.dart';
@@ -113,10 +114,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
   }
 
   renderTimeSelect() {
-    final width = MediaQuery
-        .of(context)
-        .size
-        .width;
     final container = StateContainer.of(context);
     String title = "당신의 기분을 알려주세요.";
 
@@ -132,7 +129,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
               children: <Widget>[
                 Text(curDate == null ? '' : curDate,
                     style: TextStyle(
-                      fontSize: width * 0.07,
+                      fontSize: SizeConfig.blockSizeHorizontal * 7,
                       color: const Color(0xffffffff),
                       fontWeight: FontWeight.w700,
                       fontFamily: "NotoSans",
@@ -151,7 +148,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
             ),
             Text(title,
                 style: TextStyle(
-                    fontSize: width * 0.058,
+                    fontSize: SizeConfig.blockSizeHorizontal * 5.8,
                     color: const Color(0xffffffff),
                     fontWeight: FontWeight.w400,
                     fontFamily: "NotoSans"))
@@ -160,10 +157,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
   }
 
   renderScoreSelect(StateContainerState container) {
-    final width = MediaQuery
-        .of(context)
-        .size
-        .width;
 
     List<int> scoreList = [for (var i = 0; i <= 100; i += 10) i];
 
@@ -172,8 +165,8 @@ class _InputPageStep1State extends State<InputPageStep1> {
         child:
         Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
           Container(
-            width: width * 0.73,
-            height: width * 0.73,
+            width: SizeConfig.blockSizeHorizontal * 73.5,
+            height: SizeConfig.blockSizeHorizontal * 73.5,
             decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('lib/src/image/daily/img_bubble.png'),
@@ -204,7 +197,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
                                 style: TextStyle(
                                   fontFamily: 'Roboto',
                                   color: Color(0xffffffff),
-                                  fontSize: width * 0.11,
+                                  fontSize: SizeConfig.blockSizeHorizontal * 11,
                                   fontWeight: FontWeight.w300,
                                   fontStyle: FontStyle.normal,
                                   letterSpacing: 0.28,
@@ -234,10 +227,6 @@ class _InputPageStep1State extends State<InputPageStep1> {
             : "오전 ") + dateFormat.format(createDate)}";
       });
     }
-    final height = MediaQuery
-        .of(context)
-        .size
-        .height;
 
     setState(() {
       _scrollController = FixedExtentScrollController(
@@ -245,7 +234,7 @@ class _InputPageStep1State extends State<InputPageStep1> {
     });
 
     return Container(
-      padding: EdgeInsets.only(top: height * 0.23),
+      padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 23),
       child: Stack(
         children: <Widget>[
           Column(
@@ -253,12 +242,9 @@ class _InputPageStep1State extends State<InputPageStep1> {
               renderTimeSelect(),
               renderScoreSelect(container),
               Container(
-                margin: EdgeInsets.only(top: 45),
-                height: 35,
-                width: MediaQuery
-                    .of(context)
-                    .size
-                    .width * 0.8,
+                margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 8),
+                height: SizeConfig.blockSizeVertical * 5,
+                width: SizeConfig.blockSizeHorizontal * 80,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('lib/src/image/daily/img_shadow.png'),

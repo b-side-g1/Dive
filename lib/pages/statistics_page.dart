@@ -1,7 +1,9 @@
 import 'package:Dive/components/custom_month_picker.dart';
 import 'package:Dive/components/forms/pie_chart.dart';
+import 'package:Dive/components/statistics/month_graph.dart';
 import 'package:Dive/components/statistics_emotion.dart';
 import 'package:Dive/components/statistics_tag.dart';
+import 'package:Dive/config/size_config.dart';
 import 'package:Dive/inherited/state_container.dart';
 import 'package:Dive/services/common/common_service.dart';
 import 'package:Dive/services/statistics/statistics_service.dart';
@@ -167,27 +169,10 @@ class _StatisticPageState extends State<StatisticsPage> {
   }
 
   // TODO: 월간 그래프 요약 한 부분
-  Widget _graphMonth() {
-    return Container();
-    var data = [
-      50.0,
-      10.0,
-      20.0,
-      25.0,
-      90.0,
-      100.0,
-      10.0,
-      30.0,
-      40.0,
-      50.0,
-      0.0
-    ];
-
-    return new Sparkline(
-      data: data,
-      pointsMode: PointsMode.all,
-      pointSize: 8.0,
-      pointColor: Colors.amber,
+  Widget _graphMonth()  {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 15,horizontal: 10),
+      child: MonthGraph(_year,_month)
     );
   }
 
