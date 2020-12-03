@@ -355,7 +355,8 @@ class _DailyPageState extends State<DailyPage> {
             ),
             SliverFixedExtentList(
 //              itemExtent: !isToday && !isEmpty ? 0 : 150.0,
-              itemExtent: !isToday && !isEmpty ? 0 : SizeConfig.blockSizeVertical * 24,
+              itemExtent:
+                  !isToday && !isEmpty ? 0 : SizeConfig.blockSizeVertical * 24,
               // TODO: 없애야 되는데 height 0으로 변경한 거;;리팩토링 필수
               delegate: SliverChildListDelegate([
                 _createRecordContainer(context),
@@ -379,8 +380,9 @@ class _DailyPageState extends State<DailyPage> {
                             child: Transform.scale(
                               scale: 0.5,
                               child: IconButton(
-                                onPressed: (){},
-                                icon: new Image.asset("lib/src/image/daily/icon_trash_ori.png"),
+                                onPressed: () {},
+                                icon: new Image.asset(
+                                    "lib/src/image/daily/icon_trash_ori.png"),
                               ),
                             ),
                             decoration: BoxDecoration(
@@ -391,18 +393,27 @@ class _DailyPageState extends State<DailyPage> {
                       return await showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text("감정 삭제"),
-                            content: const Text("감정을 삭제할까요?"),
+                          return CupertinoAlertDialog(
+                            content: Container(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child: const Text(
+                                    "감정을 삭제하면 되돌릴 수 없습니다.\n정말 삭제하실 건가요?",style: TextStyle(
+                                  height: 1.5,
+                                  fontSize: 15
+                                ),)
+                            ),
                             actions: <Widget>[
-                              FlatButton(
-                                  onPressed: () => Navigator.of(context).pop(true),
-                                  child: const Text("삭제하기")
+                              CupertinoDialogAction(
+                                isDefaultAction: true,
+                                child: Text("삭제하기"),
+                                onPressed: () =>
+                                    Navigator.of(context).pop(true),
                               ),
-                              FlatButton(
-                                onPressed: () => Navigator.of(context).pop(false),
-                                child: const Text("취소"),
-                              ),
+                              CupertinoDialogAction(
+                                child: Text("취소"),
+                                onPressed: () =>
+                                    Navigator.of(context).pop(false),
+                              )
                             ],
                           );
                         },

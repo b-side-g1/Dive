@@ -17,7 +17,6 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-
   List emotions = [];
 
   Color get backgroundColor {
@@ -88,7 +87,8 @@ class _InputPageState extends State<InputPage> {
             child: Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
-                  padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 5),
+                  padding:
+                      EdgeInsets.only(top: SizeConfig.blockSizeVertical * 5),
                   child: stepActionButton(ArrowAction.up, step),
                 )),
           ),
@@ -98,7 +98,8 @@ class _InputPageState extends State<InputPage> {
               child: Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
-                    padding: EdgeInsets.only(bottom: SizeConfig.blockSizeVertical * 5),
+                    padding: EdgeInsets.only(
+                        bottom: SizeConfig.blockSizeVertical * 5),
                     child: stepActionButton(ArrowAction.down, step),
                   )),
             ),
@@ -113,25 +114,33 @@ class _InputPageState extends State<InputPage> {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          // return object of type Dialog
-          return AlertDialog(
-            content: new Text("저장되지 않은 데이터는 삭제됩니다.\n취소하시겠습니까?"),
+          return CupertinoAlertDialog(
+            content: Container(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: const Text(
+                  "저장되지 않은 데이터는 삭제됩니다.\n취소하시겠습니까?",style: TextStyle(
+                    height: 1.5,
+                    fontSize: 15
+                ),)
+            ),
             actions: <Widget>[
-              new FlatButton(
-                child: new Text("아니오"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              new FlatButton(
-                child: new Text("네"),
+              CupertinoDialogAction(
+                isDefaultAction: true,
+                child: Text("네"),
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => DiaryTabController()),
+                      MaterialPageRoute(
+                          builder: (context) => DiaryTabController()),
                       (e) => false);
                 },
               ),
+              CupertinoDialogAction(
+                child: Text("아니오"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
             ],
           );
         },
@@ -179,8 +188,7 @@ class _InputPageState extends State<InputPage> {
           Positioned(
               child: Container(
                   width: SizeConfig.blockSizeHorizontal * 1,
-                  height:
-                      (SizeConfig.blockSizeVertical * 90 / 3) * step,
+                  height: (SizeConfig.blockSizeVertical * 90 / 3) * step,
                   decoration: new BoxDecoration(
                       color: Color(0xff33f7fe),
                       borderRadius: BorderRadius.circular(100)))),
@@ -212,7 +220,9 @@ class _InputPageState extends State<InputPage> {
                 InputPageStep2(
                   emotions: emotions,
                 ),
-                InputPageStep3(description: container.description,)
+                InputPageStep3(
+                  description: container.description,
+                )
               ],
               onPageChanged: (page) {
                 setState(() {
