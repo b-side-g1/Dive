@@ -68,7 +68,7 @@ class _StatisticsEmotionState extends State<StatisticsEmotion> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
             description,
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700),
+            style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700),
           ),
           Padding(
               padding: EdgeInsets.only(top: 10),

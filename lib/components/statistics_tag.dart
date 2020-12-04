@@ -21,7 +21,6 @@ class _StatisticsTagState extends State<StatisticsTag> {
   StatisticsService _statisticsService = StatisticsService();
   List bestTagList = [];
   List worstTagList = [];
-  List<Map> mostTagList = [];
 
   @override
   void initState() {
@@ -56,18 +55,6 @@ class _StatisticsTagState extends State<StatisticsTag> {
                   .toList()
             });
 
-    _statisticsService
-        .getMostFrequentTags(widget.month, widget.year)
-        .then((value) => {
-              mostTagList = value
-                  .map((e) => {
-                        'id': e['id'],
-                        'name': e['name'],
-                        'percent': e['percent'],
-                        'lastUpdatedAt': e['lastUpdatedAt']
-                      })
-                  .toList()
-            });
   }
 
   Widget _emptyTagWidget() {
@@ -114,7 +101,7 @@ class _StatisticsTagState extends State<StatisticsTag> {
                   children: [
                     Text(
                       description,
-                      style: TextStyle(fontWeight: FontWeight.w700),
+                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
                     ),
                     Image.asset(isBest
                         ? "assets/images/badge_best.png"
@@ -122,7 +109,7 @@ class _StatisticsTagState extends State<StatisticsTag> {
                   ],
                 ),
                 Padding(
-                    padding: EdgeInsets.only(top: 15),
+                    padding: EdgeInsets.only(top: 25),
                     child: Wrap(
                         spacing: 8.0,
                         runSpacing: 8.0,
@@ -158,65 +145,6 @@ class _StatisticsTagState extends State<StatisticsTag> {
             )));
   }
 
-  Widget _mostTagListWidget() {
-    return Card(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-        color: Colors.white,
-        child: Padding(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                    padding: EdgeInsets.only(bottom: 15),
-                    child: Text("이달, 기분에 가장 영향을 미친 이유들이에요.",
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w700))),
-                Column(
-                  children: List.generate(mostTagList.length, (index) {
-                    return InkWell(
-                        onTap: () => {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => TagEmotionDetail(
-                                            type: 'tag',
-                                            title: mostTagList[index]['name'],
-                                            id: mostTagList[index]['id'],
-                                            month: widget.month,
-                                            year: widget.year,
-                                          )))
-                            },
-                        child: Card(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(7.5)),
-                            color: index == 0
-                                ? Color(0xff1fafff)
-                                : index == 1
-                                    ? Color(0xffAE87DA)
-                                    : Color(0xff8394EE),
-                            child: Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "#${mostTagList[index]["name"]}",
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                    Text(
-                                        "${mostTagList[index]["percent"].floor().toString()}%",
-                                        style: TextStyle(color: Colors.white)),
-                                  ],
-                                ))));
-                  }),
-                )
-              ],
-            )));
-  }
-
   @override
   Widget build(BuildContext context) {
     // TODO: 조건문 수정 필요
@@ -227,7 +155,6 @@ class _StatisticsTagState extends State<StatisticsTag> {
         children: [
           _tagListWidget(true),
           _tagListWidget(false),
-          _mostTagListWidget()
         ],
       );
     }

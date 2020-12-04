@@ -11,7 +11,7 @@ class BottomBar extends StatelessWidget {
             filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
             child: Container(
                 decoration: new BoxDecoration(
-                    color: Color.fromRGBO(0, 0, 0, 0.55),
+                    color: Color.fromRGBO(0, 0, 0, 0.70),
                     borderRadius: new BorderRadius.only(
                         topLeft: const Radius.circular(20.0),
                         topRight: const Radius.circular(20.0))),

@@ -58,7 +58,7 @@ class _CustomMonthPickerState extends State<CustomMonthPicker> {
 
   Widget _yearPickerWidget() {
     return Padding(
-        padding: EdgeInsets.only(bottom: 10),
+        padding: EdgeInsets.only(bottom: 30),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -96,12 +96,12 @@ class _CustomMonthPickerState extends State<CustomMonthPicker> {
   Widget _monthPickerWidget(double width, double height) {
     return Container(
       width: width * 0.9,
-      height: height * 0.35,
+      height: height * 0.33,
       child: Column(
         children: [
           _yearPickerWidget(),
           Container(
-              height: height * 0.3,
+              height: height * 0.25,
               child: GridView.count(
                   primary: false,
                   crossAxisCount: 3,
