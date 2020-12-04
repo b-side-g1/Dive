@@ -177,8 +177,8 @@ class _StatisticPageState extends State<StatisticsPage> {
             _graphMonth(),
             Container(
                 child: Divider(
-                  color: Colors.grey,
-                )),
+              color: Colors.grey,
+            )),
             _summaryMonth()
           ],
         ));
@@ -192,36 +192,38 @@ class _StatisticPageState extends State<StatisticsPage> {
   }
 
   Widget _summaryMonth() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          child: CustomPaint(
-              size: Size(56, 56),
-              painter: PieChart(
-                  percentage: _averageScore.floor(),
-                  textScaleFactor: 0.8,
-                  textColor: Color(0xff63c7ff),
-                  unFilledChartColor: Color(0xff63c7ff),
-                  filledChartColor: Color(0xff33f7fe))),
-        ),
-        Padding(
-            padding: EdgeInsets.only(top: 10),
-            child: Text("$_month월  나의  평균  감정  점수",
-                style: TextStyle(
-                    fontSize: 17,
-                    color: Colors.black,
-                    fontWeight: FontWeight.w700))),
-        Padding(
-            padding: EdgeInsets.only(top: 10, bottom: 25),
-            child: Text("기분을 좋게 하기 위해서 필요한 건\n   달달한 케익과 커피면 충분해요!",
-                style: TextStyle(
-                    fontSize: 13,
-                    color: Color(0xff959da6),
-                    fontWeight: FontWeight.w700))),
-      ],
-    );
+    return Container(
+        margin: EdgeInsets.only(top: 25),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              child: CustomPaint(
+                  size: Size(56, 56),
+                  painter: PieChart(
+                      percentage: _averageScore.floor(),
+                      textScaleFactor: 0.8,
+                      textColor: Color(0xff63c7ff),
+                      unFilledChartColor: Color(0xff63c7ff),
+                      filledChartColor: Color(0xff33f7fe))),
+            ),
+            Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Text("$_month월  나의  평균  감정  점수",
+                    style: TextStyle(
+                        fontSize: 17,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w700))),
+            Padding(
+                padding: EdgeInsets.only(top: 10, bottom: 25),
+                child: Text("기분을 좋게 하기 위해서 필요한 건\n   달달한 케익과 커피면 충분해요!",
+                    style: TextStyle(
+                        fontSize: 13,
+                        color: Color(0xff959da6),
+                        fontWeight: FontWeight.w700))),
+          ],
+        ));
   }
 
   _statisticsTag() {
@@ -253,11 +255,12 @@ class _StatisticPageState extends State<StatisticsPage> {
       month: _month,
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-        body: Container(
+            body: Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [Color(0xffAE87DA), Color(0xff8394EE)],
