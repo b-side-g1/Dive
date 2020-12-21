@@ -26,7 +26,20 @@ class _StatisticPageState extends State<StatisticsPage> {
   int _monthCnt = 0;
   double _averageScore = 0;
   bool isEmpty = false;
-  int minStatisticCnt = 2;
+  int minStatisticCnt = 1;
+
+  List averageScoreFeedbackTextList = [
+    ["기분이 좋지 않아도 괜찮아요. 이 또한 지나갈 것이고,", "돌이켜보면 결국 도움이 되는 시간들일거에요"],
+    ["불안해 하지 말아요. 당신은 잘 하고 있고, 앞으로도 잘 해낼거에요."],
+    ["기분이 생각이 되지 않도록, 내가 내 삶의 주인이 되는 것이 중요해요."],
+    ["행복한 사람이 되려고 노력하지 않아도 돼요.", "그냥 지금 이순간 행복하면돼요."],
+    ["보통의 날들을 편안히 보내는 것이", "행복한 날들을 위해 애쓰는 것보다 나을거에요.", "오늘 하루도 정말 잘 해냈어요."],
+    ["아무것도 변하지 않더라도", "일상을 잘 지내다 보면 더욱 좋은일이 일어날거에요."],
+    ["기분을 좋게 하기 위해서 필요한 건 달달한 케익과 커피면 충분해요!"],
+    ["기분 좋은 날들을 지속하기 위해선 무엇을 해야 할까요?"],
+    ["즐거운 나날이 계속되고 있네요.", "무엇이 나를 즐겁게 만드는지 탐색해보고", "그러한 행동이 나를 발전시킬 수 있도록 탐구해봐요."],
+    ["하루하루가 만족스럽고 행복한 날들이에요!"],
+  ];
 
   @override
   void dispose() {
@@ -192,6 +205,9 @@ class _StatisticPageState extends State<StatisticsPage> {
   }
 
   Widget _summaryMonth() {
+    int feedbackTextIndex = (_averageScore.ceil() / 10).ceil();
+    feedbackTextIndex = feedbackTextIndex == 0 ? feedbackTextIndex : feedbackTextIndex - 1;
+
     return Container(
         margin: EdgeInsets.only(top: 25),
         child: Column(
@@ -217,11 +233,19 @@ class _StatisticPageState extends State<StatisticsPage> {
                         fontWeight: FontWeight.w700))),
             Padding(
                 padding: EdgeInsets.only(top: 10, bottom: 25),
-                child: Text("기분을 좋게 하기 위해서 필요한 건\n   달달한 케익과 커피면 충분해요!",
-                    style: TextStyle(
-                        fontSize: 13,
-                        color: Color(0xff959da6),
-                        fontWeight: FontWeight.w700))),
+                child: Column(
+                    children: List.generate(
+                        averageScoreFeedbackTextList[feedbackTextIndex].length,
+                        (index) {
+                  return Align(
+                    alignment: Alignment.center,
+                      child: Text(
+                      averageScoreFeedbackTextList[feedbackTextIndex][index],
+                      style: TextStyle(
+                          fontSize: 13,
+                          color: Color(0xff959da6),
+                          fontWeight: FontWeight.w700)));
+                }))),
           ],
         ));
   }
