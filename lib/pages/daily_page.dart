@@ -356,94 +356,101 @@ class _DailyPageState extends State<DailyPage> {
                 ),
                 SliverFixedExtentList(
 //              itemExtent: !isToday && !isEmpty ? 0 : 150.0,
-                  itemExtent: !isToday && !isEmpty
-                      ? 0
-                      : SizeConfig.blockSizeVertical * 24,
-                  // TODO: 없애야 되는데 height 0으로 변경한 거;;리팩토링 필수
-                  delegate: SliverChildListDelegate([
-                    _createRecordContainer(context),
-                  ]),
-                ),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      final record = _firstRecordList[index];
-                      return Dismissible(
-                        key: Key(record.id),
-                        direction: DismissDirection.endToStart,
-                        background: Container(
-                          color: Colors.transparent,
-                          alignment: Alignment.centerRight,
-                          child: Padding(
-                              padding: const EdgeInsets.only(right: 45),
-                              child: Container(
-                                width: 60,
-                                height: 60,
-                                child: Transform.scale(
-                                  scale: 0.5,
-                                  child: IconButton(
-                                    onPressed: () {},
-                                    icon: new Image.asset(
-                                        "lib/src/image/daily/icon_trash_ori.png"),
-                                  ),
-                                ),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle, color: Colors.red),
-                              )),
-                        ),
-                        confirmDismiss: (DismissDirection direction) async {
-                          return await showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text("감정 삭제"),
-                                content: const Text("감정을 삭제할까요?"),
-                                actions: <Widget>[
-                                  FlatButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(true),
-                                      child: const Text("삭제하기")),
-                                  FlatButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(false),
-                                    child: const Text("취소"),
-                                  ),
-                                ],
-                              );
-                            },
+              itemExtent:
+                  !isToday && !isEmpty ? 0 : SizeConfig.blockSizeVertical * 24,
+              // TODO: 없애야 되는데 height 0으로 변경한 거;;리팩토링 필수
+              delegate: SliverChildListDelegate([
+                _createRecordContainer(context),
+              ]),
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  final record = _firstRecordList[index];
+                  return Dismissible(
+                    key: Key(record.id),
+                    direction: DismissDirection.endToStart,
+                    background: Container(
+                      color: Colors.transparent,
+                      alignment: Alignment.centerRight,
+                      child: Padding(
+                          padding: const EdgeInsets.only(right: 45),
+                          child: Container(
+                            width: 60,
+                            height: 60,
+                            child: Transform.scale(
+                              scale: 0.5,
+                              child: IconButton(
+                                onPressed: () {},
+                                icon: new Image.asset(
+                                    "lib/src/image/daily/icon_trash_ori.png"),
+                              ),
+                            ),
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.red),
+                          )),
+                    ),
+                    confirmDismiss: (DismissDirection direction) async {
+                      return await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return CupertinoAlertDialog(
+                            content: Container(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child: const Text(
+                                    "감정을 삭제하면 되돌릴 수 없습니다.\n정말 삭제하실 건가요?",style: TextStyle(
+                                  height: 1.5,
+                                  fontSize: 15
+                                ),)
+                            ),
+                            actions: <Widget>[
+                              CupertinoDialogAction(
+                                isDefaultAction: true,
+                                child: Text("삭제하기"),
+                                onPressed: () =>
+                                    Navigator.of(context).pop(true),
+                              ),
+                              CupertinoDialogAction(
+                                child: Text("취소"),
+                                onPressed: () =>
+                                    Navigator.of(context).pop(false),
+                              )
+                            ],
                           );
                         },
-                        onDismissed: (direction) {
-                          setState(() {
-                            _firstRecordList.removeAt(index);
-                          });
-                          _recordService.deleteRecord(record.id);
-                          setScore();
-                          Scaffold.of(context).showSnackBar(
-                              SnackBar(content: Text("기록이 삭제 됐습니다.")));
-                        },
-                        child: InkWell(
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.all(10),
-                            child: RecordCard(
-                              record: record,
-                            ),
-                          ),
-                          onTap: () {
-                            Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => StateContainer(
-                                        child: InputPage(),
-                                        score: record.score,
-                                        emotions: record.emotions,
-                                        tags: record.tags,
-                                        description: record.description,
-                                        record: record)));
-                          },
+                      );
+                    },
+                    onDismissed: (direction) {
+                      setState(() {
+                        _firstRecordList.removeAt(index);
+                      });
+                      _recordService.deleteRecord(record.id);
+                      setScore();
+                      Scaffold.of(context).showSnackBar(
+                          SnackBar(content: Text("기록이 삭제 됐습니다.")));
+                    },
+                    child: InkWell(
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.all(10),
+                        child: RecordCard(
+                          record: record,
                         ),
-                        // swipe 시 옆으로 삭제 되는 기능
+                      ),
+                      onTap: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StateContainer(
+                                    child: InputPage(),
+                                    score: record.score,
+                                    emotions: record.emotions,
+                                    tags: record.tags,
+                                    description: record.description,
+                                    record: record)));
+                      },
+                    ),
+                    // swipe 시 옆으로 삭제 되는 기능
 //                    background: Container(
 //                      color: Colors.red,
 //                      child: Icon(Icons.cancel)
