@@ -205,9 +205,6 @@ class _StatisticPageState extends State<StatisticsPage> {
   }
 
   Widget _summaryMonth() {
-    setState(() {
-      _averageScore = 100;
-    });
     int feedbackTextIndex = (_averageScore.ceil() / 10).ceil();
     feedbackTextIndex = feedbackTextIndex == 0 ? feedbackTextIndex : feedbackTextIndex - 1;
 
