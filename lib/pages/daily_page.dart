@@ -325,35 +325,36 @@ class _DailyPageState extends State<DailyPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Colors.white,
-        body: CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              pinned: false,
-              // 스크롤 내릴때 남아 있음
-              automaticallyImplyLeading: false,
-              backgroundColor: Colors.white,
-              brightness: Brightness.light,
-              expandedHeight: SizeConfig.blockSizeVertical * 5,
-              flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: true,
-                  titlePadding: EdgeInsets.fromLTRB(15, 0, 0, 5),
-                  title: _topNav(context)),
-            ),
-            SliverFixedExtentList(
-              itemExtent: SizeConfig.blockSizeVertical * 20,
-              delegate: SliverChildListDelegate([
-                _dailyContainer(context, _date),
-              ]),
-            ),
-            SliverFixedExtentList(
-              itemExtent: SizeConfig.blockSizeVertical * 26,
-              delegate: SliverChildListDelegate([
-                _waveContainer(),
-              ]),
-            ),
-            SliverFixedExtentList(
+    return SafeArea(
+        child: Scaffold(
+            backgroundColor: Colors.white,
+            body: CustomScrollView(
+              slivers: <Widget>[
+                SliverAppBar(
+                  pinned: false,
+                  // 스크롤 내릴때 남아 있음
+                  automaticallyImplyLeading: false,
+                  backgroundColor: Colors.white,
+                  brightness: Brightness.light,
+                  expandedHeight: SizeConfig.blockSizeVertical * 5,
+                  flexibleSpace: FlexibleSpaceBar(
+                      centerTitle: true,
+                      titlePadding: EdgeInsets.fromLTRB(15, 0, 0, 5),
+                      title: _topNav(context)),
+                ),
+                SliverFixedExtentList(
+                  itemExtent: SizeConfig.blockSizeVertical * 20,
+                  delegate: SliverChildListDelegate([
+                    _dailyContainer(context, _date),
+                  ]),
+                ),
+                SliverFixedExtentList(
+                  itemExtent: SizeConfig.blockSizeVertical * 26,
+                  delegate: SliverChildListDelegate([
+                    _waveContainer(),
+                  ]),
+                ),
+                SliverFixedExtentList(
 //              itemExtent: !isToday && !isEmpty ? 0 : 150.0,
               itemExtent:
                   !isToday && !isEmpty ? 0 : SizeConfig.blockSizeVertical * 24,
@@ -454,85 +455,86 @@ class _DailyPageState extends State<DailyPage> {
 //                      color: Colors.red,
 //                      child: Icon(Icons.cancel)
 //                    ),
-                  );
-                },
-                childCount:
-                    _firstRecordList == null ? 0 : _firstRecordList.length,
-              ),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                DateTime dateTime =
-                    DateTime.parse(_firstRecordList[0].createdAt);
-                return _dividerWidget("${dateTime.month}/${dateTime.day}");
-              },
-                  childCount: (_secondRecordList.isNotEmpty ||
-                              existDifferentDayRecord) &&
-                          _firstRecordList.length != 0
-                      ? 1
-                      : 0),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  final record = _secondRecordList[index];
-                  return Dismissible(
-                    key: Key(record.id),
-                    onDismissed: (direction) {
-                      setState(() {
-                        _secondRecordList.removeAt(index);
-                      });
-                      _recordService.deleteRecord(record.id);
-                      setScore();
-                      Scaffold.of(context).showSnackBar(
-                          SnackBar(content: Text("기록이 삭제 됐습니다.")));
+                      );
                     },
-                    child: InkWell(
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.all(10),
-                        child: RecordCard(
-                          record: record,
+                    childCount:
+                        _firstRecordList == null ? 0 : _firstRecordList.length,
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                    DateTime dateTime =
+                        DateTime.parse(_firstRecordList[0].createdAt);
+                    return _dividerWidget("${dateTime.month}/${dateTime.day}");
+                  },
+                      childCount: (_secondRecordList.isNotEmpty ||
+                                  existDifferentDayRecord) &&
+                              _firstRecordList.length != 0
+                          ? 1
+                          : 0),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                      final record = _secondRecordList[index];
+                      return Dismissible(
+                        key: Key(record.id),
+                        onDismissed: (direction) {
+                          setState(() {
+                            _secondRecordList.removeAt(index);
+                          });
+                          _recordService.deleteRecord(record.id);
+                          setScore();
+                          Scaffold.of(context).showSnackBar(
+                              SnackBar(content: Text("기록이 삭제 됐습니다.")));
+                        },
+                        child: InkWell(
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.all(10),
+                            child: RecordCard(
+                              record: record,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => StateContainer(
+                                        child: InputPage(),
+                                        score: record.score,
+                                        emotions: record.emotions,
+                                        tags: record.tags,
+                                        description: record.description,
+                                        record: record)));
+                          },
                         ),
-                      ),
-                      onTap: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => StateContainer(
-                                    child: InputPage(),
-                                    score: record.score,
-                                    emotions: record.emotions,
-                                    tags: record.tags,
-                                    description: record.description,
-                                    record: record)));
-                      },
-                    ),
-                    // swipe 시 옆으로 삭제 되는 기능
+                        // swipe 시 옆으로 삭제 되는 기능
 //                    background: Container(
 //                      color: Colors.red,
 //                      child: Icon(Icons.cancel)
 //                    ),
-                  );
-                },
-                childCount:
-                    _secondRecordList == null ? 0 : _secondRecordList.length,
-              ),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                DateTime dateTime =
-                    DateTime.parse(_secondRecordList[0].createdAt);
-                return _dividerWidget("${dateTime.month}/${dateTime.day}");
-              },
-                  childCount: _secondRecordList.isNotEmpty &&
-                          !_secondRecordList[0].isCreatedSameDay()
-                      ? 1
-                      : 0),
-            ),
-          ],
-        ));
+                      );
+                    },
+                    childCount: _secondRecordList == null
+                        ? 0
+                        : _secondRecordList.length,
+                  ),
+                ),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                    DateTime dateTime =
+                        DateTime.parse(_secondRecordList[0].createdAt);
+                    return _dividerWidget("${dateTime.month}/${dateTime.day}");
+                  },
+                      childCount: _secondRecordList.isNotEmpty &&
+                              !_secondRecordList[0].isCreatedSameDay()
+                          ? 1
+                          : 0),
+                ),
+              ],
+            )));
   }
 }
