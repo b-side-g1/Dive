@@ -12,74 +12,57 @@ class RecordCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-        color: Color(0xff2a67d0),
-        child: Padding(
-          padding: EdgeInsets.all(20),
-          child: IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  child: CustomPaint(
-                      size: Size(56, 56),
-                      painter: PieChart(
-                          percentage: record.score,
-                          textScaleFactor: 0.8,
-                          textColor: Color(0xff33f7fe),
-                          unFilledChartColor: Color(0xff63c7ff),
-                          filledChartColor: Color(0xff33f7fe))),
+    return SingleChildScrollView(
+        child: Card(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0)),
+            color: Color(0xff2a67d0),
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Container(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    CustomPaint(
+                        size: Size(56, 56),
+                        painter: PieChart(
+                            percentage: record.score,
+                            textScaleFactor: 0.8,
+                            textColor: Color(0xff33f7fe),
+                            unFilledChartColor: Color(0xff63c7ff),
+                            filledChartColor: Color(0xff33f7fe))),
+                    Expanded(
+                      child: Container(
+                          margin: EdgeInsets.only(left: 20, right: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              emotionWidget(),
+                              tagWidget(),
+                              descriptionWidget(),
+                              dateWidget(),
+                            ],
+                          )),
+                    ),
+                  ],
                 ),
-                Expanded(
-                    child: Padding(
-                        padding: EdgeInsets.only(left: 20, right: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            emotionWidget(),
-                            tagWidget(),
-                            descriptionWidget(),
-                            Padding(
-                                padding: EdgeInsets.only(
-                                    top: (this.record.emotions.isNotEmpty ||
-                                                this.record.tags.isNotEmpty) &&
-                                            this.record.description.isEmpty
-                                        ? 0
-                                        : 25,
-                                    right: 10),
-                                child: Align(
-                                    alignment: Alignment.topRight,
-                                    child: Text(
-                                      record.createdAt == null
-                                          ? ''
-                                          : dateFormat(record.createdAt, record.isCreatedSameDay()),
-                                      //DateFormat('kk:mm').format(record.createdAt),
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontFamily: "NotoSans"),
-                                    ))),
-                          ],
-                        ))),
-              ],
-            ),
-          ),
-        ));
+              ),
+            )));
   }
 
   dateFormat(String dateStr, bool isCreatedSameDay) {
     DateTime datetime = DateTime.parse(dateStr);
-    return (!isCreatedSameDay ? "${datetime.month}/${datetime.day} " : "" ) + (datetime.hour >= 12 ? "오후 " : "오전 ") + _dateFormat.format(datetime);
+    return (!isCreatedSameDay ? "${datetime.month}/${datetime.day} " : "") +
+        (datetime.hour >= 12 ? "오후 " : "오전 ") +
+        _dateFormat.format(datetime);
   }
 
   tagWidget() {
     if (this.record.tags.isEmpty) {
       return Container();
     }
-    return Padding(
-      padding: EdgeInsets.only(top: this.record.emotions.isNotEmpty ? 18 : 0),
+    return Container(
+      margin: EdgeInsets.only(top: this.record.emotions.isNotEmpty ? 10 : 0),
       child: Wrap(
         spacing: 8.0,
         runSpacing: 4.0,
@@ -105,7 +88,7 @@ class RecordCard extends StatelessWidget {
       runSpacing: 8.0,
       children: List.generate(this.record.emotions.length, (index) {
         return _textInsideCircleWidget(this.record.emotions[index].name);
-      }),
+      })
     );
   }
 
@@ -135,20 +118,43 @@ class RecordCard extends StatelessWidget {
 
   descriptionWidget() {
     String description = this.record.description;
+
     return (description == null || description.isEmpty)
-        ? Container()
-        : Expanded(
-            child: Padding(
-            padding: EdgeInsets.only(
-                top: this.record.emotions.isNotEmpty ||
-                        this.record.tags.isNotEmpty
-                    ? 13
-                    : 0),
+        ? Container(child: Text(""))
+        : Container(
+        margin: EdgeInsets.only(
+            top: this.record.emotions.isNotEmpty ||
+                    this.record.tags.isNotEmpty
+                ? 13
+                : 0),
+        child: Text(
+          description,
+          style: TextStyle(
+              color: Colors.white, fontSize: 15, fontFamily: "NotoSansKR"),
+        ),
+          );
+  }
+
+  dateWidget() {
+    return Container(
+        margin: EdgeInsets.only(
+            top: (this.record.emotions.isNotEmpty ||
+                        this.record.tags.isNotEmpty) &&
+                    this.record.description.isEmpty
+                ? 0
+                : 25,
+            right: 10),
+        child: Align(
+            alignment: Alignment.bottomRight,
             child: Text(
-              record.description,
+              record.createdAt == null
+                  ? ''
+                  : dateFormat(record.createdAt, record.isCreatedSameDay()),
+              //DateFormat('kk:mm').format(record.createdAt),
               style: TextStyle(
-                  color: Colors.white, fontSize: 15, fontFamily: "NotoSansKR"),
-            ),
-          ));
+                  color: Colors.white,
+                  fontSize: 14,
+                  fontFamily: "NotoSans"),
+            )));
   }
 }

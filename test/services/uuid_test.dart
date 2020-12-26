@@ -1,9 +1,5 @@
-
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:Dive/services/common/common_service.dart';
-import 'package:uuid/uuid.dart';
-import 'package:Dive/main.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   test('uuid should be 32byte.', () {
@@ -15,5 +11,5 @@ void main() {
     List<bool> bools = List();
     bools.add(true);
     print(bools[0]);
-});
+  });
 }

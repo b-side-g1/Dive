@@ -1,3 +1,5 @@
+import 'package:Dive/controller/diary_tab_controller.dart';
+import 'package:Dive/config/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Dive/inherited/state_container.dart';
@@ -15,7 +17,6 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-
   List emotions = [];
 
   Color get backgroundColor {
@@ -86,7 +87,8 @@ class _InputPageState extends State<InputPage> {
             child: Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
-                  padding: EdgeInsets.only(top: height * 0.05),
+                  padding:
+                      EdgeInsets.only(top: SizeConfig.blockSizeVertical * 5),
                   child: stepActionButton(ArrowAction.up, step),
                 )),
           ),
@@ -96,7 +98,8 @@ class _InputPageState extends State<InputPage> {
               child: Align(
                   alignment: Alignment.bottomCenter,
                   child: Padding(
-                    padding: EdgeInsets.only(bottom: height * 0.05),
+                    padding: EdgeInsets.only(
+                        bottom: SizeConfig.blockSizeVertical * 5),
                     child: stepActionButton(ArrowAction.down, step),
                   )),
             ),
@@ -111,25 +114,33 @@ class _InputPageState extends State<InputPage> {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          // return object of type Dialog
-          return AlertDialog(
-            content: new Text("저장되지 않은 데이터는 삭제됩니다.\n취소하시겠습니까?"),
+          return CupertinoAlertDialog(
+            content: Container(
+                padding: EdgeInsets.symmetric(vertical: 10),
+                child: const Text(
+                  "저장되지 않은 데이터는 삭제됩니다.\n취소하시겠습니까?",style: TextStyle(
+                    height: 1.5,
+                    fontSize: 15
+                ),)
+            ),
             actions: <Widget>[
-              new FlatButton(
-                child: new Text("아니오"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-              new FlatButton(
-                child: new Text("네"),
+              CupertinoDialogAction(
+                isDefaultAction: true,
+                child: Text("네"),
                 onPressed: () {
                   Navigator.pushAndRemoveUntil(
                       context,
-                      MaterialPageRoute(builder: (context) => DailyPage()),
+                      MaterialPageRoute(
+                          builder: (context) => DiaryTabController()),
                       (e) => false);
                 },
               ),
+              CupertinoDialogAction(
+                child: Text("아니오"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
             ],
           );
         },
@@ -138,8 +149,8 @@ class _InputPageState extends State<InputPage> {
 
     return Container(
       child: Container(
-        width: 40,
-        height: 40,
+        width: SizeConfig.blockSizeHorizontal * 12,
+        height: SizeConfig.blockSizeVertical * 6,
         decoration: BoxDecoration(
             color: Color.fromRGBO(0, 0, 0, 0.0), shape: BoxShape.rectangle),
         child: IconButton(
@@ -159,14 +170,14 @@ class _InputPageState extends State<InputPage> {
 
   renderSteper(step) {
     return Container(
-      margin: EdgeInsets.only(top: 25),
-      height: MediaQuery.of(context).size.height - 40,
+      margin: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 4),
+      height: SizeConfig.blockSizeVertical * 100,
       child: Stack(
         children: <Widget>[
           Opacity(
             opacity: 0.20000000298023224,
             child: new Container(
-                width: 4,
+                width: SizeConfig.blockSizeHorizontal * 1,
                 decoration: new BoxDecoration(
                     color: Color(0xff000000),
                     borderRadius: new BorderRadius.only(
@@ -176,9 +187,8 @@ class _InputPageState extends State<InputPage> {
           ),
           Positioned(
               child: Container(
-                  width: 4,
-                  height:
-                      ((MediaQuery.of(context).size.height - 40) / 3) * step,
+                  width: SizeConfig.blockSizeHorizontal * 1,
+                  height: (SizeConfig.blockSizeVertical * 90 / 3) * step,
                   decoration: new BoxDecoration(
                       color: Color(0xff33f7fe),
                       borderRadius: BorderRadius.circular(100)))),
@@ -210,7 +220,9 @@ class _InputPageState extends State<InputPage> {
                 InputPageStep2(
                   emotions: emotions,
                 ),
-                InputPageStep3(description: container.description,)
+                InputPageStep3(
+                  description: container.description,
+                )
               ],
               onPageChanged: (page) {
                 setState(() {
@@ -219,8 +231,8 @@ class _InputPageState extends State<InputPage> {
               },
             ),
             Positioned(
-                right: 20.0,
-                top: 40.0,
+                right: SizeConfig.blockSizeHorizontal * 6,
+                top: SizeConfig.blockSizeVertical * 7,
                 child: Container(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.end,

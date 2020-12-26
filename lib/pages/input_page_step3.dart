@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:Dive/controller/diary_tab_controller.dart';
+import 'package:Dive/config/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:Dive/components/input/step3/edit_tag_dialog.dart';
 import 'package:Dive/components/input/step3/reason_tag_widget.dart';
@@ -62,21 +64,18 @@ class _InputPageStep3State extends State<InputPageStep3> {
   }
 
   Widget titleWidget() {
-    final width = MediaQuery.of(context).size.width / 100;
-
     return Container(
         child: Center(
             child: Text(
       "그렇게 느끼는 이유는...",
       style: TextStyle(
-          fontSize: width * 6.3,
+          fontSize: SizeConfig.blockSizeHorizontal * 6.3,
           fontWeight: FontWeight.w700,
           color: Colors.white),
     )));
   }
 
   Widget toolBarWidget() {
-    final width = MediaQuery.of(context).size.width / 100;
 
     return Container(
         child: Row(
@@ -85,7 +84,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
         Text(
           "이유태그",
           style: TextStyle(
-              fontSize: width * 5.5,
+              fontSize: SizeConfig.blockSizeHorizontal * 5.5,
               fontWeight: FontWeight.w700,
               color: Colors.white),
         ),
@@ -107,7 +106,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
               Icon(
                 Icons.edit,
                 color: Colors.grey,
-                size: width * 5,
+                size: SizeConfig.blockSizeHorizontal * 5,
               ),
               SizedBox(
                 width: 3,
@@ -117,7 +116,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
                 child: Text(
                   "태그편집",
                   style: TextStyle(
-                      fontSize: width * 4.5,
+                      fontSize: SizeConfig.blockSizeHorizontal * 4.5,
                       fontWeight: FontWeight.w400,
                       color: Colors.grey),
                 ),
@@ -142,8 +141,6 @@ class _InputPageStep3State extends State<InputPageStep3> {
   }
 
   Widget writeReasonTitle() {
-    final width = MediaQuery.of(context).size.width / 100;
-
     return Container(
         child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -151,7 +148,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
         Text(
           "이유적기",
           style: TextStyle(
-              fontSize: width * 5.5,
+              fontSize: SizeConfig.blockSizeHorizontal * 5.5,
               fontWeight: FontWeight.w700,
               color: Colors.white),
         ),
@@ -160,9 +157,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
   }
 
   Widget writeReasonField() {
-    final width = MediaQuery.of(context).size.width;
     return Container(
-
         child: TextFormField(
           textInputAction: TextInputAction.done,
           onFieldSubmitted: (value) {},
@@ -177,7 +172,7 @@ class _InputPageStep3State extends State<InputPageStep3> {
           minLines: 1,
           maxLines: 5,
           cursorColor: CommonService.hexToColor("#34b7eb"),
-          style: TextStyle(color: Colors.white, fontSize: width * 0.04),
+          style: TextStyle(color: Colors.white, fontSize: SizeConfig.blockSizeHorizontal * 4),
           decoration: new InputDecoration(
               hintStyle: TextStyle(color: Colors.grey),
               border: InputBorder.none,
@@ -275,10 +270,10 @@ class _InputPageStep3State extends State<InputPageStep3> {
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
-                          StateContainer(child: DailyPage())));
+                          StateContainer(child: DiaryTabController())));
             },
             child: Text(
-              "기록하기",
+              (container.record == null) ?  "기록하기" : "수정하기",
               style: TextStyle(
                 fontSize: 22.0,
               ),

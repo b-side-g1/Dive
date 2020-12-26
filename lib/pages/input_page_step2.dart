@@ -1,3 +1,4 @@
+import 'package:Dive/config/size_config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:Dive/components/emotion_tag_box.dart';
@@ -42,27 +43,25 @@ class _InputPageStep2State extends State<InputPageStep2> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: Column(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.only(top: height * 0.2),
+            padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 20),
             child: Text(
               '지금 떠오르는 감정들',
               style: TextStyle(
                 color: Color.fromRGBO(255, 255, 255, 1),
-                fontSize: width * 0.08,
+                fontSize: SizeConfig.blockSizeHorizontal * 8,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
 
           Padding(
-            padding: EdgeInsets.only(top: height * 0.04, bottom: 20.1),
+            padding: EdgeInsets.only(top: SizeConfig.blockSizeVertical * 4, bottom: 20.1),
             child: EmotionTagBox(
               emotions: widget.emotions,
             ),

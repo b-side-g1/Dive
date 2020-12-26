@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:Dive/services/basic/basic_service.dart';
 import 'package:Dive/services/common/push_notification_service.dart';
 import 'package:Dive/splash/splash_page.dart';
+import 'package:kakao_flutter_sdk/all.dart';
+
+import 'commons/static.dart';
 
 bool initScreen;
 
@@ -13,6 +16,8 @@ void main() async {
 
   PushNotificationService pushNotificationService = PushNotificationService();
   await pushNotificationService.initialize();
+
+  KakaoContext.clientId = KakaNativeKey;
 
   runApp(MyApp());
 }
