@@ -434,11 +434,6 @@ class _DailyPageState extends State<DailyPage> {
                       });
                       _recordService.deleteRecord(record.id);
                       setScore();
-
-                      Scaffold.of(context).showSnackBar(
-                          SnackBar(
-                            behavior:SnackBarBehavior.floating ,
-                              content: Text("기록이 삭제 됐습니다.")));
                     },
                     child: InkWell(
                       child: Container(
@@ -500,8 +495,6 @@ class _DailyPageState extends State<DailyPage> {
                       });
                       _recordService.deleteRecord(record.id);
                       setScore();
-                      Scaffold.of(context).showSnackBar(
-                          SnackBar(content: Text("기록이 삭제 됐습니다.")));
                     },
                     child: InkWell(
                       child: Container(
