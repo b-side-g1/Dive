@@ -42,7 +42,31 @@ class _StatisticsTagMostState extends State<StatisticsTagMost> {
             });
   }
 
+  Widget _emptyTagWidget() {
+    return Card(
+        shape:
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        color: Colors.white,
+        child: Padding(
+            padding: EdgeInsets.only(top: 30, bottom: 40),
+            child: Column(
+              children: [
+                Image.asset("assets/images/icon_no_data_reason.png"),
+                Padding(
+                  padding: EdgeInsets.only(top: 15),
+                  child: Text("감점 점수 기록과 함께 이유태그를 선택하면",
+                      style: TextStyle(color: Color(0xff959da6))),
+                ),
+                Text("내가 왜 기분이 나쁜지 알 수 있어요.",
+                    style: TextStyle(color: Color(0xff959da6))),
+              ],
+            )));
+  }
+
   Widget _mostTagListWidget() {
+    if(mostTagList.isEmpty) {
+      return _emptyTagWidget();
+    }
     return Card(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
