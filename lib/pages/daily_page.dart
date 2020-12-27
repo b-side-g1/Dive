@@ -330,6 +330,7 @@ class _DailyPageState extends State<DailyPage> {
             backgroundColor: Colors.white,
             body: CustomScrollView(
               slivers: <Widget>[
+                /* 맨 위 상테바 (Dive 로고, 환경설정 버튼) */
                 SliverAppBar(
                   pinned: false,
                   // 스크롤 내릴때 남아 있음
@@ -342,18 +343,22 @@ class _DailyPageState extends State<DailyPage> {
                       titlePadding: EdgeInsets.fromLTRB(15, 0, 0, 5),
                       title: _topNav(context)),
                 ),
+                /* 달력 및 안내 문구 */
                 SliverFixedExtentList(
                   itemExtent: SizeConfig.blockSizeVertical * 20,
                   delegate: SliverChildListDelegate([
                     _dailyContainer(context, _date),
                   ]),
                 ),
+                /* 물결 (Wave) 이미지 */
                 SliverFixedExtentList(
                   itemExtent: SizeConfig.blockSizeVertical * 26,
                   delegate: SliverChildListDelegate([
                     _waveContainer(),
                   ]),
                 ),
+
+                /* 감정 등록 버튼 */
                 SliverFixedExtentList(
 //              itemExtent: !isToday && !isEmpty ? 0 : 150.0,
               itemExtent:
@@ -426,8 +431,6 @@ class _DailyPageState extends State<DailyPage> {
                       });
                       _recordService.deleteRecord(record.id);
                       setScore();
-                      Scaffold.of(context).showSnackBar(
-                          SnackBar(content: Text("기록이 삭제 됐습니다.")));
                     },
                     child: InkWell(
                       child: Container(
@@ -486,8 +489,6 @@ class _DailyPageState extends State<DailyPage> {
                           });
                           _recordService.deleteRecord(record.id);
                           setScore();
-                          Scaffold.of(context).showSnackBar(
-                              SnackBar(content: Text("기록이 삭제 됐습니다.")));
                         },
                         child: InkWell(
                           child: Container(
