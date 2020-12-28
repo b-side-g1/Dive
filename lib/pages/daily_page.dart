@@ -271,12 +271,9 @@ class _DailyPageState extends State<DailyPage> {
   }
 
   Widget _waveContainer() {
-    return FittedBox(
-      fit: BoxFit.fill, // width 100% 적용!
-      child: Image.asset(
-        'assets/images/img_wave.png',
-        height: 160,
-      ),
+    return Image.asset(
+      'assets/images/img_wave.png',
+      height: 160,
     );
   }
 
