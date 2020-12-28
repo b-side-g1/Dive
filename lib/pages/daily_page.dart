@@ -343,117 +343,113 @@ class _DailyPageState extends State<DailyPage> {
                       titlePadding: EdgeInsets.fromLTRB(15, 0, 0, 5),
                       title: _topNav(context)),
                 ),
-                /* 달력 및 안내 문구 */
                 SliverFixedExtentList(
-                  itemExtent: SizeConfig.blockSizeVertical * 20,
+                  itemExtent: SizeConfig.blockSizeVertical * 48,
                   delegate: SliverChildListDelegate([
-                    _dailyContainer(context, _date),
+                    Column(
+                      children: [
+                        /* 달력 및 안내 문구 */
+                        _dailyContainer(context, _date),
+                        Stack(
+                          children: [
+                            /* 물결 (Wave) 이미지 */
+                            _waveContainer(),
+                            /* 감정 등록 버튼 */
+                            Positioned.fill(
+                                child: Align(
+                                    alignment: Alignment.center,
+                                    child: _createRecordContainer(context))),
+                          ],
+                        )
+                      ],
+                    )
                   ]),
                 ),
-                /* 물결 (Wave) 이미지 */
-                SliverFixedExtentList(
-                  itemExtent: SizeConfig.blockSizeVertical * 26,
-                  delegate: SliverChildListDelegate([
-                    _waveContainer(),
-                  ]),
-                ),
-
-                /* 감정 등록 버튼 */
-                SliverFixedExtentList(
-//              itemExtent: !isToday && !isEmpty ? 0 : 150.0,
-              itemExtent:
-                  !isToday && !isEmpty ? 0 : SizeConfig.blockSizeVertical * 24,
-              // TODO: 없애야 되는데 height 0으로 변경한 거;;리팩토링 필수
-              delegate: SliverChildListDelegate([
-                _createRecordContainer(context),
-              ]),
-            ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  final record = _firstRecordList[index];
-                  return Dismissible(
-                    key: Key(record.id),
-                    direction: DismissDirection.endToStart,
-                    background: Container(
-                      color: Colors.transparent,
-                      alignment: Alignment.centerRight,
-                      child: Padding(
-                          padding: const EdgeInsets.only(right: 45),
-                          child: Container(
-                            width: 60,
-                            height: 60,
-                            child: Transform.scale(
-                              scale: 0.5,
-                              child: IconButton(
-                                onPressed: () {},
-                                icon: new Image.asset(
-                                    "lib/src/image/daily/icon_trash_ori.png"),
-                              ),
-                            ),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle, color: Colors.red),
-                          )),
-                    ),
-                    confirmDismiss: (DismissDirection direction) async {
-                      return await showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return CupertinoAlertDialog(
-                            content: Container(
-                                padding: EdgeInsets.symmetric(vertical: 10),
-                                child: const Text(
-                                    "감정을 삭제하면 되돌릴 수 없습니다.\n정말 삭제하실 건가요?",style: TextStyle(
-                                  height: 1.5,
-                                  fontSize: 15
-                                ),)
-                            ),
-                            actions: <Widget>[
-                              CupertinoDialogAction(
-                                isDefaultAction: true,
-                                child: Text("삭제하기"),
-                                onPressed: () =>
-                                    Navigator.of(context).pop(true),
-                              ),
-                              CupertinoDialogAction(
-                                child: Text("취소"),
-                                onPressed: () =>
-                                    Navigator.of(context).pop(false),
-                              )
-                            ],
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                      final record = _firstRecordList[index];
+                      return Dismissible(
+                        key: Key(record.id),
+                        direction: DismissDirection.endToStart,
+                        background: Container(
+                          color: Colors.transparent,
+                          alignment: Alignment.centerRight,
+                          child: Padding(
+                              padding: const EdgeInsets.only(right: 45),
+                              child: Container(
+                                width: 60,
+                                height: 60,
+                                child: Transform.scale(
+                                  scale: 0.5,
+                                  child: IconButton(
+                                    onPressed: () {},
+                                    icon: new Image.asset(
+                                        "lib/src/image/daily/icon_trash_ori.png"),
+                                  ),
+                                ),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle, color: Colors.red),
+                              )),
+                        ),
+                        confirmDismiss: (DismissDirection direction) async {
+                          return await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return CupertinoAlertDialog(
+                                content: Container(
+                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    child: const Text(
+                                      "감정을 삭제하면 되돌릴 수 없습니다.\n정말 삭제하실 건가요?",
+                                      style:
+                                          TextStyle(height: 1.5, fontSize: 15),
+                                    )),
+                                actions: <Widget>[
+                                  CupertinoDialogAction(
+                                    isDefaultAction: true,
+                                    child: Text("삭제하기"),
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(true),
+                                  ),
+                                  CupertinoDialogAction(
+                                    child: Text("취소"),
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(false),
+                                  )
+                                ],
+                              );
+                            },
                           );
                         },
-                      );
-                    },
-                    onDismissed: (direction) {
-                      setState(() {
-                        _firstRecordList.removeAt(index);
-                      });
-                      _recordService.deleteRecord(record.id);
-                      setScore();
-                    },
-                    child: InkWell(
-                      child: Container(
-                        alignment: Alignment.center,
-                        padding: EdgeInsets.all(10),
-                        child: RecordCard(
-                          record: record,
+                        onDismissed: (direction) {
+                          setState(() {
+                            _firstRecordList.removeAt(index);
+                          });
+                          _recordService.deleteRecord(record.id);
+                          setScore();
+                        },
+                        child: InkWell(
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.all(10),
+                            child: RecordCard(
+                              record: record,
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => StateContainer(
+                                        child: InputPage(),
+                                        score: record.score,
+                                        emotions: record.emotions,
+                                        tags: record.tags,
+                                        description: record.description,
+                                        record: record)));
+                          },
                         ),
-                      ),
-                      onTap: () {
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => StateContainer(
-                                    child: InputPage(),
-                                    score: record.score,
-                                    emotions: record.emotions,
-                                    tags: record.tags,
-                                    description: record.description,
-                                    record: record)));
-                      },
-                    ),
-                    // swipe 시 옆으로 삭제 되는 기능
+                        // swipe 시 옆으로 삭제 되는 기능
 //                    background: Container(
 //                      color: Colors.red,
 //                      child: Icon(Icons.cancel)
