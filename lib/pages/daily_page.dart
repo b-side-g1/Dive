@@ -203,7 +203,23 @@ class _DailyPageState extends State<DailyPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          DailyDate(_date,_currentDate),
+          DailyDate(_date, _currentDate, (context) async {
+            DateTime picked = await showDatePicker(
+                context: context,
+                initialDate: _date,
+                firstDate: new DateTime(2020),
+                lastDate: _currentDate,
+                cancelText: "취소",
+                confirmText: "확인",
+                helpText: "");
+            if (picked != null) {
+              setState(() {
+                _date = picked
+                    .add(Duration(hours: 12)); // 마감시간에 상관 없이 정오는 무조건 동일한 날로 포함됨
+                _setDataByDate(_date, false);
+              });
+            }
+          }),
           _currentStatusContainer()
         ],
       ),
@@ -212,15 +228,12 @@ class _DailyPageState extends State<DailyPage> {
 
   Widget _waveContainer() {
     return Container(
-      width: SizeConfig.screenWidth,
-      height: 160,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.fill,
-          image: AssetImage("assets/images/img_wave.png")
-        )
-      )
-    );
+        width: SizeConfig.screenWidth,
+        height: 160,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage("assets/images/img_wave.png"))));
   }
 
   Widget _createRecordContainer(BuildContext context) {
