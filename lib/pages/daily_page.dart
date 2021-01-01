@@ -289,7 +289,7 @@ class _DailyPageState extends State<DailyPage> {
                 /* 맨 위 상테바 (Dive 로고, 환경설정 버튼) */
                 DailyAppbar(),
                 SliverFixedExtentList(
-                  itemExtent: SizeConfig.blockSizeVertical * 48,
+                  itemExtent: 300,
                   delegate: SliverChildListDelegate([
                     Column(
                       children: [
