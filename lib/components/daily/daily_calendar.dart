@@ -6,10 +6,8 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 class DailyCalendar extends StatefulWidget {
 
   DateTime _date;
-  Function changeDate;
-
-
-  DailyCalendar(this._date,this.changeDate);
+  Function changeCurrentDate;
+  DailyCalendar(this._date,this.changeCurrentDate);
 
   @override
   _DailyCalendarState createState() => _DailyCalendarState();
@@ -39,8 +37,8 @@ class _DailyCalendarState extends State<DailyCalendar> {
         child: CalendarCarousel(
             onDayPressed: (DateTime date,List<Event> events) {
               setState(() {
-                widget.changeDate(date);
                 _currentDate = date;
+                widget.changeCurrentDate(_currentDate);
               });
             },
             weekendTextStyle: TextStyle(

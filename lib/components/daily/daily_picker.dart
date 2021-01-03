@@ -6,12 +6,25 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
     show CalendarCarousel;
 import 'package:flutter_calendar_carousel/classes/event.dart';
 
-class DailyPicker extends StatelessWidget  {
+class DailyPicker extends StatefulWidget {
 
   DateTime _date;
   Function changeDate;
 
   DailyPicker(this._date,this.changeDate);
+
+  @override
+  _DailyPickerState createState() => _DailyPickerState();
+}
+
+class _DailyPickerState extends State<DailyPicker> {
+  DateTime _currentDate;
+
+  void changeCurrentDate(DateTime newDate) {
+    setState(() {
+      _currentDate = newDate;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +60,7 @@ class DailyPicker extends StatelessWidget  {
     return YYDialog().build()
       ..width = SizeConfig.screenWidth * 0.8
       ..borderRadius = 4.0
-      ..widget(DailyCalendar(this._date,this.changeDate))
+      ..widget(DailyCalendar(widget._date,changeCurrentDate))
       ..doubleButton(
         padding: EdgeInsets.only(top: 10.0),
         gravity: Gravity.right,
@@ -57,6 +70,9 @@ class DailyPicker extends StatelessWidget  {
         fontWeight1: FontWeight.bold,
         text2: "확인",
         color2: Colors.deepPurpleAccent,
+        onTap2: () {
+          widget.changeDate(_currentDate);
+        },
         fontSize2: 14.0,
         fontWeight2: FontWeight.bold,
       )
