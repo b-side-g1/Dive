@@ -24,6 +24,20 @@ class DailyService {
     return res.isEmpty ? null : Daily.fromJson(res[0]);
   }
 
+  Future<List<DateTime>> selectRecordedDaily(int year) async {
+    final db = await DBHelper().database;
+    return db.rawQuery("""
+      SELECT year,month,day FROM record 
+      JOIN daily
+      ON dailyId = daily.id
+      WHERE year = ?
+      GROUP BY day;
+    """,[year])
+        .then((value) => value.toList())
+        .then((value) => value.map((e) => DateTime(e["year"],e["month"],e["day"])).toList());
+  }
+
+  // return DateTime(e["year"],e["month"],e["day"]);
   Future<int> insertDaily(Daily daily) async {
     final db = await DBHelper().database;
     return await db.insert(Daily.tableName, daily.toJson());
