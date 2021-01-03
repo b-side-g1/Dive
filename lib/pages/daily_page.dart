@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:Dive/components/record_card.dart';
-import 'package:Dive/components/daily/daily_date.dart';
 import 'package:Dive/components/daily/daily_appbar.dart';
 import 'package:Dive/components/daily/daily_picker.dart';
 
@@ -15,7 +14,6 @@ import 'package:Dive/services/record/record_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'dart:math';
 import 'input_page.dart';
 
 class DailyPage extends StatefulWidget {
