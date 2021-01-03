@@ -213,20 +213,6 @@ class _DailyPageState extends State<DailyPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           DailyPicker(_date,changeDate),
-          DailyDate(_date, _currentDate, (context) async {
-            DateTime picked = await showDatePicker(
-                context: context,
-                initialDate: _date,
-                firstDate: new DateTime(2020),
-                lastDate: _currentDate,
-                cancelText: "취소",
-                confirmText: "확인",
-                helpText: "");
-            if (picked != null) {
-              debugPrint("$picked");
-              changeDate(picked);
-            }
-          }),
           _currentStatusContainer()
         ],
       ),

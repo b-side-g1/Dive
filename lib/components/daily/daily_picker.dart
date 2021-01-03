@@ -1,16 +1,14 @@
 import 'package:Dive/components/daily/calendar_body.dart';
-import 'package:Dive/components/daily/daily_calendar.dart';
 import 'package:Dive/config/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_dialog/flutter_custom_dialog.dart';
-import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
-    show CalendarCarousel;
-import 'package:flutter_calendar_carousel/classes/event.dart';
+import 'package:intl/intl.dart';
 
 class DailyPicker extends StatefulWidget {
 
   DateTime _date;
   Function changeDate;
+
 
   DailyPicker(this._date,this.changeDate);
 
@@ -31,9 +29,26 @@ class _DailyPickerState extends State<DailyPicker> {
     YYDialog.init(context);
 
     return Container(
-        child: makeTextButton("테스트", () {
-          YYAlertDialogBody(context);
-        }));
+      child:  FlatButton(
+          onPressed: () => {YYAlertDialogBody(context)},
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                child: Icon(Icons.calendar_today),
+                margin: EdgeInsets.only(right: 10),
+              ),
+              Text(
+                DateFormat("M.d").format(widget._date),
+                style: TextStyle(fontSize: 19),
+              ),
+              Container(
+                child: Image.asset("assets/images/icon_date_arrow.png"),
+                margin: EdgeInsets.only(left: 5),
+              )
+            ],
+          )),
+    );
   }
 
   void changeCurrentDate(DateTime newDate) {

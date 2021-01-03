@@ -19,7 +19,6 @@ class _CalendarBodyState extends State<CalendarBody> {
   String _currentEndAt = "...";
   BasicService _basicService = BasicService();
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
