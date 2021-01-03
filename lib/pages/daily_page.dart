@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:Dive/components/record_card.dart';
 import 'package:Dive/components/daily/daily_date.dart';
 import 'package:Dive/components/daily/daily_appbar.dart';
+import 'package:Dive/components/daily/daily_picker.dart';
+
 import 'package:Dive/config/size_config.dart';
 import 'package:Dive/inherited/state_container.dart';
 import 'package:Dive/models/daily_model.dart';
@@ -13,7 +15,6 @@ import 'package:Dive/services/record/record_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:calendar_widget/calendar_widget.dart';
 import 'dart:math';
 import 'input_page.dart';
 
@@ -198,11 +199,20 @@ class _DailyPageState extends State<DailyPage> {
     return Container();
   }
 
+  void changeDate(DateTime date) {
+    setState(() {
+      _date = date
+          .add(Duration(hours: 12)); // 마감시간에 상관 없이 정오는 무조건 동일한 날로 포함됨
+      _setDataByDate(_date, false);
+    });
+  }
+
   Widget _dailyContainer(BuildContext context) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
+          DailyPicker(_date,changeDate),
           DailyDate(_date, _currentDate, (context) async {
             DateTime picked = await showDatePicker(
                 context: context,
@@ -213,11 +223,8 @@ class _DailyPageState extends State<DailyPage> {
                 confirmText: "확인",
                 helpText: "");
             if (picked != null) {
-              setState(() {
-                _date = picked
-                    .add(Duration(hours: 12)); // 마감시간에 상관 없이 정오는 무조건 동일한 날로 포함됨
-                _setDataByDate(_date, false);
-              });
+              debugPrint("$picked");
+              changeDate(picked);
             }
           }),
           _currentStatusContainer()

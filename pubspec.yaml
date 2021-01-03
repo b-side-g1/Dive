@@ -52,7 +52,10 @@ dependencies:
   flutter_sparkline: ^0.1.0
   collection: ^1.14.13
   intl: ^0.15.7
+
   calendar_widget: ^0.1.0
+  flutter_calendar_carousel: ^1.5.2
+  flutter_custom_dialog: ^1.0.20
 
 dev_dependencies:
   test:

@@ -188,6 +188,20 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_calendar_carousel:
+    dependency: "direct main"
+    description:
+      name: flutter_calendar_carousel
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.5.2"
+  flutter_custom_dialog:
+    dependency: "direct main"
+    description:
+      name: flutter_custom_dialog
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.20"
   flutter_fadein:
     dependency: "direct main"
     description:
