@@ -1,3 +1,4 @@
+import 'package:Dive/components/daily/calendar_body.dart';
 import 'package:Dive/components/daily/daily_calendar.dart';
 import 'package:Dive/config/size_config.dart';
 import 'package:flutter/material.dart';
@@ -20,21 +21,25 @@ class DailyPicker extends StatefulWidget {
 class _DailyPickerState extends State<DailyPicker> {
   DateTime _currentDate;
 
-  void changeCurrentDate(DateTime newDate) {
-    setState(() {
-      _currentDate = newDate;
-    });
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-
     YYDialog.init(context);
 
     return Container(
         child: makeTextButton("테스트", () {
           YYAlertDialogBody(context);
         }));
+  }
+
+  void changeCurrentDate(DateTime newDate) {
+    setState(() {
+      _currentDate = newDate;
+    });
   }
 
   Widget makeTextButton(title, Function() function) {
@@ -60,7 +65,7 @@ class _DailyPickerState extends State<DailyPicker> {
     return YYDialog().build()
       ..width = SizeConfig.screenWidth * 0.8
       ..borderRadius = 4.0
-      ..widget(DailyCalendar(widget._date,changeCurrentDate))
+      ..widget(buildDialogBody())
       ..doubleButton(
         padding: EdgeInsets.only(top: 10.0),
         gravity: Gravity.right,
@@ -77,5 +82,9 @@ class _DailyPickerState extends State<DailyPicker> {
         fontWeight2: FontWeight.bold,
       )
       ..show();
+  }
+
+  Widget buildDialogBody() {
+    return CalendarBody(widget._date,_currentDate, changeCurrentDate);
   }
 }

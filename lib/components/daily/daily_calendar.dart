@@ -25,8 +25,7 @@ class _DailyCalendarState extends State<DailyCalendar> {
     _currentDate = widget._date;
 
     /* 2021년에 record가 있는 날짜들을 검색 */
-    _dailyService.selectRecordedDaily(2021).then((values) {
-      debugPrint("$values");
+    _dailyService.selectRecordedDaily(_currentDate.year).then((values) {
       setState(() {
         values.forEach((element) {
           _markedDateMap.add(
@@ -56,7 +55,6 @@ class _DailyCalendarState extends State<DailyCalendar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: EdgeInsets.only(top: 16),
         padding: EdgeInsets.all(16.0),
         alignment: Alignment.topCenter,
         child: CalendarCarousel(
@@ -73,7 +71,7 @@ class _DailyCalendarState extends State<DailyCalendar> {
             minSelectedDate: new DateTime(2020),
             maxSelectedDate: DateTime.now(),
             weekFormat: false,
-            height: 420.0,
+            height: 350.0,
             selectedDateTime: _currentDate,
             markedDatesMap: _markedDateMap,
             daysHaveCircularBorder: null));
