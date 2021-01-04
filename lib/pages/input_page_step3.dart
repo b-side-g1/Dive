@@ -318,7 +318,10 @@ class _InputPageStep3State extends State<InputPageStep3> {
                     ],
                   ),
                 ),
-                recordButton(),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 32),
+                  child: recordButton(),
+                ),
               ],
             )),
       ),
