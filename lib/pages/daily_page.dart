@@ -1,17 +1,19 @@
 import 'dart:async';
 
 import 'package:Dive/components/record_card.dart';
+import 'package:Dive/components/daily/daily_appbar.dart';
+import 'package:Dive/components/daily/daily_picker.dart';
+
 import 'package:Dive/config/size_config.dart';
 import 'package:Dive/inherited/state_container.dart';
 import 'package:Dive/models/daily_model.dart';
 import 'package:Dive/models/record_model.dart';
-import 'package:Dive/pages/setting_page.dart';
+
 import 'package:Dive/services/daily/daily_service.dart';
 import 'package:Dive/services/record/record_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'input_page.dart';
 
 class DailyPage extends StatefulWidget {
@@ -130,23 +132,6 @@ class _DailyPageState extends State<DailyPage> {
     return ((dayOfYear - date.weekday + 10) / 7).floor();
   }
 
-  Future _selectDate(BuildContext context) async {
-    DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: _date,
-        firstDate: new DateTime(2020),
-        lastDate: _currentDate,
-        cancelText: "취소",
-        confirmText: "확인",
-        helpText: "");
-    if (picked != null)
-      setState(() {
-        _date =
-            picked.add(Duration(hours: 12)); // 마감시간에 상관 없이 정오는 무조건 동일한 날로 포함됨
-        _setDataByDate(_date, false);
-      });
-  }
-
   Widget _currentStatusContainer() {
     /*
     * 1. 오늘 O, 기록 X -> Text(지금 이 순간\n나의 기분을 남겨주세요)
@@ -212,59 +197,21 @@ class _DailyPageState extends State<DailyPage> {
     return Container();
   }
 
-  Widget _dailyContainer(BuildContext context, date) {
+  void changeDate(DateTime date) {
+    setState(() {
+      _date = date
+          .add(Duration(hours: 12)); // 마감시간에 상관 없이 정오는 무조건 동일한 날로 포함됨
+      _setDataByDate(_date, false);
+    });
+  }
+
+  Widget _dailyContainer(BuildContext context) {
     return Container(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          FlatButton(
-              onPressed: () => {_selectDate(context)},
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    child: Icon(Icons.calendar_today),
-                    margin: EdgeInsets.only(right: 10),
-                  ),
-                  Text(
-                    new DateFormat("M.d").format(date),
-                    style: TextStyle(fontSize: 19),
-                  ),
-                  Container(
-                    child: Image.asset("assets/images/icon_date_arrow.png"),
-                    margin: EdgeInsets.only(left: 5),
-                  )
-                ],
-              )),
-          Container(
-            child: _currentStatusContainer(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _topNav(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Image.asset(
-            'assets/images/topnav_logo.png',
-            fit: BoxFit.fill,
-          ),
-          Container(
-            margin: EdgeInsets.only(right: 10),
-            child: IconButton(
-              icon: Image.asset(
-                'assets/images/topnav_icon_setting.png',
-              ),
-              onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SettingPage()));
-              },
-            ),
-          )
+          DailyPicker(_date,changeDate),
+          _currentStatusContainer()
         ],
       ),
     );
@@ -272,15 +219,12 @@ class _DailyPageState extends State<DailyPage> {
 
   Widget _waveContainer() {
     return Container(
-      width: SizeConfig.screenWidth,
-      height: 160,
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          fit: BoxFit.fill,
-          image: AssetImage("assets/images/img_wave.png")
-        )
-      )
-    );
+        width: SizeConfig.screenWidth,
+        height: 160,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.fill,
+                image: AssetImage("assets/images/img_wave.png"))));
   }
 
   Widget _createRecordContainer(BuildContext context) {
@@ -334,25 +278,14 @@ class _DailyPageState extends State<DailyPage> {
             body: CustomScrollView(
               slivers: <Widget>[
                 /* 맨 위 상테바 (Dive 로고, 환경설정 버튼) */
-                SliverAppBar(
-                  pinned: false,
-                  // 스크롤 내릴때 남아 있음
-                  automaticallyImplyLeading: false,
-                  backgroundColor: Colors.white,
-                  brightness: Brightness.light,
-                  expandedHeight: SizeConfig.blockSizeVertical * 5,
-                  flexibleSpace: FlexibleSpaceBar(
-                      centerTitle: true,
-                      titlePadding: EdgeInsets.fromLTRB(15, 0, 0, 5),
-                      title: _topNav(context)),
-                ),
+                DailyAppbar(),
                 SliverFixedExtentList(
-                  itemExtent: SizeConfig.blockSizeVertical * 48,
+                  itemExtent: 300,
                   delegate: SliverChildListDelegate([
                     Column(
                       children: [
                         /* 달력 및 안내 문구 */
-                        _dailyContainer(context, _date),
+                        _dailyContainer(context),
                         Stack(
                           children: [
                             /* 물결 (Wave) 이미지 */
