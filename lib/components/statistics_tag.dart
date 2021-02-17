@@ -32,29 +32,32 @@ class _StatisticsTagState extends State<StatisticsTag> {
     _statisticsService
         .getHappyReasons(widget.month, widget.year)
         .then((res) => {
-              bestTagList = res
-                  .map((e) => {
-                        'id': e['id'],
-                        'name': e['name'],
-                        'count': e['count'],
-                        'lastUpdatedAt': e['lastUpdatedAt']
-                      })
-                  .toList()
+              setState(() {
+                bestTagList = res
+                    .map((e) => {
+                          'id': e['id'],
+                          'name': e['name'],
+                          'count': e['count'],
+                          'lastUpdatedAt': e['lastUpdatedAt']
+                        })
+                    .toList();
+              })
             });
 
     _statisticsService
         .getUnHappyReasons(widget.month, widget.year)
         .then((res) => {
-              worstTagList = res
-                  .map((e) => {
-                        'id': e['id'],
-                        'name': e['name'],
-                        'count': e['count'],
-                        'lastUpdatedAt': e['lastUpdatedAt']
-                      })
-                  .toList()
+              setState(() {
+                worstTagList = res
+                    .map((e) => {
+                          'id': e['id'],
+                          'name': e['name'],
+                          'count': e['count'],
+                          'lastUpdatedAt': e['lastUpdatedAt']
+                        })
+                    .toList();
+              })
             });
-
   }
 
   Widget _emptyTagWidget() {
@@ -101,7 +104,8 @@ class _StatisticsTagState extends State<StatisticsTag> {
                   children: [
                     Text(
                       description,
-                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
                     ),
                     Image.asset(isBest
                         ? "assets/images/badge_best.png"

@@ -31,21 +31,22 @@ class _StatisticsTagMostState extends State<StatisticsTagMost> {
     _statisticsService
         .getMostFrequentTags(widget.month, widget.year)
         .then((value) => {
-              mostTagList = value
-                  .map((e) => {
-                        'id': e['id'],
-                        'name': e['name'],
-                        'percent': e['percent'],
-                        'lastUpdatedAt': e['lastUpdatedAt']
-                      })
-                  .toList()
-            });
+          setState((){
+            mostTagList = value
+                .map((e) => {
+              'id': e['id'],
+              'name': e['name'],
+              'percent': e['percent'],
+              'lastUpdatedAt': e['lastUpdatedAt']
+            }).toList();
+          })
+    });
   }
 
   Widget _emptyTagWidget() {
     return Card(
         shape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
         color: Colors.white,
         child: Padding(
             padding: EdgeInsets.only(top: 30, bottom: 40),
@@ -64,7 +65,7 @@ class _StatisticsTagMostState extends State<StatisticsTagMost> {
   }
 
   Widget _mostTagListWidget() {
-    if(mostTagList.isEmpty) {
+    if (mostTagList.isEmpty) {
       return _emptyTagWidget();
     }
     return Card(
