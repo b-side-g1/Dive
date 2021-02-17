@@ -10,6 +10,7 @@ import 'package:Dive/services/basic/basic_service.dart';
 import 'package:Dive/services/common/common_service.dart';
 import 'package:package_info/package_info.dart';
 import 'dart:convert';
+import 'dart:io' show Platform;
 
 class SettingPage extends StatefulWidget {
   _SettingPageState createState() => _SettingPageState();
@@ -276,7 +277,7 @@ class _SettingPageState extends State<SettingPage> {
                     },
                   ),
                   settingWidget('현재 버전', currentVersionWidget()),
-                  settingWidget('앱 공유하기', doShareWidget(context)),
+                  Platform.isIOS ? Container() : settingWidget('앱 공유하기', doShareWidget(context)),
                 ],
               ),
             ),
