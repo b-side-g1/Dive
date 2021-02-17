@@ -108,6 +108,7 @@ class _TagEmotionDetailState extends State<TagEmotionDetail> {
           color: Colors.black, //change your color here
         ),
         elevation: 0,
+        brightness: Brightness.light,
         centerTitle: true,
         title: Text(
           widget.title,
