@@ -1,4 +1,4 @@
 class GraphVo {
-  int date;
-  double score;
+  int? date;
+  double? score;
 }

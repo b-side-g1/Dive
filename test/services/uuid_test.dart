@@ -8,7 +8,7 @@ void main() {
   });
 
   test('list.', () {
-    List<bool> bools = List();
+    List<bool> bools = [];
     bools.add(true);
     print(bools[0]);
   });

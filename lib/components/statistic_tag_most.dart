@@ -4,13 +4,12 @@ import 'package:Dive/services/tag/tag_service.dart';
 import 'package:flutter/material.dart';
 
 class StatisticsTagMost extends StatefulWidget {
-  int year;
-  int month;
+  final int year;
+  final int month;
 
-  StatisticsTagMost({Key key, int year, int month})
+  StatisticsTagMost({super.key, int? year, int? month})
       : year = year ?? DateTime.now().year,
-        month = month ?? DateTime.now().month,
-        super(key: key);
+        month = month ?? DateTime.now().month;
 
   @override
   _StatisticsTagMostState createState() => _StatisticsTagMostState();

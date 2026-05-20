@@ -4,7 +4,6 @@ import 'package:Dive/models/record_model.dart';
 import 'package:Dive/services/record/record_service.dart';
 import 'package:Dive/services/statistics/statistics_service.dart';
 import "package:collection/collection.dart";
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TagEmotionDetail extends StatefulWidget {
@@ -14,22 +13,22 @@ class TagEmotionDetail extends StatefulWidget {
   final int month;
   final int year;
 
-  TagEmotionDetail(
-      {Key key,
-      this.title,
-      @required this.type,
-      @required this.id,
-      @required this.month,
-      @required this.year})
-      : super(key: key);
+  const TagEmotionDetail({
+    super.key,
+    this.title = '',
+    required this.type,
+    required this.id,
+    required this.month,
+    required this.year,
+  });
 
+  @override
   _TagEmotionDetailState createState() => _TagEmotionDetailState();
 }
 
 class _TagEmotionDetailState extends State<TagEmotionDetail> {
-  RecordService _recordService = RecordService();
-  StatisticsService _statisticsService = StatisticsService();
-  Map<int, List<dynamic>> recordMap;
+  final RecordService _recordService = RecordService();
+  Map<int, List<Record>> recordMap = {};
   List<Record> recordList = [];
   int averageScore = 0;
 
@@ -39,8 +38,8 @@ class _TagEmotionDetailState extends State<TagEmotionDetail> {
     _setData();
   }
 
-  _setData() async {
-    var res = [];
+  Future<void> _setData() async {
+    List<Record> res = [];
     if (widget.type == 'tag') {
       res = await _recordService.selectAllWithTagId(
           widget.id, widget.month, widget.year);
@@ -49,31 +48,32 @@ class _TagEmotionDetailState extends State<TagEmotionDetail> {
           widget.id, widget.month, widget.year);
     }
 
-    var result = groupBy(res, (obj) => DateTime.parse(obj.createdAt).day);
+    final result =
+        groupBy<Record, int>(res, (r) => DateTime.parse(r.createdAt!).day);
     setState(() {
       recordMap = result;
       averageScore = res.isEmpty
           ? 0
-          : (res.map((c) => c.score).reduce((a, b) => a + b) / res.length)
+          : (res.map((c) => c.score ?? 0).reduce((a, b) => a + b) / res.length)
               .round();
       recordList = res;
     });
   }
 
-  _scoreWidget() {
+  Widget _scoreWidget() {
     return Center(
       child: CustomPaint(
-          size: Size(56, 56),
+          size: const Size(56, 56),
           painter: PieChart(
               percentage: averageScore,
               textScaleFactor: 0.8,
-              textColor: Color(0xff63c7ff),
-              unFilledChartColor: Color(0xff63c7ff),
-              filledChartColor: Color(0xff63c7ff))),
+              textColor: const Color(0xff63c7ff),
+              unFilledChartColor: const Color(0xff63c7ff),
+              filledChartColor: const Color(0xff63c7ff))),
     );
   }
 
-  dateRecordWidget() {
+  Widget dateRecordWidget() {
     if (recordList.isEmpty || recordMap.isEmpty) {
       return SliverFixedExtentList(
         itemExtent: 0,
@@ -83,19 +83,13 @@ class _TagEmotionDetailState extends State<TagEmotionDetail> {
 
     var keys = recordMap.keys.toList();
     return SliverList(
-        delegate: SliverChildBuilderDelegate((BuildContext context, int index) {
+        delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int index) {
       var key = keys[index];
       return DateRecordList(
-          dateStr: widget.month.toString() + '/' + key.toString(),
-          recordList: recordMap[key]);
+          dateStr: "${widget.month}/$key",
+          recordList: recordMap[key] ?? const []);
     }, childCount: keys.length));
-    /*
-    * List.generate(keys.length, (index) {
-      var key = keys[index];
-      return DateRecordList(
-        dateStr: widget.month.toString() + '/' + key.toString(),
-        recordList: recordMap[key],
-    * */
   }
 
   @override
@@ -104,15 +98,12 @@ class _TagEmotionDetailState extends State<TagEmotionDetail> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
-        ),
+        iconTheme: const IconThemeData(color: Colors.black),
         elevation: 0,
-        brightness: Brightness.light,
         centerTitle: true,
         title: Text(
           widget.title,
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
         ),
       ),
       body: CustomScrollView(slivers: <Widget>[

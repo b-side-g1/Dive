@@ -1,5 +1,5 @@
 import 'package:Dive/services/statistics/statistics_service.dart';
-import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:fl_chart/fl_chart.dart';
 
 import 'package:Dive/config/size_config.dart';
 import 'package:flutter/material.dart';
@@ -8,84 +8,62 @@ class MonthGraph extends StatefulWidget {
   final int _year;
   final int _month;
 
-  MonthGraph(this._year, this._month);
+  const MonthGraph(this._year, this._month, {super.key});
 
   @override
-  _MonthGraphState createState() => _MonthGraphState();
+  State<MonthGraph> createState() => _MonthGraphState();
 }
 
 class _MonthGraphState extends State<MonthGraph> {
-  List<TimeSeriesSales> graphData;
+  List<FlSpot> _spots = const [];
+  int _daysInMonth = 30;
 
   @override
   void initState() {
     super.initState();
 
-    int year = widget._year;
-    int month = widget._month;
+    final int year = widget._year;
+    final int month = widget._month;
+    _daysInMonth = DateTime(year, month + 1, 0).day;
 
-    initGraphData(month, year);
-
-    StatisticsService().getGraphData(widget._month, widget._year).then((value) {
+    StatisticsService()
+        .getGraphData(widget._month, widget._year)
+        .then((value) {
       setState(() {
-        List<TimeSeriesSales> monthStatistics = value
-            .map((e) => TimeSeriesSales(
-                DateTime(year, month, e["day"]), e["score"].round()))
+        _spots = value
+            .map<FlSpot>((e) =>
+                FlSpot((e["day"] as num).toDouble(), (e["score"] as num).toDouble()))
             .toList();
-        graphData = [...graphData, ...monthStatistics];
       });
     });
   }
 
-  void initGraphData(month, year) {
-    graphData = [
-      TimeSeriesSales(DateTime(year, month, 1), null), // month의 첫날
-      TimeSeriesSales(DateTime(year, month + 1, 0), null), // month의 마지막날
-    ];
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: SizeConfig.blockSizeVertical * 35,
-      child: GraphBuilder(this.graphData),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: LineChart(
+          LineChartData(
+            minX: 1,
+            maxX: _daysInMonth.toDouble(),
+            gridData: const FlGridData(show: true),
+            borderData: FlBorderData(show: true),
+            titlesData: const FlTitlesData(show: true),
+            lineBarsData: [
+              LineChartBarData(
+                spots: _spots,
+                isCurved: false,
+                color: Colors.blue,
+                dotData: const FlDotData(show: true),
+                belowBarData: BarAreaData(show: false),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
-}
-
-class GraphBuilder extends StatelessWidget {
-  final graphData;
-
-  GraphBuilder(this.graphData);
-
-  List<charts.Series<TimeSeriesSales, DateTime>> _createGraphData() {
-    return [
-      charts.Series<TimeSeriesSales, DateTime>(
-        id: 'Sales',
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
-        domainFn: (TimeSeriesSales sales, _) => sales.time,
-        measureFn: (TimeSeriesSales sales, _) => sales.sales,
-        data: this.graphData,
-      )
-    ];
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return charts.TimeSeriesChart(_createGraphData(),
-        animate: false,
-        dateTimeFactory: const charts.LocalDateTimeFactory(),
-        defaultRenderer: charts.LineRendererConfig(includePoints: true),
-        primaryMeasureAxis: charts.NumericAxisSpec(
-            tickProviderSpec:
-                charts.BasicNumericTickProviderSpec(desiredTickCount: 1)));
-  }
-}
-
-class TimeSeriesSales {
-  final DateTime time;
-  final int sales;
-
-  TimeSeriesSales(this.time, this.sales);
 }

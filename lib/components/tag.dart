@@ -1,15 +1,13 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class Tag extends StatefulWidget {
-  final padding = 1.0;
-  String title;
+  final double padding = 1.0;
+  final String title;
 
-  Tag({Key key, this.title}) : super(key: key);
+  Tag({super.key, required this.title});
 
   @override
-  _TagState createState() {
-    return _TagState();
-  }
+  _TagState createState() => _TagState();
 }
 
 class _TagState extends State<Tag> {
@@ -17,19 +15,19 @@ class _TagState extends State<Tag> {
 
   @override
   Widget build(BuildContext context) {
-    _setColor() {
+    void setColor() {
       setState(() {
         isSelected = !isSelected;
       });
     }
 
     return GestureDetector(
-      onTap: _setColor,
+      onTap: setColor,
       child: Container(
         decoration: BoxDecoration(
             color: isSelected
-                ? Color.fromRGBO(0, 0, 0, 0.5)
-                : Color.fromRGBO(0, 0, 0, 0.0)),
+                ? const Color.fromRGBO(0, 0, 0, 0.5)
+                : const Color.fromRGBO(0, 0, 0, 0.0)),
         padding: EdgeInsets.all(widget.padding),
         child: Text(widget.title),
       ),

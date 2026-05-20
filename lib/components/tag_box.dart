@@ -1,47 +1,47 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import 'tag.dart';
 
 class TagBox extends StatefulWidget {
-  String title;
-  List<String> tags;
-  int columnNumber;
+  final String title;
+  final List<String> tags;
+  final int columnNumber;
 
-  TagBox({Key key, this.tags, this.title, this.columnNumber}) : super(key: key);
+  const TagBox(
+      {super.key,
+      required this.tags,
+      required this.title,
+      required this.columnNumber});
 
   @override
-  _TagBoxState createState() {
-    return _TagBoxState();
-  }
+  _TagBoxState createState() => _TagBoxState();
 }
 
 class _TagBoxState extends State<TagBox> {
-  List<Row> tagRows;
+  List<Row> tagRows = [];
 
   @override
   Widget build(BuildContext context) {
     tagRows = [];
-    var tagPaddings = widget.tags
-        .map((e) => new Tag(title: e))
-        .toList();
+    var tagPaddings = widget.tags.map((e) => Tag(title: e)).toList();
     for (int i = 0; i < tagPaddings.length / widget.columnNumber; i++) {
       if (i * widget.columnNumber + widget.columnNumber < tagPaddings.length) {
-        this.tagRows.add(new Row(
-              children: tagPaddings
-                  .getRange(i * widget.columnNumber,
-                      i * widget.columnNumber + widget.columnNumber)
-                  .toList(),
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              textBaseline: TextBaseline.alphabetic,
-            ));
+        tagRows.add(Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          textBaseline: TextBaseline.alphabetic,
+          children: tagPaddings
+              .getRange(i * widget.columnNumber,
+                  i * widget.columnNumber + widget.columnNumber)
+              .toList(),
+        ));
       } else {
-        this.tagRows.add(new Row(
-              children: tagPaddings
-                  .getRange(i * widget.columnNumber, tagPaddings.length)
-                  .toList(),
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              textBaseline: TextBaseline.alphabetic,
-            ));
+        tagRows.add(Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          textBaseline: TextBaseline.alphabetic,
+          children: tagPaddings
+              .getRange(i * widget.columnNumber, tagPaddings.length)
+              .toList(),
+        ));
       }
     }
     return Column(children: [Text(widget.title), Column(children: tagRows)]);

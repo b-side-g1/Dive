@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 
 abstract class Migration {
-  int migrationVersion;
+  late final int migrationVersion;
 
   Future<void> up(Transaction txn) async {
     throw UnimplementedError();

@@ -4,90 +4,90 @@ import 'package:Dive/models/tag_model.dart';
 import 'package:Dive/services/common/common_service.dart';
 
 class ReasonTagWidget extends StatefulWidget {
-  List<Tag> tags;
+  final List<Tag>? tags;
 
-  ReasonTagWidget({Key key, this.tags}) : super(key: key);
+  const ReasonTagWidget({super.key, this.tags});
 
   @override
   _BuildReasonTagState createState() => _BuildReasonTagState();
 }
 
 class _BuildReasonTagState extends State<ReasonTagWidget> {
-  List<bool> selecteds;
-  List<Tag> selectedTags;
-  List<Tag> selectTag;
+  List<bool> selecteds = List<bool>.filled(50, false);
+  List<Tag> selectedTags = [];
+  List<Tag> selectTag = [];
 
-  int selectedCount;
+  int selectedCount = 0;
 
   @override
   void initState() {
     super.initState();
-    this.selectedCount = 0;
-    this.selecteds = List(50);
-    this.selecteds =
-        this.selecteds.map((e) => e == true ? true : false).toList();
-    this.selectedTags = List();
+    selectedCount = 0;
+    selecteds = List<bool>.filled(50, false);
+    selectedTags = [];
   }
 
   @override
   Widget build(BuildContext context) {
     print("[reason_tag_widget.dart] #build! ");
 
-    final _scrollController = ScrollController();
+    final scrollController = ScrollController();
 
     final width = MediaQuery.of(context).size.width;
 
     final container = StateContainer.of(context);
     setState(() {
-      this.selectedCount = container.tags.length;
-      this.selectedTags = container.tags;
+      selectedCount = container.tags.length;
+      selectedTags = container.tags;
 
       if (widget.tags != null) {
-        widget.tags.asMap().forEach((index, tag) => {
-              this.selectedTags.forEach((element) {
-                if (tag.id == element.id) {
-                  this.selecteds[index] = true;
-                }
-              })
-            });
+        widget.tags!.asMap().forEach((index, tag) {
+          for (final element in selectedTags) {
+            if (tag.id == element.id) {
+              selecteds[index] = true;
+            }
+          }
+        });
       }
     });
 
     return widget.tags == null
-        ? Text("")
+        ? const Text("")
         : Scrollbar(
-            controller: _scrollController,
-            isAlwaysShown: true,
+            controller: scrollController,
+            thumbVisibility: true,
             child: SingleChildScrollView(
-              controller: _scrollController,
+              controller: scrollController,
               child: Wrap(
                   spacing: 5.0,
-                  children: List.generate(widget.tags.length, (index) {
+                  children: List.generate(widget.tags!.length, (index) {
                     return ButtonTheme(
                         minWidth: width * 0.19,
                         height: 30,
-                        child: FlatButton(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(100.0),
+                        child: TextButton(
+                          style: TextButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(100.0),
+                            ),
+                            backgroundColor: selecteds[index]
+                                ? CommonService.hexToColor("#63c7ff")
+                                : CommonService.hexToColor("#2f4262"),
+                            foregroundColor: Colors.white,
                           ),
-                          color: selecteds[index]
-                              ? CommonService.hexToColor("#63c7ff")
-                              : CommonService.hexToColor("#2f4262"),
-                          textColor: Colors.white,
                           onPressed: () {
                             setState(() {
                               if (selecteds[index]) {
-                                selectedTags.remove(widget.tags[index]);
+                                selectedTags.remove(widget.tags![index]);
                                 selectedCount--;
                                 selecteds[index] = false;
                                 selectedTags.removeWhere(
-                                    (tag) => tag.id == widget.tags[index].id);
+                                    (tag) => tag.id == widget.tags![index].id);
                               } else {
                                 if (selectedCount >= 5) {
-                                  return CommonService.showToast(
-                                      "5개까지만 선택이 가능합니다.");
+                                  CommonService.showToast("5개까지만 선택이 가능합니다.");
+                                  return;
                                 }
-                                selectedTags.add(widget.tags[index]);
+                                selectedTags.add(widget.tags![index]);
                                 selectedCount++;
                                 selecteds[index] = true;
                               }
@@ -95,7 +95,7 @@ class _BuildReasonTagState extends State<ReasonTagWidget> {
                             });
                           },
                           child: Text(
-                            "${widget.tags[index].name}",
+                            "${widget.tags![index].name}",
                             style: TextStyle(
                               fontSize: width * 0.04,
                             ),

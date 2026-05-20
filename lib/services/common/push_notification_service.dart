@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:Dive/models/basic_model.dart';
 import 'package:Dive/services/basic/basic_service.dart';
@@ -7,40 +5,37 @@ import 'package:Dive/services/basic/basic_service.dart';
 class PushNotificationService {
   final BasicService _basicService = BasicService();
 
-  Future initialize() async {
+  Future<void> initialize() async {
     Basic basic = await _basicService.selectBasicData();
     if (basic.is_push == 0) {
       print('reject push');
       return;
     }
 
-    FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-    if (Platform.isIOS) iOS_Permission(_firebaseMessaging);
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-    _firebaseMessaging.getToken().then((token) {
-      print('token:' + token);
-    });
-
-    _firebaseMessaging.configure(
-      onMessage: (Map<String, dynamic> message) async {
-        print('on message $message');
-      },
-      onResume: (Map<String, dynamic> message) async {
-        print('on resume $message');
-      },
-      onLaunch: (Map<String, dynamic> message) async {
-        print('on launch $message');
-      },
+    await messaging.requestPermission(
+      alert: true,
+      badge: true,
+      sound: true,
     );
-  }
 
+    String? token = await messaging.getToken();
+    if (token != null) {
+      print('token:$token');
+    }
 
-  void iOS_Permission(FirebaseMessaging _firebaseMessaging) {
-    _firebaseMessaging.requestNotificationPermissions(
-        IosNotificationSettings(sound: true, badge: true, alert: true));
-    _firebaseMessaging.onIosSettingsRegistered
-        .listen((IosNotificationSettings settings) {
-      print("Settings registered: $settings");
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('on message ${message.data}');
     });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('on resume/opened ${message.data}');
+    });
+
+    RemoteMessage? initial = await messaging.getInitialMessage();
+    if (initial != null) {
+      print('on launch ${initial.data}');
+    }
   }
 }

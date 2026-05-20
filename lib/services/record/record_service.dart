@@ -5,12 +5,12 @@ import 'package:Dive/services/emotion/emotion_service.dart';
 import 'package:Dive/services/tag/tag_service.dart';
 
 class RecordService {
-  EmotionService _emotionService = EmotionService();
-  TagService _tagService = TagService();
-  DailyService _dailyService = DailyService();
+  final EmotionService _emotionService = EmotionService();
+  final TagService _tagService = TagService();
+  final DailyService _dailyService = DailyService();
 
   Future<int> insertRecord(Record record) async {
-    print("record == ${record}");
+    print("record == $record");
     final db = await DBHelper().database;
     return await db.insert(Record.tableName, record.toTableJson());
   }
@@ -34,6 +34,17 @@ class RecordService {
     return records;
   }
 
+  Future<List<Record>> _hydrate(List<Record> records) async {
+    records.sort((r1, r2) =>
+        DateTime.parse(r2.createdAt!).compareTo(DateTime.parse(r1.createdAt!)));
+    for (var record in records) {
+      record.emotions =
+          await _emotionService.selectEmotionAllByRecordId(record.id!);
+      record.tags = await _tagService.selectTagAllByRecordId(record.id!);
+    }
+    return records;
+  }
+
   Future<List<Record>> selectAllWithEmotionsAndTagsByDailyId(
       String dailyId) async {
     final db = await DBHelper().database;
@@ -42,15 +53,7 @@ class RecordService {
 
     List<Record> records =
         res.isNotEmpty ? res.map((c) => Record.fromJson(c)).toList() : [];
-    records.sort((r1, r2) =>
-        DateTime.parse(r2.createdAt).compareTo(DateTime.parse(r1.createdAt)));
-    for (var _record in records) {
-      _record.emotions =
-          await _emotionService.selectEmotionAllByRecordId(_record.id);
-      _record.tags = await _tagService.selectTagAllByRecordId(_record.id);
-    }
-
-    return records;
+    return _hydrate(records);
   }
 
   Future<List<Record>> selectAllWithEmotionsAndTagsByTimestampBetween(
@@ -62,15 +65,7 @@ class RecordService {
 
     List<Record> records =
         res.isNotEmpty ? res.map((c) => Record.fromJson(c)).toList() : [];
-    records.sort((r1, r2) =>
-        DateTime.parse(r2.createdAt).compareTo(DateTime.parse(r1.createdAt)));
-    for (var _record in records) {
-      _record.emotions =
-          await _emotionService.selectEmotionAllByRecordId(_record.id);
-      _record.tags = await _tagService.selectTagAllByRecordId(_record.id);
-    }
-
-    return records;
+    return _hydrate(records);
   }
 
   Future<int> updateRecord(Record record) async {
@@ -94,65 +89,40 @@ class RecordService {
 
   Future<List<Record>> selectAllWithEmotionsAndTags() async {
     final db = await DBHelper().database;
-    var res = await db
-        .query(Record.tableName);
+    var res = await db.query(Record.tableName);
 
     List<Record> records =
-    res.isNotEmpty ? res.map((c) => Record.fromJson(c)).toList() : [];
-    records.sort((r1, r2) =>
-        DateTime.parse(r2.createdAt).compareTo(DateTime.parse(r1.createdAt)));
-    for (var _record in records) {
-      _record.emotions =
-      await _emotionService.selectEmotionAllByRecordId(_record.id);
-      _record.tags = await _tagService.selectTagAllByRecordId(_record.id);
-    }
-
-    return records;
+        res.isNotEmpty ? res.map((c) => Record.fromJson(c)).toList() : [];
+    return _hydrate(records);
   }
 
-  Future<List<Record>> selectAllWithTagId(String id, [int month, int year]) async {
+  Future<List<Record>> selectAllWithTagId(String id,
+      [int? month, int? year]) async {
     final db = await DBHelper().database;
     var res = await db.rawQuery("""
-    SELECT r.* 
+    SELECT r.*
     FROM record r JOIN recordHasTag rt ON r.id = rt.recordId
                   JOIN daily d ON r.dailyId = d.id
-        WHERE rt.tagId=? AND d.month = ? AND d.year = ? 
+        WHERE rt.tagId=? AND d.month = ? AND d.year = ?
         """, [id, month, year]);
 
     List<Record> records =
-    res.isNotEmpty ? res.map((c) => Record.fromJson(c)).toList() : [];
-    records.sort((r1, r2) =>
-        DateTime.parse(r2.createdAt).compareTo(DateTime.parse(r1.createdAt)));
-    for (var _record in records) {
-      _record.emotions =
-      await _emotionService.selectEmotionAllByRecordId(_record.id);
-      _record.tags = await _tagService.selectTagAllByRecordId(_record.id);
-    }
-
-    return records;
-
+        res.isNotEmpty ? res.map((c) => Record.fromJson(c)).toList() : [];
+    return _hydrate(records);
   }
 
-  Future<List<Record>> selectAllWithEmotionId(String id, [int month, int year]) async {
+  Future<List<Record>> selectAllWithEmotionId(String id,
+      [int? month, int? year]) async {
     final db = await DBHelper().database;
     var res = await db.rawQuery("""
-    SELECT r.* 
+    SELECT r.*
     FROM record r JOIN recordHasEmotion re ON r.id = re.recordId
                   JOIN daily d ON r.dailyId = d.id
-        WHERE re.emotionId=? AND d.month = ? AND d.year = ? 
+        WHERE re.emotionId=? AND d.month = ? AND d.year = ?
         """, [id, month, year]);
 
     List<Record> records =
-    res.isNotEmpty ? res.map((c) => Record.fromJson(c)).toList() : [];
-    records.sort((r1, r2) =>
-        DateTime.parse(r2.createdAt).compareTo(DateTime.parse(r1.createdAt)));
-    for (var _record in records) {
-      _record.emotions =
-      await _emotionService.selectEmotionAllByRecordId(_record.id);
-      _record.tags = await _tagService.selectTagAllByRecordId(_record.id);
-    }
-
-    return records;
-
+        res.isNotEmpty ? res.map((c) => Record.fromJson(c)).toList() : [];
+    return _hydrate(records);
   }
 }

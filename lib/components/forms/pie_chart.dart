@@ -2,13 +2,19 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class PieChart extends CustomPainter {
-  int percentage = 0;
-  double textScaleFactor = 1.0;
-  Color textColor;
-  Color unFilledChartColor;
-  Color filledChartColor;
+  final int percentage;
+  final double textScaleFactor;
+  final Color textColor;
+  final Color unFilledChartColor;
+  final Color filledChartColor;
 
-  PieChart({this.percentage, this.textScaleFactor, this.textColor, this.unFilledChartColor, this.filledChartColor});
+  PieChart({
+    this.percentage = 0,
+    this.textScaleFactor = 1.0,
+    required this.textColor,
+    required this.unFilledChartColor,
+    required this.filledChartColor,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -18,9 +24,9 @@ class PieChart extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
 
-
-    double radius = min(size.width / 2 - paint.strokeWidth / 2 , size.height / 2 - paint.strokeWidth/2);
-    Offset center = Offset(size.width / 2, size.height/ 2);
+    double radius = min(size.width / 2 - paint.strokeWidth / 2,
+        size.height / 2 - paint.strokeWidth / 2);
+    Offset center = Offset(size.width / 2, size.height / 2);
 
     canvas.drawCircle(center, radius, paint);
     drawArc(paint, canvas, center, radius);
@@ -29,15 +35,22 @@ class PieChart extends CustomPainter {
 
   void drawArc(Paint paint, Canvas canvas, Offset center, double radius) {
     double arcAngle = 2 * pi * (percentage / 100);
-    paint..color = Color(0xff33f7fe);
-    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), -pi / 2, arcAngle, false, paint);
+    paint.color = filledChartColor;
+    canvas.drawArc(Rect.fromCircle(center: center, radius: radius), -pi / 2,
+        arcAngle, false, paint);
   }
 
   void drawText(Canvas canvas, Size size, String text) {
     double fontSize = getFontSize(size, text);
 
-    TextSpan sp = TextSpan(style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold, color: textColor), text: text);
-    TextPainter tp = TextPainter(text: sp, textDirection: TextDirection.ltr);
+    TextSpan sp = TextSpan(
+        style: TextStyle(
+            fontSize: fontSize,
+            fontWeight: FontWeight.bold,
+            color: textColor),
+        text: text);
+    TextPainter tp =
+        TextPainter(text: sp, textDirection: TextDirection.ltr);
 
     tp.layout();
     double dx = size.width / 2 - tp.width / 2;
@@ -52,7 +65,7 @@ class PieChart extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(PieChart old) {
+  bool shouldRepaint(covariant PieChart old) {
     return old.percentage != percentage;
   }
 }

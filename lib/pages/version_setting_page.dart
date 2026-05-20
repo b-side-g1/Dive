@@ -11,7 +11,7 @@ class _VersionSettingPageState extends State<VersionSettingPage> {
     return Scaffold(
         appBar: AppBar(title: Text("버전 정보")),
         body: Center(
-          child: RaisedButton(
+          child: ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
             },

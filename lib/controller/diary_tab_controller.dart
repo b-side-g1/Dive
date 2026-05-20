@@ -4,20 +4,21 @@ import 'package:Dive/pages/statistics_page.dart';
 import 'package:flutter/material.dart';
 
 class DiaryTabController extends StatefulWidget {
+  const DiaryTabController({super.key});
+
   @override
   _DiaryTabControllerState createState() => _DiaryTabControllerState();
 }
 
-class _DiaryTabControllerState extends State<DiaryTabController> with SingleTickerProviderStateMixin {
-  TabController _tabController;
-
+class _DiaryTabControllerState extends State<DiaryTabController>
+    with SingleTickerProviderStateMixin {
+  late final TabController _tabController;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(initialIndex: 0, length: 2, vsync: this);
   }
-
 
   @override
   void dispose() {
@@ -32,16 +33,15 @@ class _DiaryTabControllerState extends State<DiaryTabController> with SingleTick
         child: Scaffold(
           body: Stack(
             children: [
-            TabBarView(physics: NeverScrollableScrollPhysics(),
-                // 스크롤해서 탭 넘어가는거 막는 설정, 일단 추가해봤어욤
-                children: [
-                  DailyPage(),
-                  StatisticsPage(),
-                ]),
-              BottomBar()
+              TabBarView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    const DailyPage(),
+                    const StatisticsPage(),
+                  ]),
+              const BottomBar()
             ],
-          )
-//          bottomNavigationBar: BottomBar(),
+          ),
         ));
   }
 }

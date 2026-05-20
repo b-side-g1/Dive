@@ -11,7 +11,7 @@ class _TagSettingPageState extends State<TagSettingPage> {
     return Scaffold(
         appBar: AppBar(title: Text("태그 설정")),
         body: Center(
-          child: RaisedButton(
+          child: ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
             },

@@ -11,7 +11,7 @@ class _PushSettingPageState extends State<PushSettingPage> {
     return Scaffold(
         appBar: AppBar(title: Text("알림 설정")),
         body: Center(
-          child: RaisedButton(
+          child: ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
             },

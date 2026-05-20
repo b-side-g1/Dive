@@ -1,5 +1,5 @@
 class PickerTime {
-  String hour;
+  String? hour;
 
   PickerTime({this.hour});
 }

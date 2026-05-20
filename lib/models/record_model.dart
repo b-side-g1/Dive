@@ -5,30 +5,31 @@ import 'package:Dive/models/daily_model.dart';
 class Record {
   static final tableName = 'record';
 
-  final String id;
-  final int score;
-  final String description;
-  final String dailyId;
-  final String updatedAt;
-  final String createdAt;
-  final int createdTimestamp;
-  Daily daily;
-  List<Tag> tags;
-  List<Emotion> emotions;
+  final String? id;
+  final int? score;
+  final String? description;
+  final String? dailyId;
+  final String? updatedAt;
+  final String? createdAt;
+  final int? createdTimestamp;
+  Daily? daily;
+  List<Tag>? tags;
+  List<Emotion>? emotions;
 
-  Record(
-      {this.id,
-      this.score,
-      this.description,
-      this.dailyId,
-      this.updatedAt,
-      this.createdAt,
-      this.createdTimestamp,
-      this.daily,
-      this.tags,
-      this.emotions});
+  Record({
+    this.id,
+    this.score,
+    this.description,
+    this.dailyId,
+    this.updatedAt,
+    this.createdAt,
+    this.createdTimestamp,
+    this.daily,
+    this.tags,
+    this.emotions,
+  });
 
-  factory Record.fromJson(Map<String, dynamic> json) => new Record(
+  factory Record.fromJson(Map<String, dynamic> json) => Record(
         id: json["id"],
         score: json["score"],
         description: json["description"],
@@ -45,9 +46,9 @@ class Record {
         "id": id,
         "score": score,
         "description": description,
-        "dailyId": dailyId ,
-        "updatedAt": updatedAt ,
-        "createdAt": createdAt ,
+        "dailyId": dailyId,
+        "updatedAt": updatedAt,
+        "createdAt": createdAt,
         "createdTimestamp": createdTimestamp,
         "daily": daily,
         "tags": tags,
@@ -55,24 +56,23 @@ class Record {
       };
 
   Map<String, dynamic> toTableJson() => {
-    "id": id,
-    "score": score,
-    "description": description,
-    "dailyId": dailyId ,
-    "updatedAt": updatedAt ,
-    "createdAt": createdAt ,
-    "createdTimestamp": createdTimestamp ,
-//    "daily": daily,
-//    "tags": tags,
-//    "emotions": emotions,
-  };
+        "id": id,
+        "score": score,
+        "description": description,
+        "dailyId": dailyId,
+        "updatedAt": updatedAt,
+        "createdAt": createdAt,
+        "createdTimestamp": createdTimestamp,
+      };
 
   bool isCreatedSameDay() {
-    if(daily == null) {
+    if (daily == null) {
       return true;
     }
-    DateTime datetime = DateTime.parse(daily.endAt);
-    datetime = datetime.hour <= 6 ? datetime.subtract(Duration(days: 1)) : datetime;
-    return DateTime.parse(createdAt).day ==  datetime.day;
+    DateTime datetime = DateTime.parse(daily!.endAt!);
+    datetime = datetime.hour <= 6
+        ? datetime.subtract(const Duration(days: 1))
+        : datetime;
+    return DateTime.parse(createdAt!).day == datetime.day;
   }
 }

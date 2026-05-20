@@ -1,3 +1,3 @@
 abstract class DefaultShareTemplate {
-  void doShare();
+  Future<void> doShare();
 }

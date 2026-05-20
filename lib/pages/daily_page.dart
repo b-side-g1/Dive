@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:Dive/components/record_card.dart';
 import 'package:Dive/components/daily/daily_appbar.dart';
 import 'package:Dive/components/daily/daily_picker.dart';
@@ -17,13 +15,16 @@ import 'package:intl/intl.dart';
 import 'input_page.dart';
 
 class DailyPage extends StatefulWidget {
+  const DailyPage({super.key});
+
+  @override
   _DailyPageState createState() => _DailyPageState();
 }
 
 class _DailyPageState extends State<DailyPage> {
-  DateTime _today = DateTime.now();
+  final DateTime _today = DateTime.now();
   DateTime _date = DateTime.now();
-  DateTime _currentDate;
+  DateTime? _currentDate;
   int _dailyScore = 0;
   List<Record> _firstRecordList = [];
   List<Record> _secondRecordList = [];
@@ -31,13 +32,8 @@ class _DailyPageState extends State<DailyPage> {
   bool isEmpty = true;
   bool existDifferentDayRecord = false;
 
-  RecordService _recordService = RecordService();
-  DailyService _dailyService = DailyService();
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  final RecordService _recordService = RecordService();
+  final DailyService _dailyService = DailyService();
 
   @override
   void initState() {
@@ -49,39 +45,44 @@ class _DailyPageState extends State<DailyPage> {
     var resDaily = await _dailyService.getDailyByTimestamp(
         date.millisecondsSinceEpoch, createDaily);
 
-    var records = List<Record>();
+    var records = <Record>[];
     if (resDaily != null) {
       _setDateByDaily(resDaily);
-      records = await _recordService
-          .selectAllWithEmotionsAndTagsByDailyId(resDaily.id);
-      records.forEach((element) {
+      if (resDaily.id != null) {
+        records = await _recordService
+            .selectAllWithEmotionsAndTagsByDailyId(resDaily.id!);
+      }
+      for (var element in records) {
         element.daily = resDaily;
-      });
+      }
     }
 
     setDataByRecord(records, date);
   }
 
   void _setDateByDaily(Daily daily) {
-    DateTime datetime = DateTime.parse(daily.endAt);
+    if (daily.endAt == null) return;
+    DateTime datetime = DateTime.parse(daily.endAt!);
     setState(() {
-      _date =
-          datetime.hour <= 6 ? datetime.subtract(Duration(days: 1)) : datetime;
-      if (_currentDate == null) {
-        _currentDate = _date;
-      }
+      _date = datetime.hour <= 6
+          ? datetime.subtract(const Duration(days: 1))
+          : datetime;
+      _currentDate ??= _date;
     });
   }
 
   void setDataByRecord(List<Record> records, DateTime date) {
     var resDailyScore = records.isEmpty
         ? 0
-        : (records.map((c) => c.score).reduce((a, b) => a + b) / records.length)
+        : (records
+                    .map((c) => c.score ?? 0)
+                    .reduce((a, b) => a + b) /
+                records.length)
             .round();
 
     var resIsToday =
         _today.difference(date).inDays == 0 && _today.day == date.day;
-    var resIsEmpty = records.length == 0;
+    var resIsEmpty = records.isEmpty;
 
     int differentDayIndex = getDifferentDayIndex(records);
 
@@ -105,9 +106,12 @@ class _DailyPageState extends State<DailyPage> {
     var records = [..._firstRecordList, ..._secondRecordList];
     var resDailyScore = records.isEmpty
         ? 0
-        : (records.map((c) => c.score).reduce((a, b) => a + b) / records.length)
+        : (records
+                    .map((c) => c.score ?? 0)
+                    .reduce((a, b) => a + b) /
+                records.length)
             .round();
-    var resIsEmpty = records.length == 0;
+    var resIsEmpty = records.isEmpty;
     setState(() {
       _dailyScore = resDailyScore;
       isEmpty = resIsEmpty;
@@ -133,14 +137,8 @@ class _DailyPageState extends State<DailyPage> {
   }
 
   Widget _currentStatusContainer() {
-    /*
-    * 1. 오늘 O, 기록 X -> Text(지금 이 순간\n나의 기분을 남겨주세요)
-    * 2. 오늘 O, 기록 O -> Text(점수)\n Text(오늘 하루의 점수)
-    * 3. 오늘 X, 기록 X -> Text(이날은 기록했던\n기분이 없네요) + 중간 이미지 변경
-    * 4. 오늘 X, 기록 O -> Text(점수)\n Text(이날 하루의 점수)
-    * */
     if (isToday && isEmpty) {
-      return Text(
+      return const Text(
         "지금 이 순간 \n나의 기분을 남겨보세요.",
         style: TextStyle(fontSize: 17, fontFamily: "NotoSans"),
         textAlign: TextAlign.center,
@@ -152,13 +150,13 @@ class _DailyPageState extends State<DailyPage> {
         children: <Widget>[
           Text(
             _dailyScore.toString(),
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: 34,
                 fontFamily: "Montserrat",
                 fontWeight: FontWeight.w700),
             textAlign: TextAlign.center,
           ),
-          Text(
+          const Text(
             "오늘 하루의 점수",
             style: TextStyle(fontSize: 17, fontFamily: "NotoSans"),
             textAlign: TextAlign.center,
@@ -167,7 +165,7 @@ class _DailyPageState extends State<DailyPage> {
       );
     }
     if (!isToday && isEmpty) {
-      return Text(
+      return const Text(
         "이날은 기록했던\n기분이 없네요.",
         style: TextStyle(fontSize: 17, fontFamily: "NotoSans"),
         textAlign: TextAlign.center,
@@ -179,13 +177,13 @@ class _DailyPageState extends State<DailyPage> {
         children: <Widget>[
           Text(
             _dailyScore.toString(),
-            style: TextStyle(
+            style: const TextStyle(
                 fontSize: 34,
                 fontFamily: "Montserrat",
                 fontWeight: FontWeight.w700),
             textAlign: TextAlign.center,
           ),
-          Text(
+          const Text(
             "이날 하루의 점수",
             style: TextStyle(fontSize: 17),
             textAlign: TextAlign.center,
@@ -199,21 +197,18 @@ class _DailyPageState extends State<DailyPage> {
 
   void changeDate(DateTime date) {
     setState(() {
-      _date = date
-          .add(Duration(hours: 12)); // 마감시간에 상관 없이 정오는 무조건 동일한 날로 포함됨
+      _date = date.add(const Duration(hours: 12));
       _setDataByDate(_date, false);
     });
   }
 
   Widget _dailyContainer(BuildContext context) {
-    return Container(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          DailyPicker(_date,changeDate),
-          _currentStatusContainer()
-        ],
-      ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        DailyPicker(_date, changeDate),
+        _currentStatusContainer()
+      ],
     );
   }
 
@@ -221,7 +216,7 @@ class _DailyPageState extends State<DailyPage> {
     return Container(
         width: SizeConfig.screenWidth,
         height: 160,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
             image: DecorationImage(
                 fit: BoxFit.fill,
                 image: AssetImage("assets/images/img_wave.png"))));
@@ -239,7 +234,8 @@ class _DailyPageState extends State<DailyPage> {
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => StateContainer(child: InputPage())));
+                builder: (context) =>
+                    StateContainer(child: const InputPage())));
       },
       child: Image.asset(
         'assets/images/btn_dive.png',
@@ -251,18 +247,18 @@ class _DailyPageState extends State<DailyPage> {
   Widget _dividerWidget(String dateStr) {
     return Row(children: <Widget>[
       Expanded(
-        child: new Container(
+        child: Container(
             margin: const EdgeInsets.only(left: 10.0, right: 20.0),
-            child: Divider(
+            child: const Divider(
               color: Colors.black,
               height: 36,
             )),
       ),
       Text(dateStr),
       Expanded(
-        child: new Container(
+        child: Container(
             margin: const EdgeInsets.only(left: 20.0, right: 10.0),
-            child: Divider(
+            child: const Divider(
               color: Colors.black,
               height: 36,
             )),
@@ -277,20 +273,16 @@ class _DailyPageState extends State<DailyPage> {
             backgroundColor: Colors.white,
             body: CustomScrollView(
               slivers: <Widget>[
-                /* 맨 위 상테바 (Dive 로고, 환경설정 버튼) */
-                DailyAppbar(),
+                const DailyAppbar(),
                 SliverFixedExtentList(
                   itemExtent: 300,
                   delegate: SliverChildListDelegate([
                     Column(
                       children: [
-                        /* 달력 및 안내 문구 */
                         _dailyContainer(context),
                         Stack(
                           children: [
-                            /* 물결 (Wave) 이미지 */
                             _waveContainer(),
-                            /* 감정 등록 버튼 */
                             Positioned.fill(
                                 child: Align(
                                     alignment: Alignment.center,
@@ -306,7 +298,7 @@ class _DailyPageState extends State<DailyPage> {
                     (BuildContext context, int index) {
                       final record = _firstRecordList[index];
                       return Dismissible(
-                        key: Key(record.id),
+                        key: Key(record.id ?? '$index'),
                         direction: DismissDirection.endToStart,
                         background: Container(
                           color: Colors.transparent,
@@ -316,39 +308,41 @@ class _DailyPageState extends State<DailyPage> {
                               child: Container(
                                 width: 60,
                                 height: 60,
+                                decoration: const BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.red),
                                 child: Transform.scale(
                                   scale: 0.5,
                                   child: IconButton(
                                     onPressed: () {},
-                                    icon: new Image.asset(
+                                    icon: Image.asset(
                                         "lib/src/image/daily/icon_trash_ori.png"),
                                   ),
                                 ),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle, color: Colors.red),
                               )),
                         ),
                         confirmDismiss: (DismissDirection direction) async {
-                          return await showDialog(
+                          return await showDialog<bool>(
                             context: context,
                             builder: (BuildContext context) {
                               return CupertinoAlertDialog(
                                 content: Container(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10),
                                     child: const Text(
                                       "감정을 삭제하면 되돌릴 수 없습니다.\n정말 삭제하실 건가요?",
-                                      style:
-                                          TextStyle(height: 1.5, fontSize: 15),
+                                      style: TextStyle(
+                                          height: 1.5, fontSize: 15),
                                     )),
                                 actions: <Widget>[
                                   CupertinoDialogAction(
                                     isDefaultAction: true,
-                                    child: Text("삭제하기"),
+                                    child: const Text("삭제하기"),
                                     onPressed: () =>
                                         Navigator.of(context).pop(true),
                                   ),
                                   CupertinoDialogAction(
-                                    child: Text("취소"),
+                                    child: const Text("취소"),
                                     onPressed: () =>
                                         Navigator.of(context).pop(false),
                                   )
@@ -361,51 +355,48 @@ class _DailyPageState extends State<DailyPage> {
                           setState(() {
                             _firstRecordList.removeAt(index);
                           });
-                          _recordService.deleteRecord(record.id);
+                          if (record.id != null) {
+                            _recordService.deleteRecord(record.id!);
+                          }
                           setScore();
                         },
                         child: InkWell(
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.all(10),
-                            child: RecordCard(
-                              record: record,
-                            ),
-                          ),
                           onTap: () {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => StateContainer(
-                                        child: InputPage(),
                                         score: record.score,
                                         emotions: record.emotions,
                                         tags: record.tags,
                                         description: record.description,
-                                        record: record)));
+                                        record: record,
+                                        child: const InputPage())));
                           },
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.all(10),
+                            child: RecordCard(
+                              record: record,
+                            ),
+                          ),
                         ),
-                        // swipe 시 옆으로 삭제 되는 기능
-//                    background: Container(
-//                      color: Colors.red,
-//                      child: Icon(Icons.cancel)
-//                    ),
                       );
                     },
-                    childCount:
-                        _firstRecordList == null ? 0 : _firstRecordList.length,
+                    childCount: _firstRecordList.length,
                   ),
                 ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
                     DateTime dateTime =
-                        DateTime.parse(_firstRecordList[0].createdAt);
-                    return _dividerWidget("${dateTime.month}/${dateTime.day}");
+                        DateTime.parse(_firstRecordList[0].createdAt!);
+                    return _dividerWidget(
+                        "${dateTime.month}/${dateTime.day}");
                   },
                       childCount: (_secondRecordList.isNotEmpty ||
                                   existDifferentDayRecord) &&
-                              _firstRecordList.length != 0
+                              _firstRecordList.isNotEmpty
                           ? 1
                           : 0),
                 ),
@@ -414,53 +405,49 @@ class _DailyPageState extends State<DailyPage> {
                     (BuildContext context, int index) {
                       final record = _secondRecordList[index];
                       return Dismissible(
-                        key: Key(record.id),
+                        key: Key(record.id ?? '$index'),
                         onDismissed: (direction) {
                           setState(() {
                             _secondRecordList.removeAt(index);
                           });
-                          _recordService.deleteRecord(record.id);
+                          if (record.id != null) {
+                            _recordService.deleteRecord(record.id!);
+                          }
                           setScore();
                         },
                         child: InkWell(
-                          child: Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.all(10),
-                            child: RecordCard(
-                              record: record,
-                            ),
-                          ),
                           onTap: () {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => StateContainer(
-                                        child: InputPage(),
                                         score: record.score,
                                         emotions: record.emotions,
                                         tags: record.tags,
                                         description: record.description,
-                                        record: record)));
+                                        record: record,
+                                        child: const InputPage())));
                           },
+                          child: Container(
+                            alignment: Alignment.center,
+                            padding: const EdgeInsets.all(10),
+                            child: RecordCard(
+                              record: record,
+                            ),
+                          ),
                         ),
-                        // swipe 시 옆으로 삭제 되는 기능
-//                    background: Container(
-//                      color: Colors.red,
-//                      child: Icon(Icons.cancel)
-//                    ),
                       );
                     },
-                    childCount: _secondRecordList == null
-                        ? 0
-                        : _secondRecordList.length,
+                    childCount: _secondRecordList.length,
                   ),
                 ),
                 SliverList(
                   delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
                     DateTime dateTime =
-                        DateTime.parse(_secondRecordList[0].createdAt);
-                    return _dividerWidget("${dateTime.month}/${dateTime.day}");
+                        DateTime.parse(_secondRecordList[0].createdAt!);
+                    return _dividerWidget(
+                        "${dateTime.month}/${dateTime.day}");
                   },
                       childCount: _secondRecordList.isNotEmpty &&
                               !_secondRecordList[0].isCreatedSameDay()
