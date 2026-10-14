@@ -3,13 +3,12 @@ import 'package:Dive/services/statistics/statistics_service.dart';
 import 'package:flutter/material.dart';
 
 class StatisticsEmotion extends StatefulWidget {
-  int year;
-  int month;
+  final int year;
+  final int month;
 
-  StatisticsEmotion({Key key, int year, int month})
+  StatisticsEmotion({super.key, int? year, int? month})
       : year = year ?? DateTime.now().year,
-        month = month ?? DateTime.now().month,
-        super(key: key);
+        month = month ?? DateTime.now().month;
 
   @override
   _StatisticsEmotionState createState() => _StatisticsEmotionState();

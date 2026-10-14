@@ -5,42 +5,42 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart'
 import 'package:flutter_calendar_carousel/classes/event.dart';
 
 class DailyCalendar extends StatefulWidget {
-  DateTime _date;
-  Function changeCurrentDate;
+  final DateTime _date;
+  final ValueChanged<DateTime> changeCurrentDate;
 
-  DailyCalendar(this._date, this.changeCurrentDate);
+  const DailyCalendar(this._date, this.changeCurrentDate, {super.key});
 
   @override
   _DailyCalendarState createState() => _DailyCalendarState();
 }
 
 class _DailyCalendarState extends State<DailyCalendar> {
-  DateTime _currentDate;
-  DailyService _dailyService = DailyService();
+  late DateTime _currentDate;
+  final DailyService _dailyService = DailyService();
 
-  EventList<Event> _markedDateMap = EventList<Event>();
+  final EventList<Event> _markedDateMap = EventList<Event>(events: {});
 
   @override
   void initState() {
+    super.initState();
     _currentDate = widget._date;
 
-    /* 2021년에 record가 있는 날짜들을 검색 */
     _dailyService.selectRecordedDaily(_currentDate.year).then((values) {
       setState(() {
-        values.forEach((element) {
+        for (final element in values) {
           _markedDateMap.add(
               DateTime(element.year, element.month, element.day),
               createMarkedEvent(element.year, element.month, element.day));
-        });
+        }
       });
     });
   }
 
-  Event createMarkedEvent(year, month, day) {
+  Event createMarkedEvent(int year, int month, int day) {
     return Event(
-        date: new DateTime(year, month, day),
+        date: DateTime(year, month, day),
         dot: Container(
-          margin: EdgeInsets.symmetric(horizontal: 1.0),
+          margin: const EdgeInsets.symmetric(horizontal: 1.0),
           color: Colors.blue,
           height: 5.0,
           width: 5.0,
@@ -48,27 +48,20 @@ class _DailyCalendarState extends State<DailyCalendar> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         alignment: Alignment.topCenter,
-        child: CalendarCarousel(
+        child: CalendarCarousel<Event>(
             onDayPressed: (DateTime date, List<Event> events) {
               setState(() {
                 _currentDate = date;
                 widget.changeCurrentDate(_currentDate);
               });
             },
-            weekendTextStyle: TextStyle(
-              color: Colors.red,
-            ),
+            weekendTextStyle: const TextStyle(color: Colors.red),
             thisMonthDayBorderColor: Colors.grey,
-            minSelectedDate: new DateTime(2020),
+            minSelectedDate: DateTime(2020),
             maxSelectedDate: DateTime.now(),
             weekFormat: false,
             height: 350.0,

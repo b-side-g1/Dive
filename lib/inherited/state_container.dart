@@ -5,64 +5,66 @@ import 'package:Dive/models/tag_model.dart';
 
 class StateContainer extends StatefulWidget {
   final Widget child;
-  final int score;
-  final List<Emotion> emotions;
-  final List<Tag> tags;
-  final String description;
-  final Record record;
-  final String selectedTime;
+  final int? score;
+  final List<Emotion>? emotions;
+  final List<Tag>? tags;
+  final String? description;
+  final Record? record;
+  final String? selectedTime;
 
-  StateContainer({
-    @required this.child,
+  const StateContainer({
+    super.key,
+    required this.child,
     this.score,
     this.emotions,
     this.tags,
     this.description,
     this.record,
-    this.selectedTime
+    this.selectedTime,
   });
 
   static StateContainerState of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(_InheritedStateContainer)
-            as _InheritedStateContainer)
+    return (context.dependOnInheritedWidgetOfExactType<_InheritedStateContainer>())!
         .data;
   }
 
   @override
-  StateContainerState createState() => new StateContainerState();
+  StateContainerState createState() => StateContainerState();
 }
 
 class StateContainerState extends State<StateContainer> {
   int score = 50;
   List<Emotion> emotions = [];
   List<Tag> tags = [];
-  String description;
-  Record record;
-  String selectedTime;
+  String description = "";
+  Record? record;
+  String selectedTime = "";
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     setState(() {
       score = widget.score ?? 50;
       emotions = widget.emotions ?? [];
       tags = widget.tags ?? [];
       description = widget.description ?? "";
-      record = widget.record ?? null;
+      record = widget.record;
       selectedTime = DateTime.now().toString();
     });
   }
-  void updateScore(score) {
+
+  void updateScore(int score) {
     setState(() {
       this.score = score;
     });
   }
-  void updateTime(time) {
+
+  void updateTime(String time) {
     setState(() {
-      this.selectedTime = time;
+      selectedTime = time;
     });
   }
+
   void updateEmotions(List<Emotion> emotions) {
     setState(() {
       this.emotions = emotions;
@@ -83,7 +85,7 @@ class StateContainerState extends State<StateContainer> {
 
   @override
   Widget build(BuildContext context) {
-    return new _InheritedStateContainer(
+    return _InheritedStateContainer(
       data: this,
       child: widget.child,
     );
@@ -93,11 +95,10 @@ class StateContainerState extends State<StateContainer> {
 class _InheritedStateContainer extends InheritedWidget {
   final StateContainerState data;
 
-  _InheritedStateContainer({
-    Key key,
-    @required this.data,
-    @required Widget child,
-  }) : super(key: key, child: child);
+  const _InheritedStateContainer({
+    required this.data,
+    required super.child,
+  });
 
   @override
   bool updateShouldNotify(_InheritedStateContainer old) => true;

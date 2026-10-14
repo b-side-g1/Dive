@@ -1,15 +1,18 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:Dive/services/basic/basic_service.dart';
 import 'package:Dive/services/common/push_notification_service.dart';
 import 'package:Dive/splash/splash_page.dart';
-import 'package:kakao_flutter_sdk/all.dart';
+import 'package:kakao_flutter_sdk_share/kakao_flutter_sdk_share.dart';
 
 import 'commons/static.dart';
 
-bool initScreen;
+late bool initScreen;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp();
 
   BasicService basicService = BasicService();
   initScreen = await basicService.isSetTodayEndAt();
@@ -17,13 +20,14 @@ void main() async {
   PushNotificationService pushNotificationService = PushNotificationService();
   await pushNotificationService.initialize();
 
-  KakaoContext.clientId = KakaNativeKey;
+  KakaoSdk.init(nativeAppKey: KakaNativeKey);
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -34,6 +38,5 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         home: SplashPage(initScreen));
-    // home: InputPage());
   }
 }

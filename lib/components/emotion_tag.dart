@@ -1,28 +1,27 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/painting.dart';
+import 'package:flutter/material.dart';
 
 class EmotionTag extends StatefulWidget {
-  String title;
-  int id;
-  double width = 34;
-  double height = 34;
-  Function onTap;
-  List<Color> activeColors;
-  bool isActivated;
+  final String title;
+  final int id;
+  final double width;
+  final double height;
+  final VoidCallback onTap;
+  final List<Color> activeColors;
+  final bool isActivated;
 
-  EmotionTag(
-      {Key key,
-      this.id,
-      this.title,
-      this.onTap,
-      this.activeColors,
-      this.isActivated})
-      : super(key: key);
+  const EmotionTag({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.onTap,
+    required this.activeColors,
+    required this.isActivated,
+    this.width = 34,
+    this.height = 34,
+  });
 
   @override
-  _EmotionTagState createState() {
-    return _EmotionTagState();
-  }
+  _EmotionTagState createState() => _EmotionTagState();
 }
 
 class _EmotionTagState extends State<EmotionTag> {
@@ -30,7 +29,9 @@ class _EmotionTagState extends State<EmotionTag> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: widget.onTap,
-        onVerticalDragStart:(detail){ widget.onTap(); },
+        onVerticalDragStart: (detail) {
+          widget.onTap();
+        },
         child: Container(
           height: widget.width,
           width: widget.height,
@@ -40,27 +41,26 @@ class _EmotionTagState extends State<EmotionTag> {
               end: Alignment.bottomCenter,
               colors: widget.isActivated
                   ? widget.activeColors
-                  : [Color.fromRGBO(255, 255, 255, 0.03), Color.fromRGBO(255, 255, 255, 0.03)],
+                  : const [
+                      Color.fromRGBO(255, 255, 255, 0.03),
+                      Color.fromRGBO(255, 255, 255, 0.03)
+                    ],
             ),
-//          image: DecorationImage(
-//            image: AssetImage('lib/src/image/tags/icon_1_off.png'),
-//            fit: BoxFit.scaleDown,
-//          )
-            borderRadius: BorderRadius.all(Radius.circular(9.9)),
+            borderRadius: const BorderRadius.all(Radius.circular(9.9)),
           ),
           child: Padding(
-              padding: EdgeInsets.all(9),
+              padding: const EdgeInsets.all(9),
               child: Column(
                 children: <Widget>[
                   Image.asset(
                     'lib/src/image/tags/icon_${widget.id}_${widget.isActivated ? 'on' : 'off'}.png',
-                    // image height, width: 16.7dp
                     height: 16.7 / widget.height * (100 + 9),
                     width: 16.7 / widget.width * (100 + 9),
                   ),
                   Text(
                     widget.title,
-                    style: TextStyle(color: Color.fromRGBO(255, 255, 255, 1)),
+                    style:
+                        const TextStyle(color: Color.fromRGBO(255, 255, 255, 1)),
                   ),
                 ],
               )),

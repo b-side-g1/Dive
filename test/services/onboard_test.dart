@@ -16,11 +16,9 @@ Future<void> main() async {
 
     List<Map<String, dynamic>> maps = await db.query(Basic.tableName);
 
-    Basic basic = maps.isNotEmpty ? maps.map((e) {
-      return Basic.fromJson(e);
-    }).toList()[0] : null;
+    Basic? basic = maps.isNotEmpty ? Basic.fromJson(maps.first) : null;
 
-    print(basic.toJson());
+    print(basic?.toJson());
 
     await db.close();
     expect(0, 0);

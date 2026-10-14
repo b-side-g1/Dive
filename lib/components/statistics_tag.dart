@@ -4,21 +4,19 @@ import 'package:Dive/services/tag/tag_service.dart';
 import 'package:flutter/material.dart';
 
 class StatisticsTag extends StatefulWidget {
-  int year;
-  int month;
+  final int year;
+  final int month;
 
-  StatisticsTag({Key key, int year, int month})
+  StatisticsTag({super.key, int? year, int? month})
       : year = year ?? DateTime.now().year,
-        month = month ?? DateTime.now().month,
-        super(key: key);
+        month = month ?? DateTime.now().month;
 
   @override
   _StatisticsTagState createState() => _StatisticsTagState();
 }
 
 class _StatisticsTagState extends State<StatisticsTag> {
-  TagService _tagService = TagService();
-  StatisticsService _statisticsService = StatisticsService();
+  final StatisticsService _statisticsService = StatisticsService();
   List bestTagList = [];
   List worstTagList = [];
 

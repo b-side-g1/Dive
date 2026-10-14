@@ -11,7 +11,7 @@ class _BackupSettingPageState extends State<BackupSettingPage> {
     return Scaffold(
         appBar: AppBar(title: Text("백업 설정")),
         body: Center(
-          child: RaisedButton(
+          child: ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
             },

@@ -7,17 +7,19 @@ import 'package:Dive/pages/input_page_step1.dart';
 import 'package:Dive/pages/input_page_step2.dart';
 import 'package:Dive/pages/input_page_step3.dart';
 
-import 'daily_page.dart';
+import 'package:Dive/models/emotion_model.dart';
 
 enum ArrowAction { up, down }
 
 class InputPage extends StatefulWidget {
+  const InputPage({super.key});
+
   @override
   _InputPageState createState() => _InputPageState();
 }
 
 class _InputPageState extends State<InputPage> {
-  List emotions = [];
+  List<Emotion> emotions = [];
 
   Color get backgroundColor {
     switch (step) {
@@ -30,11 +32,9 @@ class _InputPageState extends State<InputPage> {
     }
   }
 
-  PageController _controller = PageController(
-    initialPage: 0,
-  );
+  final PageController _controller = PageController(initialPage: 0);
   int step = 1;
-  int testScore;
+  int testScore = 0;
 
   @override
   void dispose() {
@@ -131,7 +131,7 @@ class _InputPageState extends State<InputPage> {
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => DiaryTabController()),
+                          builder: (context) => const DiaryTabController()),
                       (e) => false);
                 },
               ),
@@ -201,10 +201,7 @@ class _InputPageState extends State<InputPage> {
   Widget build(BuildContext context) {
     final container = StateContainer.of(context);
     testScore = container.score;
-
-    setState(() {
-      emotions = container.emotions;
-    });
+    emotions = container.emotions;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -216,12 +213,12 @@ class _InputPageState extends State<InputPage> {
               controller: _controller,
               scrollDirection: Axis.vertical,
               children: <Widget>[
-                InputPageStep1(),
+                const InputPageStep1(),
                 InputPageStep2(
                   emotions: emotions,
                 ),
                 InputPageStep3(
-                  description: container.description,
+                  description: container.description ?? '',
                 )
               ],
               onPageChanged: (page) {
@@ -249,6 +246,8 @@ class _InputPageState extends State<InputPage> {
 
 // for common animation , updown btn
 class InputPageAnimation extends StatefulWidget {
+  const InputPageAnimation({super.key});
+
   @override
   _InputPageAnimationState createState() => _InputPageAnimationState();
 }
@@ -256,10 +255,10 @@ class InputPageAnimation extends StatefulWidget {
 class _InputPageAnimationState extends State<InputPageAnimation> {
   @override
   Widget build(BuildContext context) {
-    return AnimatedOpacity(
-      child: InputPage(),
+    return const AnimatedOpacity(
       opacity: 0.5,
       duration: Duration(seconds: 1),
+      child: InputPage(),
     );
   }
 }

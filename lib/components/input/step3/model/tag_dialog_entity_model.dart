@@ -1,6 +1,6 @@
-class TagDialogEntity <T> {
+class TagDialogEntity<T> {
   bool isConfirm;
-  T value;
+  T? value;
 
-  TagDialogEntity({this.isConfirm,this.value});
+  TagDialogEntity({this.isConfirm = false, this.value});
 }
